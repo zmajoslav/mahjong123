@@ -1,6 +1,6 @@
 async function ensureExtensions(pool) {
-  // Needed for gen_random_uuid() in schema.sql
-  await pool.query('CREATE EXTENSION IF NOT EXISTS pgcrypto;');
+  // No extensions required. gen_random_uuid() is built-in on PostgreSQL 13+.
+  // Shared hosts often don't allow pgcrypto.
 }
 
 module.exports = { ensureExtensions };

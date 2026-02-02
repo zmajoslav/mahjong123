@@ -1,6 +1,5 @@
 -- Mahjong Solitaire schema (Shanghai-style tile-matching puzzle)
-
-CREATE EXTENSION IF NOT EXISTS pgcrypto;
+-- Note: gen_random_uuid() is built-in on PostgreSQL 13+. No extensions required.
 
 CREATE TABLE IF NOT EXISTS users (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
