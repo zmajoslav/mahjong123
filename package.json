@@ -8,7 +8,8 @@
     "dev": "nodemon src/server.js",
     "start": "node src/server.js",
     "lint": "node --check src/server.js",
-    "db:schema": "node src/scripts/printSchemaPath.js"
+    "db:schema": "node src/scripts/printSchemaPath.js",
+    "db:migrate": "node src/scripts/runMigrations.js"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
