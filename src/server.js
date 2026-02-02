@@ -7,8 +7,11 @@ const { ensureExtensions } = require('./db/migrations');
 
 async function main() {
   const env = loadEnv();
-  const pool = getPool(env.DATABASE_URL);
-  await ensureExtensions(pool);
+  let pool = null;
+  if (env.DATABASE_URL) {
+    pool = getPool(env.DATABASE_URL);
+    await ensureExtensions(pool);
+  }
 
   const app = createApp({ env, pool });
 

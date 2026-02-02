@@ -30,8 +30,15 @@ function createApp({ env, pool }) {
     res.json({ baseUrl });
   });
 
-  app.use('/api/auth', buildAuthRouter({ env, pool }));
-  app.use('/api', buildApiRouter({ env, pool, jwtSecret: env.JWT_SECRET }));
+  const requirePool = (req, res, next) => {
+    if (!pool) {
+      return res.status(503).json({ error: { code: 'UNAVAILABLE', message: 'Service temporarily unavailable.' } });
+    }
+    next();
+  };
+
+  app.use('/api/auth', requirePool, buildAuthRouter({ env, pool }));
+  app.use('/api', requirePool, buildApiRouter({ env, pool, jwtSecret: env.JWT_SECRET }));
 
   app.use(express.static(publicDir));
   app.get('*', (_req, res) => res.sendFile(path.join(publicDir, 'index.html')));
