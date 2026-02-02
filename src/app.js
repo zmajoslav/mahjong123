@@ -24,6 +24,8 @@ function createApp({ env, pool }) {
   app.use(morgan('dev'));
 
   app.get('/health', (_req, res) => res.json({ ok: true }));
+  // Diagnostic: if you see "Mahjong app OK" the domain is hitting this app, not the stub
+  app.get('/ping', (_req, res) => res.type('text/plain').send('Mahjong app OK'));
 
   app.get('/api/config', (req, res) => {
     const baseUrl = env.BASE_URL || `${req.protocol}://${req.get('host') || req.headers.host || 'localhost'}`;
