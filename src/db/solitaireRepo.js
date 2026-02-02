@@ -1,24 +1,27 @@
+const crypto = require('crypto');
+
 async function upsertHighScore(pool, { userId, layoutName, score, elapsedSeconds }) {
+  const id = crypto.randomUUID();
   const result = await pool.query(
     `
-      INSERT INTO solitaire_scores (user_id, layout_name, score, elapsed_seconds)
-      VALUES ($1, $2, $3, $4)
+      INSERT INTO solitaire_scores (id, user_id, layout_name, score, elapsed_seconds)
+      VALUES ($1, $2, $3, $4, $5)
       ON CONFLICT (user_id, layout_name)
       DO UPDATE SET
-        score = GREATEST(solitaire_scores.score, $3),
+        score = GREATEST(solitaire_scores.score, $4),
         elapsed_seconds = CASE
-          WHEN solitaire_scores.score < $3 THEN $4
-          WHEN solitaire_scores.score = $3 AND solitaire_scores.elapsed_seconds > $4 THEN $4
+          WHEN solitaire_scores.score < $4 THEN $5
+          WHEN solitaire_scores.score = $4 AND solitaire_scores.elapsed_seconds > $5 THEN $5
           ELSE solitaire_scores.elapsed_seconds
         END,
         created_at = CASE
-          WHEN solitaire_scores.score < $3 THEN now()
-          WHEN solitaire_scores.score = $3 AND solitaire_scores.elapsed_seconds > $4 THEN now()
+          WHEN solitaire_scores.score < $4 THEN now()
+          WHEN solitaire_scores.score = $4 AND solitaire_scores.elapsed_seconds > $5 THEN now()
           ELSE solitaire_scores.created_at
         END
       RETURNING id, user_id, layout_name, score, elapsed_seconds, created_at
     `,
-    [userId, layoutName || 'turtle', score, elapsedSeconds],
+    [id, userId, layoutName || 'turtle', score, elapsedSeconds],
   );
   return result.rows[0];
 }

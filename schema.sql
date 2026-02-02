@@ -1,8 +1,8 @@
 -- Mahjong Solitaire schema (Shanghai-style tile-matching puzzle)
--- Note: gen_random_uuid() is built-in on PostgreSQL 13+. No extensions required.
+-- UUIDs are generated in Node.js (crypto.randomUUID) for shared hosting compatibility.
 
 CREATE TABLE IF NOT EXISTS users (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  id UUID PRIMARY KEY,
   username TEXT NOT NULL UNIQUE,
   password_hash TEXT NOT NULL,
   created_at TIMESTAMPTZ NOT NULL DEFAULT now()
@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS users (
 
 -- Solitaire high scores (one per user per layout)
 CREATE TABLE IF NOT EXISTS solitaire_scores (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  id UUID PRIMARY KEY,
   user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
   layout_name TEXT NOT NULL DEFAULT 'turtle',
   score INTEGER NOT NULL,
