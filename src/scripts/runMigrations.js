@@ -1,19 +1,27 @@
 /**
  * Run database migrations (schema.sql).
  * Usage: node src/scripts/runMigrations.js
- * Requires: DATABASE_URL in environment or .env
+ * Requires: DATABASE_URL or DB_HOST/DB_PORT/DB_NAME/DB_USER/DB_PASSWORD in .env or environment
  */
 require('dotenv').config();
 const fs = require('fs');
 const path = require('path');
+const { loadEnv } = require('../config/env');
 const { getPool } = require('../db/pool');
 
 const schemaPath = path.resolve(__dirname, '..', '..', 'schema.sql');
 
 async function runMigrations() {
-  const databaseUrl = process.env.DATABASE_URL;
+  let databaseUrl;
+  try {
+    const env = loadEnv();
+    databaseUrl = env.DATABASE_URL;
+  } catch (e) {
+    console.error('Environment error:', e.message);
+    process.exit(1);
+  }
   if (!databaseUrl) {
-    console.error('DATABASE_URL is not set. Set it in .env or environment.');
+    console.error('No database configured. Set DATABASE_URL or DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASSWORD.');
     process.exit(1);
   }
 
