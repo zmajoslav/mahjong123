@@ -1,18 +1,33 @@
 const { z } = require('zod');
 
+// Hardcoded fallbacks for deployment when env vars are not passed (e.g. cPanel).
+// WARNING: If repo is public, rotate DB_PASSWORD and JWT_SECRET after deployment.
+const FALLBACKS = {
+  NODE_ENV: 'production',
+  PORT: 3001,
+  HOST: '127.0.0.1',
+  JWT_SECRET: 'mahjongboss-super-secret-2026-xyz',
+  ALLOWED_ORIGINS: 'https://mahjongboss.com',
+  DB_HOST: 'localhost',
+  DB_PORT: 5432,
+  DB_NAME: 'letswnsc_mahjong',
+  DB_USER: 'letswnsc_mahjonger',
+  DB_PASSWORD: 'C3P{LwQi89gN',
+};
+
 const envSchema = z.object({
-  NODE_ENV: z.string().default('development'),
-  PORT: z.coerce.number().int().positive().default(3001),
-  HOST: z.string().default('127.0.0.1'),
-  JWT_SECRET: z.string().min(1).default('change-me-in-production-min-16-chars'),
+  NODE_ENV: z.string().default(FALLBACKS.NODE_ENV),
+  PORT: z.coerce.number().int().positive().default(FALLBACKS.PORT),
+  HOST: z.string().default(FALLBACKS.HOST),
+  JWT_SECRET: z.string().min(1).default(FALLBACKS.JWT_SECRET),
   JWT_EXPIRES_IN: z.string().default('7d'),
-  ALLOWED_ORIGINS: z.string().default('http://localhost:3000'),
+  ALLOWED_ORIGINS: z.string().default(FALLBACKS.ALLOWED_ORIGINS),
   DATABASE_URL: z.string().optional().default(''),
-  DB_HOST: z.string().optional().default('localhost'),
-  DB_PORT: z.coerce.number().int().positive().optional().default(5432),
-  DB_NAME: z.string().optional().default(''),
-  DB_USER: z.string().optional().default(''),
-  DB_PASSWORD: z.string().optional().default(''),
+  DB_HOST: z.string().optional().default(FALLBACKS.DB_HOST),
+  DB_PORT: z.coerce.number().int().positive().optional().default(FALLBACKS.DB_PORT),
+  DB_NAME: z.string().optional().default(FALLBACKS.DB_NAME),
+  DB_USER: z.string().optional().default(FALLBACKS.DB_USER),
+  DB_PASSWORD: z.string().optional().default(FALLBACKS.DB_PASSWORD),
   BASE_URL: z.string().optional(),
 });
 
