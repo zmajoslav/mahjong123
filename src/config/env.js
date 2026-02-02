@@ -3,6 +3,7 @@ const { z } = require('zod');
 const envSchema = z.object({
   NODE_ENV: z.string().default('development'),
   PORT: z.coerce.number().int().positive().default(3001),
+  HOST: z.string().default('127.0.0.1'),
   JWT_SECRET: z.string().min(1).default('change-me-in-production-min-16-chars'),
   JWT_EXPIRES_IN: z.string().default('7d'),
   ALLOWED_ORIGINS: z.string().default('http://localhost:3000'),
