@@ -1,0 +1,42 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: mahjong
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d mahjong"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  app:
+    build:
+      context: .
+      target: dev
+    environment:
+      NODE_ENV: development
+      PORT: 3000
+      JWT_SECRET: replace_me_with_a_long_random_secret
+      JWT_EXPIRES_IN: 7d
+      ALLOWED_ORIGINS: http://localhost:3001
+      DATABASE_URL: postgres://postgres:postgres@db:5432/mahjong
+    ports:
+      - "3001:3000"
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: ["npm", "run", "dev"]
+
+volumes:
+  postgres_data:
+

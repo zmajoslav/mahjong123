@@ -1,0 +1,12 @@
+node_modules
+npm-debug.log
+yarn.lock
+pnpm-lock.yaml
+.env
+.git
+.gitignore
+.cursor
+dist
+coverage
+*.log
+

@@ -1,0 +1,57 @@
+async function upsertHighScore(pool, { userId, layoutName, score, elapsedSeconds }) {
+  const result = await pool.query(
+    `
+      INSERT INTO solitaire_scores (user_id, layout_name, score, elapsed_seconds)
+      VALUES ($1, $2, $3, $4)
+      ON CONFLICT (user_id, layout_name)
+      DO UPDATE SET
+        score = GREATEST(solitaire_scores.score, $3),
+        elapsed_seconds = CASE
+          WHEN solitaire_scores.score < $3 THEN $4
+          WHEN solitaire_scores.score = $3 AND solitaire_scores.elapsed_seconds > $4 THEN $4
+          ELSE solitaire_scores.elapsed_seconds
+        END,
+        created_at = CASE
+          WHEN solitaire_scores.score < $3 THEN now()
+          WHEN solitaire_scores.score = $3 AND solitaire_scores.elapsed_seconds > $4 THEN now()
+          ELSE solitaire_scores.created_at
+        END
+      RETURNING id, user_id, layout_name, score, elapsed_seconds, created_at
+    `,
+    [userId, layoutName || 'turtle', score, elapsedSeconds],
+  );
+  return result.rows[0];
+}
+
+async function getLeaderboard(pool, { layoutName, limit }) {
+  const result = await pool.query(
+    `
+      SELECT u.id, u.username, s.score, s.elapsed_seconds, s.created_at
+      FROM solitaire_scores s
+      JOIN users u ON u.id = s.user_id
+      WHERE s.layout_name = $1
+      ORDER BY s.score DESC, s.elapsed_seconds ASC
+      LIMIT $2
+    `,
+    [layoutName || 'turtle', limit],
+  );
+  return result.rows;
+}
+
+async function getUserBestScore(pool, { userId, layoutName }) {
+  const result = await pool.query(
+    `
+      SELECT score, elapsed_seconds, created_at
+      FROM solitaire_scores
+      WHERE user_id = $1 AND layout_name = $2
+    `,
+    [userId, layoutName || 'turtle'],
+  );
+  return result.rows[0] || null;
+}
+
+module.exports = {
+  getLeaderboard,
+  getUserBestScore,
+  upsertHighScore,
+};

@@ -1,0 +1,25 @@
+require('dotenv').config();
+
+const { createApp } = require('./app');
+const { loadEnv } = require('./config/env');
+const { getPool } = require('./db/pool');
+const { ensureExtensions } = require('./db/migrations');
+
+async function main() {
+  const env = loadEnv();
+  const pool = getPool(env.DATABASE_URL);
+  await ensureExtensions(pool);
+
+  const app = createApp({ env, pool });
+
+  app.listen(env.PORT, () => {
+    // eslint-disable-next-line no-console
+    console.log(`Server listening on http://localhost:${env.PORT}`);
+  });
+}
+
+main().catch((err) => {
+  // eslint-disable-next-line no-console
+  console.error(err);
+  process.exit(1);
+});
