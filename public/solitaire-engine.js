@@ -138,11 +138,58 @@
     return positions;
   }
 
+  // Fort layout: 80 tiles (40 pairs) - fortress shape
+  function getFortLayout() {
+    const positions = [];
+    const L0 = [
+      '..111111..', '.11111111.', '1111111111', '1111111111',
+      '1111111111', '1111111111', '.11111111.', '..111111..',
+    ];
+    for (let r = 0; r < L0.length; r++) {
+      for (let c = 0; c < L0[r].length; c++) {
+        if (L0[r][c] === '1') positions.push([0, r, c]);
+      }
+    }
+    for (let r = 2; r < 6; r++) {
+      for (let c = 2; c < 8; c++) {
+        positions.push([1, r, c]);
+      }
+    }
+    for (let r = 3; r < 5; r++) {
+      for (let c = 3; c < 7; c++) {
+        positions.push([2, r, c]);
+      }
+    }
+    positions.push([3, 3, 4], [3, 3, 5]);
+    return positions;
+  }
+
+  // Caterpillar layout: 72 tiles (36 pairs)
+  function getCaterpillarLayout() {
+    const positions = [];
+    for (let r = 0; r < 6; r++) {
+      for (let c = 0; c < 6; c++) positions.push([0, r, c]);
+    }
+    for (let r = 1; r < 5; r++) {
+      for (let c = 1; c < 5; c++) positions.push([1, r, c]);
+    }
+    for (let r = 2; r < 5; r++) {
+      for (let c = 1; c < 5; c++) positions.push([2, r, c]);
+    }
+    for (let r = 2; r < 5; r++) {
+      for (let c = 2; c < 4; c++) positions.push([3, r, c]);
+    }
+    positions.push([4, 3, 2], [4, 3, 3]);
+    return positions;
+  }
+
   function getLayout(name) {
     if (name === 'supereasy') return getSuperEasyLayout();
     if (name === 'easy') return getEasyLayout();
     if (name === 'hard') return getHardLayout();
     if (name === 'pyramid') return getPyramidLayout();
+    if (name === 'fort') return getFortLayout();
+    if (name === 'caterpillar') return getCaterpillarLayout();
     return getTurtleLayout();
   }
 
@@ -165,20 +212,37 @@
     return !left || !right;
   }
 
-  function createTileSet(positions) {
+  function mulberry32(seed) {
+    return function () {
+      let t = (seed += 0x6d2b79f5);
+      t = Math.imul(t ^ (t >>> 15), t | 1);
+      t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+
+  function hashSeed(str) {
+    let h = 0;
+    for (let i = 0; i < str.length; i++) {
+      h = ((h << 5) - h) + str.charCodeAt(i);
+      h = h & h;
+    }
+    return Math.abs(h);
+  }
+
+  function createTileSet(positions, seed) {
     const count = positions.length;
     const pairsNeeded = count / 2;
     const allKinds = SUIT_KINDS.concat(FLOWERS, SEASONS);
-    const shuffled = allKinds.slice().sort(function () { return Math.random() - 0.5; });
+    const rng = seed != null ? mulberry32(hashSeed(String(seed))) : Math.random;
+    const shuffled = allKinds.slice().sort(function () { return rng() - 0.5; });
     const chosenKinds = shuffled.slice(0, pairsNeeded);
-    
-    // Create pairs of kinds
+
     const kinds = [];
     chosenKinds.forEach(function (k) {
       kinds.push(k, k);
     });
-    // Shuffle the kinds
-    kinds.sort(function () { return Math.random() - 0.5; });
+    kinds.sort(function () { return rng() - 0.5; });
 
     const tiles = [];
     for (let i = 0; i < positions.length; i++) {
@@ -198,10 +262,10 @@
   const SHUFFLE_PENALTY = 5;
   const BASE_SCORE = 10;
 
-  function createGame(layoutName) {
+  function createGame(layoutName, seed) {
     layoutName = layoutName || 'turtle';
     const positions = getLayout(layoutName);
-    const tiles = createTileSet(positions);
+    const tiles = createTileSet(positions, seed);
     const removed = new Set();
     const history = [];
     const startTime = Date.now();

@@ -1,5 +1,5 @@
 /* Service worker: cache static assets for offline play and faster repeat visits */
-const CACHE_NAME = 'mahjong-v1';
+const CACHE_NAME = 'mahjong-v2';
 const STATIC_URLS = [
   '/',
   '/index.html',
@@ -37,29 +37,54 @@ self.addEventListener('activate', function (event) {
 self.addEventListener('fetch', function (event) {
   if (event.request.method !== 'GET') return;
   var url = new URL(event.request.url);
-  if (url.origin !== self.location.origin) return;
   if (url.pathname.startsWith('/api/')) return;
 
-  event.respondWith(
-    caches.match(event.request).then(function (cached) {
-      if (cached) return cached;
-      return fetch(event.request).then(function (res) {
+  var isHtml = event.request.mode === 'navigate' || url.pathname === '/' || url.pathname === '/index.html';
+  var isJs = url.pathname.endsWith('.js');
+
+  /* Network-first for HTML and JS to avoid stale cache causing "stuck on second refresh" */
+  if (isHtml || isJs) {
+    event.respondWith(
+      fetch(event.request).then(function (res) {
         var clone = res.clone();
-        if (res.status === 200 && (url.pathname === '/' || url.pathname === '/index.html' ||
-            url.pathname.endsWith('.css') || url.pathname.endsWith('.js') ||
-            url.pathname.endsWith('.txt') || url.pathname.endsWith('.xml'))) {
+        if (res.status === 200 && (isHtml || isJs || url.pathname.endsWith('.css'))) {
           caches.open(CACHE_NAME).then(function (cache) {
             cache.put(event.request, clone);
           });
         }
         return res;
       }).catch(function () {
-        if (event.request.mode === 'navigate') {
-          return caches.match('/index.html').then(function (cached) {
-            return cached || new Response('Offline', { status: 503, statusText: 'Service Unavailable' });
+        return caches.match(event.request).then(function (cached) {
+          if (cached) return cached;
+          if (isHtml) {
+            return caches.match('/index.html').then(function (c) {
+              return c || new Response('Offline', { status: 503, statusText: 'Service Unavailable' });
+            });
+          }
+          return new Response('', { status: 503 });
+        });
+      })
+    );
+    return;
+  }
+
+  /* Cache-first for CSS, txt, xml, images */
+  event.respondWith(
+    caches.match(event.request).then(function (cached) {
+      if (cached) return cached;
+      return fetch(event.request).then(function (res) {
+        var clone = res.clone();
+        if (res.status === 200 && (url.pathname.endsWith('.css') || url.pathname.endsWith('.txt') ||
+            url.pathname.endsWith('.xml') || /\.(png|jpg|svg|ico|webp)$/i.test(url.pathname))) {
+          caches.open(CACHE_NAME).then(function (cache) {
+            cache.put(event.request, clone);
           });
         }
-        return new Response('', { status: 503 });
+        return res;
+      }).catch(function () {
+        return caches.match(event.request).then(function (c) {
+          return c || new Response('', { status: 503 });
+        });
       });
     })
   );

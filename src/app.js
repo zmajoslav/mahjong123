@@ -5,7 +5,6 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 
 const { HttpError } = require('./util/httpErrors');
-const { buildAuthRouter } = require('./routes/authRoutes');
 const { buildApiRouter } = require('./routes/apiRoutes');
 
 // Resolve public folder relative to project root (works when cwd is not project root, e.g. cPanel)
@@ -39,8 +38,7 @@ function createApp({ env, pool }) {
     next();
   };
 
-  app.use('/api/auth', requirePool, buildAuthRouter({ env, pool }));
-  app.use('/api', requirePool, buildApiRouter({ env, pool, jwtSecret: env.JWT_SECRET }));
+  app.use('/api', requirePool, buildApiRouter({ pool }));
 
   app.use(express.static(publicDir));
   app.get('*', (_req, res) => res.sendFile(path.join(publicDir, 'index.html')));

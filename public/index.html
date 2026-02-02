@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   
   <!-- SEO Meta Tags -->
   <title>Mahjong Boss – Free Online Mahjong Solitaire Game | Play Now</title>
@@ -153,18 +153,21 @@
     <div class="top-nav__inner">
       <div class="brand">
         <div class="brand__logo">🀄</div>
-        <div>
+        <div class="brand__text">
           <h1 class="brand__title">Mahjong Solitaire</h1>
-          <p class="brand__subtitle">Match the pairs • Pick your level</p>
+          <span class="brand__subtitle">Match the pairs • Pick your level</span>
         </div>
       </div>
       <div class="top-nav__center">
         <select class="top-nav__layout" id="layoutSelectTop" aria-label="Layout">
-          <option value="supereasy" selected>Level 1 (24 tiles)</option>
+          <option value="daily">Daily Challenge</option>
+          <option value="supereasy">Level 1 (24 tiles)</option>
           <option value="easy">Level 2 (48 tiles)</option>
-          <option value="turtle">Level 3 (72 tiles)</option>
+          <option value="turtle" selected>Level 3 (72 tiles)</option>
           <option value="pyramid">Level 4 (80 tiles)</option>
           <option value="hard">Level 5 (104 tiles)</option>
+          <option value="fort">Fort (80 tiles)</option>
+          <option value="caterpillar">Caterpillar (72 tiles)</option>
         </select>
         <label class="top-nav__toggle" aria-label="Highlight playable tiles">
           <input type="checkbox" id="highlightPlayableTop" class="toggle__input" checked>
@@ -172,13 +175,6 @@
         </label>
       </div>
       <div class="top-nav__stats">
-        <label class="top-nav__theme-label" for="themeSelect" aria-label="Theme">
-          <select id="themeSelect" class="top-nav__theme-select" aria-label="Theme">
-            <option value="dark">Green felt</option>
-            <option value="light">Light</option>
-            <option value="wood">Classic wood</option>
-          </select>
-        </label>
         <button type="button" class="stat stat--icon-btn" id="soundToggleBtn" title="Sound" aria-label="Mute sound">
           <span id="soundToggleIcon">🔊</span>
         </button>
@@ -186,12 +182,12 @@
           <span class="stat__icon">📊</span>
           <div class="progress-container">
             <div class="progress-bar" id="progressBar"></div>
-            <div class="progress-text"><strong id="matchCount">0</strong><span id="matchTotal">/36</span></div>
+            <div class="progress-text"><strong id="matchCount">0</strong><span id="matchTotal">/72</span> tiles</div>
           </div>
         </span>
         <span class="stat" title="Elapsed time"><span class="stat__icon">⏱</span><strong id="timer">0:00</strong></span>
         <span class="stat stat--primary" title="Score"><span class="stat__icon">★</span><strong id="score">0</strong></span>
-        <span class="stat" title="Valid moves"><span class="stat__icon">◈</span><strong id="validMoves">0</strong></span>
+        <span class="stat" title="Possible pairs"><span class="stat__icon">◈</span><strong id="validMoves">0</strong> pairs</span>
       </div>
     </div>
   </nav>
@@ -234,40 +230,12 @@
         </div>
       </section>
 
-      <section class="panel" id="authSection">
+      <section class="panel">
         <div class="panel__header">
-          <h2>Account</h2>
-          <span class="muted" id="authStatus">—</span>
+          <h2>Statistics</h2>
         </div>
-        <div class="panel__grid">
-          <form id="registerForm" class="form">
-            <div class="form__title">Register</div>
-            <label class="field">
-              <div class="field__label">Username</div>
-              <input class="field__input" name="username" autocomplete="username" required>
-            </label>
-            <label class="field">
-              <div class="field__label">Password</div>
-              <input class="field__input" name="password" type="password" autocomplete="new-password" required>
-            </label>
-            <button class="btn" type="submit">Create account</button>
-          </form>
-          <form id="loginForm" class="form">
-            <div class="form__title">Login</div>
-            <label class="field">
-              <div class="field__label">Username</div>
-              <input class="field__input" name="username" autocomplete="username" required>
-            </label>
-            <label class="field">
-              <div class="field__label">Password</div>
-              <input class="field__input" name="password" type="password" autocomplete="current-password" required>
-            </label>
-            <button class="btn" type="submit">Login</button>
-          </form>
-        </div>
-        <div class="hint">Register to save high scores and appear on the leaderboard.</div>
+        <div id="statsPanel" class="stats-panel"></div>
       </section>
-
       <section class="panel">
         <div class="panel__header">
           <h2>Leaderboard</h2>

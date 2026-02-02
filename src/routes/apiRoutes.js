@@ -3,13 +3,10 @@ const { z } = require('zod');
 
 const { asyncHandler } = require('../util/asyncHandler');
 const { HttpError } = require('../util/httpErrors');
-const { authMiddleware } = require('../auth/middleware');
-const { getUserById } = require('../db/userRepo');
-const { getLeaderboard, getUserBestScore, upsertHighScore } = require('../db/solitaireRepo');
+const { getLeaderboard, insertGuestScore } = require('../db/solitaireRepo');
 
-function buildApiRouter({ pool, jwtSecret }) {
+function buildApiRouter({ pool }) {
   const router = express.Router();
-  const auth = authMiddleware({ jwtSecret });
 
   router.get('/leaderboard', asyncHandler(async (req, res) => {
     const parsed = z.object({
@@ -34,38 +31,24 @@ function buildApiRouter({ pool, jwtSecret }) {
     });
   }));
 
-  router.get('/me', auth, asyncHandler(async (req, res) => {
-    const user = await getUserById(pool, { userId: req.user.id });
-    if (!user) {
-      throw new HttpError(404, 'User not found.', 'NOT_FOUND');
-    }
-
-    const bestScore = await getUserBestScore(pool, { userId: user.id, layoutName: 'turtle' });
-    res.json({
-      user: { id: user.id, username: user.username },
-      bestScore: bestScore
-        ? { score: bestScore.score, elapsedSeconds: bestScore.elapsed_seconds }
-        : null,
-    });
-  }));
-
-  router.post('/scores', auth, asyncHandler(async (req, res) => {
+  router.post('/scores', asyncHandler(async (req, res) => {
     const parsed = z.object({
+      displayName: z.string().min(1).max(32).transform((s) => s.trim()),
       layoutName: z.string().max(32).default('turtle'),
       score: z.number().int().min(0),
       elapsedSeconds: z.number().int().min(0),
     }).safeParse(req.body);
     if (!parsed.success) {
-      throw new HttpError(400, 'Invalid payload.', 'BAD_REQUEST');
+      throw new HttpError(400, 'Invalid payload. Name required (1–32 chars).', 'BAD_REQUEST');
     }
 
-    const record = await upsertHighScore(pool, {
-      userId: req.user.id,
+    const record = await insertGuestScore(pool, {
+      displayName: parsed.data.displayName,
       layoutName: parsed.data.layoutName,
       score: parsed.data.score,
       elapsedSeconds: parsed.data.elapsedSeconds,
     });
-    res.json({ ok: true, record });
+    res.status(201).json({ ok: true, record });
   }));
 
   return router;

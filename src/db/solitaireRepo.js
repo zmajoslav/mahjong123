@@ -1,5 +1,18 @@
 const crypto = require('crypto');
 
+async function insertGuestScore(pool, { displayName, layoutName, score, elapsedSeconds }) {
+  const id = crypto.randomUUID();
+  const result = await pool.query(
+    `
+      INSERT INTO solitaire_scores (id, user_id, display_name, layout_name, score, elapsed_seconds)
+      VALUES ($1, NULL, $2, $3, $4, $5)
+      RETURNING id, layout_name, score, elapsed_seconds, created_at
+    `,
+    [id, displayName.trim().slice(0, 32), layoutName || 'turtle', score, elapsedSeconds],
+  );
+  return result.rows[0];
+}
+
 async function upsertHighScore(pool, { userId, layoutName, score, elapsedSeconds }) {
   const id = crypto.randomUUID();
   const result = await pool.query(
@@ -29,10 +42,10 @@ async function upsertHighScore(pool, { userId, layoutName, score, elapsedSeconds
 async function getLeaderboard(pool, { layoutName, limit }) {
   const result = await pool.query(
     `
-      SELECT u.id, u.username, s.score, s.elapsed_seconds, s.created_at
+      SELECT COALESCE(s.display_name, u.username) AS username, s.score, s.elapsed_seconds, s.created_at
       FROM solitaire_scores s
-      JOIN users u ON u.id = s.user_id
-      WHERE s.layout_name = $1
+      LEFT JOIN users u ON u.id = s.user_id
+      WHERE s.layout_name = $1 AND (s.display_name IS NOT NULL OR s.user_id IS NOT NULL)
       ORDER BY s.score DESC, s.elapsed_seconds ASC
       LIMIT $2
     `,
@@ -57,4 +70,5 @@ module.exports = {
   getLeaderboard,
   getUserBestScore,
   upsertHighScore,
+  insertGuestScore,
 };

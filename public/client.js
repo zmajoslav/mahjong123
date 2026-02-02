@@ -154,7 +154,15 @@ var selectedTileId = null;
 var currentLayout = 'turtle';
 var lastScore = 0;
 
-var LAYOUT_PAIRS = { supereasy: 12, easy: 24, turtle: 36, pyramid: 40, hard: 52 };
+var LAYOUT_PAIRS = {
+  supereasy: 12,
+  easy: 24,
+  turtle: 36,
+  pyramid: 40,
+  hard: 52,
+  fort: 40,
+  caterpillar: 36,
+};
 var AUTO_HINT_DELAY_MS = 10000;
 
 function formatTime(sec) {
@@ -219,11 +227,86 @@ function startAutoHintTimer() {
   }, AUTO_HINT_DELAY_MS);
 }
 
+var STATS_KEY = 'mahjongStats';
+
+function loadStats() {
+  try {
+    var s = localStorage.getItem(STATS_KEY);
+    return s ? JSON.parse(s) : { gamesPlayed: 0, gamesWon: 0, bestScore: {}, bestTime: {} };
+  } catch (e) {
+    return { gamesPlayed: 0, gamesWon: 0, bestScore: {}, bestTime: {} };
+  }
+}
+
+function saveStats(stats) {
+  try {
+    localStorage.setItem(STATS_KEY, JSON.stringify(stats));
+  } catch (e) {}
+}
+
+function recordGameStart(layout) {
+  var stats = loadStats();
+  stats.gamesPlayed = (stats.gamesPlayed || 0) + 1;
+  saveStats(stats);
+}
+
+function recordGameWin(layout, score, elapsed) {
+  var stats = loadStats();
+  stats.gamesWon = (stats.gamesWon || 0) + 1;
+  stats.bestScore = stats.bestScore || {};
+  stats.bestTime = stats.bestTime || {};
+  if (!stats.bestScore[layout] || score > stats.bestScore[layout]) {
+    stats.bestScore[layout] = score;
+  }
+  if (!stats.bestTime[layout] || elapsed < stats.bestTime[layout]) {
+    stats.bestTime[layout] = elapsed;
+  }
+  saveStats(stats);
+}
+
+function renderStatsPanel() {
+  var el = $('statsPanel');
+  if (!el) return;
+  var stats = loadStats();
+  var layouts = ['supereasy', 'easy', 'turtle', 'pyramid', 'hard', 'fort', 'caterpillar'];
+  var names = { supereasy: 'L1', easy: 'L2', turtle: 'L3', pyramid: 'L4', hard: 'L5', fort: 'Fort', caterpillar: 'Caterpillar' };
+  var html = '<p class="stats-summary"><strong>' + (stats.gamesPlayed || 0) + '</strong> games · <strong>' + (stats.gamesWon || 0) + '</strong> wins</p>';
+  html += '<table class="stats-table"><thead><tr><th>Layout</th><th>Best score</th><th>Best time</th></tr></thead><tbody>';
+  layouts.forEach(function (l) {
+    var bestS = stats.bestScore && stats.bestScore[l] ? stats.bestScore[l] : '—';
+    var bestT = stats.bestTime && stats.bestTime[l] ? formatTime(stats.bestTime[l]) : '—';
+    html += '<tr><td>' + (names[l] || l) + '</td><td>' + bestS + '</td><td>' + bestT + '</td></tr>';
+  });
+  html += '</tbody></table>';
+  el.innerHTML = html;
+}
+
+function getDailyChallengeSeed() {
+  var d = new Date();
+  var y = d.getFullYear();
+  var m = String(d.getMonth() + 1).padStart(2, '0');
+  var day = String(d.getDate()).padStart(2, '0');
+  return y + '-' + m + '-' + day;
+}
+
+function getDailyChallengeLayout() {
+  var d = new Date();
+  var start = new Date(d.getFullYear(), 0, 0);
+  var dayOfYear = Math.floor((d - start) / 86400000);
+  var layouts = ['turtle', 'pyramid', 'fort', 'easy', 'caterpillar'];
+  return layouts[dayOfYear % layouts.length];
+}
+
 function newGame() {
   stopTimer();
   clearAutoHint();
   currentLayout = getLayout();
-  game = MahjongSolitaire.createGame(currentLayout);
+  var seed = null;
+  if (currentLayout === 'daily') {
+    currentLayout = getDailyChallengeLayout();
+    seed = getDailyChallengeSeed();
+  }
+  game = MahjongSolitaire.createGame(currentLayout, seed);
   selectedTileId = null;
   lastScore = 0;
   startTimer();
@@ -237,15 +320,15 @@ function updateUI() {
   if (!game) return;
   var state = game.getState();
   var totalPairs = LAYOUT_PAIRS[currentLayout] || 36;
-  var matched = state.won ? totalPairs : Math.floor((totalPairs * 2 - state.remaining) / 2);
+  var totalTiles = totalPairs * 2;
   var matchEl = $('matchCount');
-  if (matchEl) matchEl.textContent = matched;
+  if (matchEl) matchEl.textContent = state.remaining;
   var totalEl = $('matchTotal');
-  if (totalEl) totalEl.textContent = '/' + totalPairs;
+  if (totalEl) totalEl.textContent = '/' + totalTiles;
   
   var progressBar = $('progressBar');
   if (progressBar) {
-    var progress = (matched / totalPairs) * 100;
+    var progress = ((totalTiles - state.remaining) / totalTiles) * 100;
     progressBar.style.setProperty('--progress', progress + '%');
   }
   
@@ -286,6 +369,7 @@ function updateUI() {
   if (state.won) {
     stopTimer();
     clearAutoHint();
+    recordGameWin(currentLayout, state.score, state.elapsed);
     var totalPairs = LAYOUT_PAIRS[currentLayout] || 36;
     var bestKey = 'mahjongBest_' + currentLayout;
     var best = parseInt(localStorage.getItem(bestKey) || '0', 10);
@@ -293,6 +377,7 @@ function updateUI() {
       localStorage.setItem(bestKey, String(state.score));
       showToast('New personal best! 🏆', 'success');
     }
+    renderStatsPanel();
     showLevelCompleteThenModal(state);
   } else if (state.validMoves === 0 && state.remaining > 0) {
     showStuckModal();
@@ -317,11 +402,15 @@ function renderBoard() {
   var isLevel1 = currentLayout === 'supereasy';
   var tileW = isLevel1 ? 120 : 100;
   var tileH = isLevel1 ? 145 : 120;
-  var layerOffsetX = 12;
-  var layerOffsetY = -10;
+  var layerOffsetX = Math.round(tileW * 0.5);
+  var layerOffsetY = Math.round(-tileH * 0.48);
 
   var fullBoardCount = (LAYOUT_PAIRS[currentLayout] || 36) * 2;
   var isNewGame = tiles.length === fullBoardCount;
+  var minTop = Math.min.apply(null, tiles.map(function (t) { return t.row * tileH + t.layer * layerOffsetY; }));
+  var minLeft = Math.min.apply(null, tiles.map(function (t) { return t.col * tileW + t.layer * layerOffsetX; }));
+  var offsetY = minTop < 0 ? -minTop : 0;
+  var offsetX = minLeft < 0 ? -minLeft : 0;
   tiles.forEach(function (t, i) {
     var el = document.createElement('div');
     var suitCls = tileSuitClass(t.kind);
@@ -333,9 +422,11 @@ function renderBoard() {
     el.style.width = tileW + 'px';
     el.style.height = tileH + 'px';
     if (isNewGame) el.style.animationDelay = Math.min(i * 5, 350) + 'ms';
-    el.style.left = (t.col * tileW + t.layer * layerOffsetX) + 'px';
-    el.style.top = (t.row * tileH + t.layer * layerOffsetY) + 'px';
-    el.style.zIndex = t.layer * 100 + t.row * 10 + t.col;
+    el.style.left = (t.col * tileW + t.layer * layerOffsetX + offsetX) + 'px';
+    el.style.top = (t.row * tileH + t.layer * layerOffsetY + offsetY) + 'px';
+    // Free (playable) tiles get higher z-index so they're never hidden under overlapping tiles
+    var baseZ = t.layer * 100 + t.row * 10 + t.col;
+    el.style.zIndex = t.free ? 5000 + baseZ : baseZ;
     var sym = tileSymbol(t.kind);
     var cls = sym !== t.kind ? 'tile__kind' : 'tile__kind tile__kind--fallback';
     var suitCls = tileSuitClass(t.kind);
@@ -345,10 +436,14 @@ function renderBoard() {
     board.appendChild(el);
   });
 
-  var maxCol = Math.max.apply(null, tiles.map(function (x) { return x.col; })) || 12;
-  var maxRow = Math.max.apply(null, tiles.map(function (x) { return x.row; })) || 8;
-  var w = (maxCol + 1) * tileW + (maxLayer + 1) * Math.abs(layerOffsetX);
-  var h = (maxRow + 1) * tileH + 20;
+  var maxRight = Math.max.apply(null, tiles.map(function (t) {
+    return t.col * tileW + t.layer * layerOffsetX + tileW;
+  }));
+  var maxBottom = Math.max.apply(null, tiles.map(function (t) {
+    return t.row * tileH + t.layer * layerOffsetY + tileH;
+  }));
+  var w = Math.ceil(maxRight - minLeft + 16);
+  var h = Math.ceil(maxBottom - minTop + 32);
   board.style.width = w + 'px';
   board.style.height = h + 'px';
 
@@ -371,11 +466,12 @@ function scaleToFit() {
 
   if (boardW === 0 || boardH === 0) return;
 
-  var padding = 40;
+  var padding = window.innerWidth < 600 ? 32 : 48;
   var scaleX = (stageW - padding) / boardW;
   var scaleY = (stageH - padding) / boardH;
   var scale = Math.min(scaleX, scaleY, 1);
 
+  inner.style.transformOrigin = 'center center';
   inner.style.transform = 'scale(' + scale + ')';
 }
 
@@ -549,17 +645,15 @@ function showLevelCompleteThenModal(state) {
 function showWinModal(state) {
   announce('You won! Score: ' + state.score + '. Time: ' + formatTime(state.elapsed));
   trackEvent('game_won', { score: state.score, time: state.elapsed, layout: currentLayout });
-  var token = getAccessToken();
-  var canSubmit = !!token;
   var bodyHtml = '<div class="win-summary">';
   bodyHtml += '<p class="win-summary__score">🌟 Score: <strong>' + state.score + '</strong></p>';
   bodyHtml += '<p class="win-summary__time">⏱ Time: <strong>' + formatTime(state.elapsed) + '</strong></p>';
   bodyHtml += '<p class="win-summary__cheer">You cleared all the tiles! You\'re a star! ⭐</p>';
-  if (canSubmit) {
-    bodyHtml += '<button class="btn btn--primary" id="submitScoreBtn">Save score to leaderboard ⭐</button>';
-  } else {
-    bodyHtml += '<p class="muted">Register to save your score and appear on the leaderboard.</p>';
-  }
+  bodyHtml += '<label class="field">';
+  bodyHtml += '<div class="field__label">Your name (for high scores)</div>';
+  bodyHtml += '<input class="field__input" id="winNameInput" placeholder="Enter your name" maxlength="32" autocomplete="off">';
+  bodyHtml += '</label>';
+  bodyHtml += '<button class="btn btn--primary" id="submitScoreBtn">Save to leaderboard ⭐</button>';
   bodyHtml += '<button class="btn btn--ghost" id="newGameFromWin">Play again! 🎮</button>';
   bodyHtml += '<div class="win-share">';
   bodyHtml += '<p class="win-share__label">Share your score:</p>';
@@ -593,8 +687,14 @@ function showWinModal(state) {
   $('modalBackdrop').classList.remove('hidden');
 
   $('submitScoreBtn')?.addEventListener('click', function () {
-    submitScore(state, function () {
-      showToast('Score saved!', 'success');
+    var nameInput = $('winNameInput');
+    var name = nameInput ? nameInput.value.trim() : '';
+    if (!name) {
+      showToast('Please enter your name to save to the leaderboard.', 'error');
+      return;
+    }
+    submitScore(state, name, function () {
+      showToast('Score saved! You\'re on the leaderboard!', 'success');
       closeModal();
       loadLeaderboard();
     });
@@ -782,7 +882,7 @@ function loadLeaderboard() {
         el.innerHTML = '<p class="muted">No scores yet.</p>';
         return;
       }
-      el.innerHTML = '<table class="leaderboard__table"><thead><tr><th>#</th><th>User</th><th>Score</th><th>Time</th></tr></thead><tbody>' +
+      el.innerHTML = '<table class="leaderboard__table"><thead><tr><th>#</th><th>Name</th><th>Score</th><th>Time</th></tr></thead><tbody>' +
         res.leaderboard.map(function (r) {
           var rankClass = 'rank';
           if (r.rank === 1) rankClass += ' rank--gold';
@@ -798,18 +898,28 @@ function loadLeaderboard() {
 }
 
 function startGame() {
-  newGame();
-  var boardEl = $('board');
-  if (boardEl) boardEl.classList.remove('board--loading');
   var loadingOverlay = $('loadingOverlay');
-  if (loadingOverlay) {
-    setTimeout(function () {
-      loadingOverlay.classList.add('hidden');
-      showToast('Let\'s play! Have fun! 🎮', 'success');
-      if (localStorage.getItem('mahjongTutorialSeen') !== 'true') {
-        showTutorialOverlay();
-      }
-    }, 300);
+  try {
+    if (typeof MahjongSolitaire === 'undefined') {
+      throw new Error('Game engine failed to load. Refresh the page.');
+    }
+    newGame();
+    var boardEl = $('board');
+    if (boardEl) boardEl.classList.remove('board--loading');
+    if (loadingOverlay) {
+      setTimeout(function () {
+        loadingOverlay.classList.add('hidden');
+        showToast('Let\'s play! Have fun! 🎮', 'success');
+        if (localStorage.getItem('mahjongTutorialSeen') !== 'true') {
+          showTutorialOverlay();
+        }
+      }, 300);
+    }
+  } catch (err) {
+    if (loadingOverlay) loadingOverlay.classList.add('hidden');
+    showToast(err && err.message ? err.message : 'Failed to load game. Try refreshing.', 'error');
+    var boardEl = $('board');
+    if (boardEl) boardEl.classList.remove('board--loading');
   }
 }
 
@@ -839,21 +949,10 @@ function applyTheme(theme) {
   } else {
     document.documentElement.setAttribute('data-theme', v);
   }
-  var sel = $('themeSelect');
-  if (sel) sel.value = v;
 }
 
 function init() {
   applyTheme();
-
-  var themeSelect = $('themeSelect');
-  if (themeSelect) {
-    themeSelect.addEventListener('change', function () {
-      var v = themeSelect.value || 'dark';
-      localStorage.setItem('mahjongTheme', v);
-      applyTheme(v);
-    });
-  }
 
   var landing = $('landing');
   var gameWrap = $('gameWrap');
@@ -866,6 +965,12 @@ function init() {
       gameWrap.classList.add('game-wrap--visible');
       if (loadingOverlay) loadingOverlay.classList.remove('hidden');
       setTimeout(startGame, 80);
+      setTimeout(function () {
+        if (loadingOverlay && !loadingOverlay.classList.contains('hidden')) {
+          loadingOverlay.classList.add('hidden');
+          showToast('Loading timed out. Click Play to try again.', 'error');
+        }
+      }, 5000);
     } else {
       landingPlayBtn.addEventListener('click', function () {
         trackEvent('play_clicked');
@@ -876,12 +981,24 @@ function init() {
           landing.style.display = 'none';
           startGame();
         }, 300);
+        setTimeout(function () {
+          if (loadingOverlay && !loadingOverlay.classList.contains('hidden')) {
+            loadingOverlay.classList.add('hidden');
+            showToast('Loading timed out. Click Play to try again.', 'error');
+          }
+        }, 5500);
       });
     }
   } else {
     if (gameWrap) gameWrap.classList.add('game-wrap--visible');
     if (loadingOverlay) loadingOverlay.classList.remove('hidden');
     setTimeout(startGame, 80);
+    setTimeout(function () {
+      if (loadingOverlay && !loadingOverlay.classList.contains('hidden')) {
+        loadingOverlay.classList.add('hidden');
+        showToast('Loading timed out. Click Play to try again.', 'error');
+      }
+    }, 5000);
   }
 
   // Sidebar toggle
@@ -893,6 +1010,7 @@ function init() {
       sidebar.classList.toggle('sidebar--hidden');
       if (!sidebar.classList.contains('sidebar--hidden')) {
         loadLeaderboard();
+        renderStatsPanel();
       }
     });
   }
@@ -968,42 +1086,6 @@ function init() {
   if (hintBtn) hintBtn.addEventListener('click', doHint);
   if (hintBtnNav) hintBtnNav.addEventListener('click', doHint);
 
-  var registerForm = $('registerForm');
-  if (registerForm) registerForm.addEventListener('submit', function (e) {
-    e.preventDefault();
-    var data = Object.fromEntries(new FormData(e.target).entries());
-    apiRequest('/api/auth/register', { method: 'POST', body: data })
-      .then(function (res) {
-        setAccessToken(res.token);
-        var authEl = $('authStatus');
-        if (authEl) authEl.textContent = 'Registered: ' + res.user.username;
-        showToast('Welcome, ' + res.user.username + '!', 'success');
-      })
-      .catch(function (err) {
-        var authEl = $('authStatus');
-        if (authEl) authEl.textContent = 'Register failed';
-        showToast('Register failed: ' + err.message, 'error');
-      });
-  });
-
-  var loginForm = $('loginForm');
-  if (loginForm) loginForm.addEventListener('submit', function (e) {
-    e.preventDefault();
-    var data = Object.fromEntries(new FormData(e.target).entries());
-    apiRequest('/api/auth/login', { method: 'POST', body: data })
-      .then(function (res) {
-        setAccessToken(res.token);
-        var authEl = $('authStatus');
-        if (authEl) authEl.textContent = 'Logged in: ' + res.user.username;
-        showToast('Welcome back, ' + res.user.username + '!', 'success');
-      })
-      .catch(function (err) {
-        var authEl = $('authStatus');
-        if (authEl) authEl.textContent = 'Login failed';
-        showToast('Login failed: ' + err.message, 'error');
-      });
-  });
-
   var soundToggleBtn = $('soundToggleBtn');
   if (soundToggleBtn) {
     soundToggleBtn.addEventListener('click', function () {
@@ -1039,6 +1121,7 @@ function init() {
   if (layoutSelectTop) layoutSelectTop.addEventListener('change', function () {
     newGame();
     loadLeaderboard();
+    renderStatsPanel();
   });
 
   setupStagePanning();
