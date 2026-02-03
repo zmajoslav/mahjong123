@@ -203,14 +203,24 @@
         </label>
       </div>
       <div class="top-nav__stats">
-        <button type="button" class="stat stat--icon-btn" id="soundToggleBtn" title="Sound" aria-label="Mute sound">
+        <button type="button" class="stat stat--icon-btn" id="soundToggleBtn" title="Sound Effects" aria-label="Mute sound">
           <span id="soundToggleIcon">🔊</span>
         </button>
+        <label class="stat stat--icon-toggle" title="Ambient Sound" aria-label="Toggle ambient sound">
+          <input type="checkbox" id="ambienceToggle">
+          <span class="stat__icon">🍃</span>
+        </label>
         <span class="stat stat--progress" title="Progress">
           <span class="stat__icon">📊</span>
           <div class="progress-container">
             <div class="progress-bar" id="progressBar"></div>
             <div class="progress-text"><strong id="matchCount">0</strong><span id="matchTotal">/72</span> tiles</div>
+          </div>
+        </span>
+        <span class="stat stat--combo" title="Combo (time bonus)">
+          <div class="combo-text" id="comboCount"></div>
+          <div class="combo-container" id="comboContainer">
+            <div class="combo-bar" id="comboBar"></div>
           </div>
         </span>
         <span class="stat" title="Elapsed time"><span class="stat__icon">⏱</span><strong id="timer">0:00</strong></span>

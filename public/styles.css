@@ -303,6 +303,43 @@ body {
   font-variant-numeric: tabular-nums;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
+.stat--icon-btn {
+  background: transparent;
+  border-color: transparent;
+  cursor: pointer;
+  padding: 6px;
+  box-shadow: none;
+}
+.stat--icon-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-1px);
+}
+.stat--icon-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.stat--icon-toggle:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+.stat--icon-toggle input {
+  display: none;
+}
+.stat--icon-toggle input:checked + span {
+  filter: drop-shadow(0 0 4px var(--accent2));
+  opacity: 1;
+}
+.stat--icon-toggle span {
+  font-size: 1.2rem;
+  opacity: 0.5;
+  transition: all 0.2s ease;
+}
 .stat--primary {
   background: linear-gradient(135deg, rgba(20, 184, 166, 0.15) 0%, rgba(16, 24, 36, 0.75) 100%);
   border-color: rgba(94, 234, 212, 0.3);
@@ -368,9 +405,96 @@ body {
   z-index: 1;
   pointer-events: none;
 }
-.progress-text strong {
-  color: var(--text);
+/* === COMBO BAR === */
+.combo-container {
+  position: relative;
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  margin-top: 8px;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.combo-container--active {
+  opacity: 1;
+}
+.combo-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #fbbf24, #f59e0b);
+  width: 0%;
+  border-radius: 3px;
+  transition: width 0.1s linear;
+}
+.stat--combo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 100px;
+}
+.combo-text {
   font-weight: 700;
+  color: var(--gold);
+  font-size: 0.9rem;
+}
+
+/* === PARTICLES === */
+.particle {
+  position: absolute;
+  pointer-events: none;
+  border-radius: 50%;
+  opacity: 0;
+  z-index: 2000;
+  animation: particleOut 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.4);
+}
+@keyframes particleOut {
+  0% { transform: translate3d(0, 0, 50px) scale(1); opacity: 1; }
+  100% { transform: translate3d(var(--tx), var(--ty), 100px) scale(0); opacity: 0; }
+}
+
+/* === SHOCKWAVE EFFECT === */
+@keyframes shockwave {
+  0% { box-shadow: 0 0 0 0 rgba(94, 234, 212, 0.4); }
+  100% { box-shadow: 0 0 0 100px rgba(94, 234, 212, 0); }
+}
+.tile--matched {
+  animation: matchOut 0.22s cubic-bezier(0.55, 0, 0.1, 1) forwards;
+  pointer-events: none;
+}
+.tile--matched::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+  animation: shockwave 0.4s ease-out forwards;
+}
+
+/* === FLOATING TEXT === */
+.floating-text {
+  position: absolute;
+  color: var(--gold);
+  font-weight: 800;
+  font-size: 1.5rem;
+  pointer-events: none;
+  z-index: 2000;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  animation: floatUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+.floating-text--combo {
+  color: var(--accent2);
+  font-size: 1.8rem;
+}
+@keyframes floatUp {
+  0% { transform: translateY(0) scale(0.8); opacity: 0; }
+  20% { transform: translateY(-20px) scale(1.2); opacity: 1; }
+  100% { transform: translateY(-60px) scale(1); opacity: 0; }
 }
 
 .match-popup {
@@ -865,6 +989,7 @@ kbd {
   line-height: 1.65;
 }
 
+/* === 3D TILT === */
 .stage {
   position: relative;
   flex: 1;
@@ -875,6 +1000,7 @@ kbd {
   display: flex;
   justify-content: center;
   align-items: center;
+  perspective: 1200px; /* Enable 3D perspective */
   background:
     url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E"),
     radial-gradient(ellipse 120% 90% at 30% 20%, rgba(180, 100, 50, 0.08) 0%, transparent 50%),
@@ -889,8 +1015,11 @@ kbd {
 .stage__inner {
   position: relative;
   padding: 0;
+  transform-style: preserve-3d; /* Keep tiles in 3D space */
   transform-origin: center center;
   background: transparent;
+  transition: transform 0.1s ease-out; /* Smooth out tilt updates */
+  will-change: transform;
 }
 
 .board {

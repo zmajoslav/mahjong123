@@ -233,15 +233,41 @@
   function createTileSet(positions, seed) {
     const count = positions.length;
     const pairsNeeded = count / 2;
-    const allKinds = SUIT_KINDS.concat(FLOWERS, SEASONS);
     const rng = seed != null ? mulberry32(hashSeed(String(seed))) : Math.random;
-    const shuffled = allKinds.slice().sort(function () { return rng() - 0.5; });
-    const chosenKinds = shuffled.slice(0, pairsNeeded);
+
+    // Create a pool of available pairs.
+    // Standard Mahjong has 4 copies of each suit/honor tile.
+    // Since we match pairs, we treat 4 copies as "2 pairs".
+    const availablePairs = [];
+    
+    // Add 2 pairs for each suit/honor
+    SUIT_KINDS.forEach(function (k) {
+      availablePairs.push(k, k);
+    });
+    // Add 1 pair for each Flower/Season
+    FLOWERS.concat(SEASONS).forEach(function (k) {
+      availablePairs.push(k);
+    });
+
+    // Shuffle the available pairs
+    availablePairs.sort(function () { return rng() - 0.5; });
+
+    // Select the needed number of pairs
+    // If we need more than available (unlikely for < 152 tiles), we loop or error.
+    // But Hard is 104 tiles (52 pairs), available is 76 pairs. Safe.
+    const chosenPairs = availablePairs.slice(0, pairsNeeded);
+    
+    // If somehow we don't have enough (e.g. huge layout), fill with randoms
+    while (chosenPairs.length < pairsNeeded) {
+      chosenPairs.push(SUIT_KINDS[Math.floor(rng() * SUIT_KINDS.length)]);
+    }
 
     const kinds = [];
-    chosenKinds.forEach(function (k) {
+    chosenPairs.forEach(function (k) {
       kinds.push(k, k);
     });
+    
+    // Shuffle the actual tile positions
     kinds.sort(function () { return rng() - 0.5; });
 
     const tiles = [];
@@ -258,19 +284,155 @@
     return tiles;
   }
 
+  /** Backtracking solver to check if a board is winnable. Caps steps/time to avoid long runs. */
+  const SOLVER_MAX_STEPS = 150000;
+  const SOLVER_MAX_MS = 150;
+  function isSolvable(positions, tiles, removedSnapshot, timeLimitMs) {
+    const removed = new Set();
+    if (removedSnapshot && removedSnapshot.size) {
+      removedSnapshot.forEach(function (key) { removed.add(key); });
+    }
+    let steps = 0;
+    const startedAt = Date.now();
+    const maxMs = typeof timeLimitMs === 'number' ? timeLimitMs : SOLVER_MAX_MS;
+
+    function getValidMatchPairs() {
+      const free = [];
+      tiles.forEach(function (t) {
+        if (removed.has(posKey(t.layer, t.row, t.col))) return;
+        if (isTileFree(positions, removed, t.layer, t.row, t.col)) free.push(t);
+      });
+      const pairs = [];
+      const seen = {};
+      for (let i = 0; i < free.length; i++) {
+        for (let j = i + 1; j < free.length; j++) {
+          if (canMatch(free[i].kind, free[j].kind)) {
+            const key = [free[i].id, free[j].id].sort().join('-');
+            if (!seen[key]) {
+              seen[key] = true;
+              pairs.push([free[i], free[j]]);
+            }
+          }
+        }
+      }
+      // Heuristic: check pairs in reverse order (likely higher layers first) to find solution faster
+      pairs.reverse();
+      return pairs;
+    }
+
+    function solve() {
+      if (steps++ > SOLVER_MAX_STEPS) return false;
+      if (Date.now() - startedAt > maxMs) return false;
+      if (removed.size === tiles.length) return true;
+      const pairs = getValidMatchPairs();
+      for (let idx = 0; idx < pairs.length; idx++) {
+        const a = pairs[idx][0];
+        const b = pairs[idx][1];
+        const kA = posKey(a.layer, a.row, a.col);
+        const kB = posKey(b.layer, b.row, b.col);
+        removed.add(kA);
+        removed.add(kB);
+        if (solve()) return true;
+        removed.delete(kA);
+        removed.delete(kB);
+      }
+      return false;
+    }
+    return solve();
+  }
+
   const HINT_LIMIT = 20;
   const SHUFFLE_PENALTY = 5;
   const BASE_SCORE = 10;
+  const SOLVABLE_MAX_ATTEMPTS = 20;
+  const SOLVABLE_TOTAL_MAX_MS = 1000;
+  const SHUFFLE_SOLVE_MAX_ATTEMPTS = 50;
+  const SHUFFLE_SOLVE_MAX_MS = 500;
+  const SHUFFLE_CACHE_LIMIT = 80;
+  const SHUFFLE_CACHE_PREFIX = 'mahjongShuffleCache::';
+
+  var shuffleCacheMemory = new Map();
+  var storageAvailable = (function () {
+    try {
+      if (typeof localStorage === 'undefined') return false;
+      var testKey = '__mahjong_shuffle_test__';
+      localStorage.setItem(testKey, '1');
+      localStorage.removeItem(testKey);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  })();
+
+  function loadShuffleCache(layoutName) {
+    if (shuffleCacheMemory.has(layoutName)) return shuffleCacheMemory.get(layoutName);
+    var cache = { order: [], data: {} };
+    if (storageAvailable) {
+      try {
+        var raw = localStorage.getItem(SHUFFLE_CACHE_PREFIX + layoutName);
+        if (raw) {
+          var parsed = JSON.parse(raw);
+          if (parsed && Array.isArray(parsed.order) && parsed.data) cache = parsed;
+        }
+      } catch (e) {}
+    }
+    shuffleCacheMemory.set(layoutName, cache);
+    return cache;
+  }
+
+  function persistShuffleCache(layoutName) {
+    if (!storageAvailable) return;
+    var cache = shuffleCacheMemory.get(layoutName);
+    if (!cache) return;
+    try {
+      localStorage.setItem(SHUFFLE_CACHE_PREFIX + layoutName, JSON.stringify(cache));
+    } catch (e) {}
+  }
+
+  function getRemainingKey(tiles, removed) {
+    return tiles.filter(function (t) {
+      return !removed.has(posKey(t.layer, t.row, t.col));
+    }).map(function (t) { return t.id; }).sort().join(',');
+  }
+
+  function loadCachedShuffle(layoutName, key) {
+    var cache = loadShuffleCache(layoutName);
+    return cache.data[key];
+  }
+
+  function saveCachedShuffle(layoutName, key, mapping) {
+    var cache = loadShuffleCache(layoutName);
+    if (!cache.data[key]) {
+      cache.order.push(key);
+      if (cache.order.length > SHUFFLE_CACHE_LIMIT) {
+        var oldest = cache.order.shift();
+        delete cache.data[oldest];
+      }
+    }
+    cache.data[key] = mapping;
+    persistShuffleCache(layoutName);
+  }
 
   function createGame(layoutName, seed) {
     layoutName = layoutName || 'turtle';
     const positions = getLayout(layoutName);
-    const tiles = createTileSet(positions, seed);
+    let tiles = createTileSet(positions, seed);
+    let attempt = 0;
+    const solverStartedAt = Date.now();
+    let solvable = isSolvable(positions, tiles, new Set(), SOLVER_MAX_MS);
+    while (!solvable && attempt < SOLVABLE_MAX_ATTEMPTS && (Date.now() - solverStartedAt) < SOLVABLE_TOTAL_MAX_MS) {
+      attempt++;
+      const retrySeed = seed != null ? String(seed) + '_' + attempt : undefined;
+      tiles = createTileSet(positions, retrySeed);
+      solvable = isSolvable(positions, tiles, new Set(), SOLVER_MAX_MS);
+    }
     const removed = new Set();
     const history = [];
     const startTime = Date.now();
     let hintsUsed = 0;
     let combo = 0;
+    let lastMatchTime = 0;
+    const COMBO_TIMEOUT_MS = 6000;
 
     function getTile(id) {
       return tiles.find(function (t) { return t.id === id; }) || null;
@@ -306,6 +468,7 @@
     }
 
     function match(idA, idB) {
+      if (idA == null || idB == null) return { ok: false, message: 'Invalid tile' };
       const a = getTile(idA);
       const b = getTile(idB);
       if (!a || !b) return { ok: false, message: 'Tile not found' };
@@ -320,10 +483,19 @@
 
       removed.add(kA);
       removed.add(kB);
+      
+      const now = Date.now();
+      let comboBroken = false;
+      if (now - lastMatchTime > COMBO_TIMEOUT_MS && combo > 0) {
+        combo = 0;
+        comboBroken = true;
+      }
+      lastMatchTime = now;
       combo++;
+      
       const score = BASE_SCORE * combo;
-      history.push({ idA: a.id, idB: b.id, keyA: kA, keyB: kB, combo: combo, score: score });
-      return { ok: true, score: score, combo: combo };
+      history.push({ idA: a.id, idB: b.id, keyA: kA, keyB: kB, combo: combo, score: score, time: now });
+      return { ok: true, score: score, combo: combo, comboBroken: comboBroken, comboTimeout: COMBO_TIMEOUT_MS };
     }
 
     function undo() {
@@ -331,7 +503,14 @@
       const last = history.pop();
       removed.delete(last.keyA);
       removed.delete(last.keyB);
-      combo = history.length ? history[history.length - 1].combo : 0;
+      // Restore combo state from previous move, or reset if history empty
+      if (history.length > 0) {
+        combo = history[history.length - 1].combo;
+        lastMatchTime = history[history.length - 1].time;
+      } else {
+        combo = 0;
+        lastMatchTime = 0;
+      }
       return { ok: true };
     }
 
@@ -340,39 +519,97 @@
         return !removed.has(posKey(t.layer, t.row, t.col));
       });
       if (remaining.length === 0) return { ok: false, message: 'Game over' };
-      
-      // Get all kinds from remaining tiles and shuffle them
-      const kinds = remaining.map(function (t) { return t.kind; });
-      kinds.sort(function () { return Math.random() - 0.5; });
-      
-      // Reassign kinds to remaining tiles
-      remaining.forEach(function (t, i) {
-        t.kind = kinds[i];
-      });
-      
-      // Reset combo on shuffle
+
+      const originalKinds = remaining.map(function (t) { return t.kind; });
+      const cacheKey = layoutName + '::' + getRemainingKey(tiles, removed);
+
+      function applyMapping(mapping) {
+        for (var i = 0; i < remaining.length; i++) {
+          var id = remaining[i].id;
+          if (!mapping || !mapping.hasOwnProperty(id)) return false;
+          remaining[i].kind = mapping[id];
+        }
+        return true;
+      }
+
+      const cached = loadCachedShuffle(layoutName, cacheKey);
+      if (cached && applyMapping(cached)) {
+        if (isSolvable(positions, tiles, removed, SOLVER_MAX_MS)) {
+          combo = 0;
+          return { ok: true, penaltySeconds: SHUFFLE_PENALTY, fromCache: true };
+        } else {
+          // drop corrupted cache entry
+          var cache = loadShuffleCache(layoutName);
+          delete cache.data[cacheKey];
+          cache.order = cache.order.filter(function (k) { return k !== cacheKey; });
+          persistShuffleCache(layoutName);
+          remaining.forEach(function (t, i) { t.kind = originalKinds[i]; });
+        }
+      }
+
+      let attempts = 0;
+      const start = Date.now();
+      let success = false;
+      while (attempts < SHUFFLE_SOLVE_MAX_ATTEMPTS && (Date.now() - start) < SHUFFLE_SOLVE_MAX_MS) {
+        attempts++;
+        const kinds = remaining.map(function (t) { return t.kind; });
+        kinds.sort(function () { return Math.random() - 0.5; });
+        remaining.forEach(function (t, i) {
+          t.kind = kinds[i];
+        });
+        if (isSolvable(positions, tiles, removed, SOLVER_MAX_MS)) {
+          const mapping = {};
+          remaining.forEach(function (t) { mapping[t.id] = t.kind; });
+          saveCachedShuffle(layoutName, cacheKey, mapping);
+          success = true;
+          break;
+        }
+      }
+
+      if (!success) {
+        remaining.forEach(function (t, i) { t.kind = originalKinds[i]; });
+        return { ok: false, message: 'Could not find a solvable shuffle. Try New Game.' };
+      }
+
       combo = 0;
-      
-      return { ok: true, penaltySeconds: SHUFFLE_PENALTY };
+      return { ok: true, penaltySeconds: SHUFFLE_PENALTY, fromCache: false };
     }
 
     function hint() {
       if (hintsUsed >= HINT_LIMIT) return { ok: false, message: 'No hints left' };
       const matches = getValidMatches();
       if (matches.length === 0) return { ok: false, message: 'No moves' };
+      
+      // Sort matches by quality (highest layer first)
+      matches.sort(function (a, b) {
+        const maxLayerA = Math.max(a[0].layer, a[1].layer);
+        const maxLayerB = Math.max(b[0].layer, b[1].layer);
+        return maxLayerB - maxLayerA;
+      });
+
+      // Pick the best one
+      const pair = matches[0];
+      const a = pair[0];
+      const b = pair[1];
+      if (!a || !b || a.id === b.id) return { ok: false, message: 'No moves' };
+      if (!canMatch(a.kind, b.kind)) return { ok: false, message: 'No moves' };
+      if (removed.has(posKey(a.layer, a.row, a.col)) || removed.has(posKey(b.layer, b.row, b.col))) return { ok: false, message: 'No moves' };
+      if (!isTileFree(positions, removed, a.layer, a.row, a.col) || !isTileFree(positions, removed, b.layer, b.row, b.col)) return { ok: false, message: 'No moves' };
       hintsUsed++;
-      const pair = matches[Math.floor(Math.random() * matches.length)];
-      return { ok: true, tileA: pair[0].id, tileB: pair[1].id, hintsRemaining: HINT_LIMIT - hintsUsed };
+      return { ok: true, tileA: a.id, tileB: b.id, hintsRemaining: HINT_LIMIT - hintsUsed };
     }
 
     function getState() {
       const elapsed = Math.floor((Date.now() - startTime) / 1000);
-      const remaining = tiles.filter(function (t) {
+      const remainingTiles = tiles.filter(function (t) {
         return !removed.has(posKey(t.layer, t.row, t.col));
       });
-      const score = history.reduce(function (sum, h) { return sum + h.score; }, 0);
+      const score = history.reduce(function (sum, h) { return sum + (h ? h.score : 0); }, 0);
+      const now = Date.now();
+      const comboTimeLeft = Math.max(0, COMBO_TIMEOUT_MS - (now - lastMatchTime));
+      
       return {
-        tiles: tiles.filter(function (t) { return !removed.has(posKey(t.layer, t.row, t.col)); }).map(function (t) {
+        tiles: remainingTiles.map(function (t) {
           return {
             id: t.id,
             kind: t.kind,
@@ -384,11 +621,14 @@
         }),
         score: score,
         elapsed: elapsed,
-        remaining: remaining.length,
-        won: remaining.length === 0,
+        remaining: remainingTiles.length,
+        won: remainingTiles.length === 0,
         hintsRemaining: HINT_LIMIT - hintsUsed,
         validMoves: getValidMatches().length,
         canUndo: history.length > 0,
+        combo: combo,
+        comboTimeLeft: combo > 0 ? comboTimeLeft : 0,
+        comboTotalTime: COMBO_TIMEOUT_MS
       };
     }
 
