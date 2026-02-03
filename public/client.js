@@ -551,6 +551,14 @@ function applyHintToDom(tileA, tileB, durationMs) {
     });
   });
 }
+function getTileDimensions(isLevel1) {
+  var w = window.innerWidth;
+  if (w <= 400) return { w: isLevel1 ? 52 : 44, h: isLevel1 ? 64 : 52 };
+  if (w <= 600) return { w: isLevel1 ? 64 : 54, h: isLevel1 ? 78 : 64 };
+  if (w <= 900) return { w: isLevel1 ? 88 : 76, h: isLevel1 ? 106 : 90 };
+  return { w: isLevel1 ? 120 : 100, h: isLevel1 ? 145 : 120 };
+}
+
 function renderBoardImpl(board) {
   if (!game) return;
   var state = game.getState();
@@ -566,8 +574,9 @@ function renderBoardImpl(board) {
   const maxLayer = Math.max.apply(null, tiles.map(function (t) { return t.layer; })) || 0;
 
   var isLevel1 = currentLayout === 'supereasy';
-  var tileW = isLevel1 ? 120 : 100;
-  var tileH = isLevel1 ? 145 : 120;
+  var dims = getTileDimensions(isLevel1);
+  var tileW = dims.w;
+  var tileH = dims.h;
   var layerOffsetX = 0;
   var layerOffsetY = Math.round(-tileH * 0.04);
 
@@ -645,7 +654,7 @@ function scaleToFit() {
 
   if (boardW === 0 || boardH === 0) return;
 
-  var padding = window.innerWidth < 600 ? 32 : 48;
+  var padding = window.innerWidth <= 400 ? 16 : (window.innerWidth < 600 ? 24 : 48);
   var scaleX = (stageW - padding) / boardW;
   var scaleY = (stageH - padding) / boardH;
   var scale = Math.min(scaleX, scaleY, 1);
@@ -662,9 +671,16 @@ function setupStagePanning() {
   var stage = $('stage');
   if (!stage) return;
 
-  // Re-scale on window resize
+  // Re-scale and re-render board on resize (e.g. rotate) so tile sizes stay readable
+  var resizeTimeout;
   window.addEventListener('resize', function () {
     scaleToFit();
+    if (game && $('board')) {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(function () {
+        renderBoard();
+      }, 150);
+    }
   });
 
   var isDown = false;

@@ -1190,8 +1190,9 @@ kbd {
   filter: none;
 }
 .board--highlight-playable .tile--blocked {
-  opacity: 1;
-  filter: saturate(0.96) brightness(0.98);
+  opacity: 0.72;
+  filter: saturate(0.85) brightness(0.88);
+  transition: opacity 0.2s ease, filter 0.2s ease;
 }
 .board--highlight-playable .tile--free {
   box-shadow:
@@ -1207,7 +1208,32 @@ kbd {
     6px 12px 16px rgba(0, 0, 0, 0.4),
     inset 0 1px 0 rgba(255, 255, 255, 0.6),
     inset -1px -1px 0 rgba(0, 0, 0, 0.06),
-    0 0 0 4px rgba(94, 234, 212, 0.65);
+    0 0 0 4px rgba(94, 234, 212, 0.95),
+    0 0 20px rgba(94, 234, 212, 0.35),
+    0 0 40px rgba(94, 234, 212, 0.15);
+  outline: 3px solid rgba(94, 234, 212, 0.9);
+  outline-offset: 2px;
+  filter: brightness(1.05);
+  transition: box-shadow 0.2s ease, filter 0.2s ease, outline-color 0.2s ease;
+}
+.board--highlight-playable .tile--free:hover {
+  box-shadow:
+    0 4px 0 #c9b89a,
+    0 8px 0 #b8a078,
+    0 12px 0 #a89068,
+    0 16px 0 #987858,
+    0 20px 0 #8a6c50,
+    0 24px 0 #7a6044,
+    0 28px 0 #6c543a,
+    0 32px 0 #5e4832,
+    0 33px 0 1px rgba(100, 75, 50, 0.95),
+    0 34px 6px rgba(0, 0, 0, 0.35),
+    8px 16px 24px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.55),
+    inset -1px -1px 0 rgba(0, 0, 0, 0.06),
+    0 0 0 4px rgba(94, 234, 212, 0.95),
+    0 0 24px rgba(94, 234, 212, 0.5),
+    0 0 48px rgba(94, 234, 212, 0.2);
 }
 .tile--selected {
   outline: 4px solid #fde047;
@@ -1351,6 +1377,42 @@ kbd {
   letter-spacing: 0.06em;
   color: #0c0a09;
   -webkit-text-stroke: 1px rgba(0, 0, 0, 0.3);
+}
+
+/* Responsive tile symbols – keep symbols visible and readable on small screens */
+@media (max-width: 900px) {
+  .tile__kind {
+    font-size: 56px;
+    -webkit-text-stroke: 1.25px rgba(0, 0, 0, 0.5);
+  }
+  .tile__kind--fallback {
+    font-size: 32px;
+  }
+}
+@media (max-width: 600px) {
+  .tile__kind {
+    font-size: 44px;
+    -webkit-text-stroke: 1px rgba(0, 0, 0, 0.5);
+  }
+  .tile__kind--fallback {
+    font-size: 26px;
+  }
+  .tile {
+    border-width: 2px;
+    border-radius: 10px;
+  }
+}
+@media (max-width: 400px) {
+  .tile__kind {
+    font-size: 36px;
+    -webkit-text-stroke: 1px rgba(0, 0, 0, 0.5);
+  }
+  .tile__kind--fallback {
+    font-size: 22px;
+  }
+  .tile {
+    border-radius: 8px;
+  }
 }
 
 .stats-panel { font-size: 0.95rem; }
@@ -1638,10 +1700,13 @@ kbd {
   }
   .stage {
     padding: 12px 10px;
-    min-height: 280px;
+    min-height: 320px;
   }
   .stage__inner {
     padding: 16px;
+  }
+  .board {
+    min-height: 400px;
   }
   .layout--fullscreen {
     padding: 12px;
