@@ -155,8 +155,8 @@ body {
 }
 .top-nav__layout {
   padding: 6px 12px;
-  font-size: 0.8rem;
-  font-weight: 500;
+  font-size: 0.85rem;
+  font-weight: 600;
   color: var(--text);
   background: linear-gradient(135deg, rgba(20, 28, 42, 0.7) 0%, rgba(16, 24, 36, 0.6) 100%);
   border: 1px solid var(--border);
@@ -164,6 +164,14 @@ body {
   cursor: pointer;
   transition: all 0.2s ease;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+.top-nav__layout {
+  color-scheme: light;
+}
+.top-nav__layout option {
+  color: #1e293b;
+  background: #ffffff;
+  font-weight: 500;
 }
 .top-nav__layout:hover {
   background: linear-gradient(135deg, rgba(24, 32, 48, 0.8) 0%, rgba(20, 28, 42, 0.7) 100%);
