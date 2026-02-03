@@ -41,6 +41,12 @@ function createApp({ env, pool }) {
   app.use('/api', requirePool, buildApiRouter({ pool }));
 
   app.use(express.static(publicDir));
+  app.get('/privacy.html', (_req, res) => res.sendFile(path.join(publicDir, 'privacy.html')));
+  app.get('/terms.html', (_req, res) => res.sendFile(path.join(publicDir, 'terms.html')));
+  ['es', 'fr', 'de', 'pt', 'pl', 'it'].forEach((lang) => {
+    app.get('/' + lang, (_req, res) => res.sendFile(path.join(publicDir, lang, 'index.html')));
+    app.get('/' + lang + '/', (_req, res) => res.sendFile(path.join(publicDir, lang, 'index.html')));
+  });
   app.get('*', (_req, res) => res.sendFile(path.join(publicDir, 'index.html')));
 
   // eslint-disable-next-line no-unused-vars

@@ -909,6 +909,7 @@ kbd {
   height: 124px;
   border-radius: 14px;
   background: var(--tileFace);
+  backface-visibility: hidden;
   border: 2px solid rgba(160, 130, 90, 0.85);
   color: var(--tileInk);
   display: flex;
@@ -1754,9 +1755,24 @@ select:focus-visible {
   padding-top: 32px;
   border-top: 1px solid var(--border);
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
-  gap: 32px;
+  align-items: center;
+  gap: 12px 24px;
   font-size: 0.9rem;
+}
+.landing__langs {
+  display: flex;
+  gap: 4px 12px;
+  flex-wrap: wrap;
+}
+.landing__lang {
+  font-size: 0.8rem;
+  opacity: 0.85;
+  font-weight: 600;
+}
+.landing__lang:hover {
+  opacity: 1;
 }
 .landing__footer a {
   color: var(--muted);
@@ -1957,4 +1973,87 @@ select:focus-visible {
   .stage {
     margin: 0 !important;
   }
+}
+
+/* === LEGAL PAGES (Privacy, Terms) === */
+.legal-page {
+  min-height: 100vh;
+  padding: 32px 24px 48px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+.legal-page__inner {
+  max-width: 680px;
+  width: 100%;
+}
+.legal-page__back {
+  display: inline-block;
+  color: var(--accent2);
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  margin-bottom: 24px;
+  transition: color 0.2s ease, opacity 0.2s ease;
+}
+.legal-page__back:hover {
+  color: var(--accent2Dark);
+  opacity: 0.9;
+}
+.legal-page__title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0 0 8px;
+}
+.legal-page__updated {
+  font-size: 0.9rem;
+  color: var(--textDim);
+  margin: 0 0 32px;
+}
+.legal-page__section {
+  margin-bottom: 28px;
+}
+.legal-page__section h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0 0 12px;
+}
+.legal-page__section p,
+.legal-page__section li {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--textDim);
+  margin: 0 0 12px;
+}
+.legal-page__section ul {
+  margin: 8px 0 16px;
+  padding-left: 24px;
+}
+.legal-page__section a {
+  color: var(--accent2);
+  text-decoration: none;
+}
+.legal-page__section a:hover {
+  text-decoration: underline;
+}
+.legal-page__footer {
+  margin-top: 48px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  font-size: 0.95rem;
+  color: var(--textDim);
+}
+.legal-page__footer a {
+  color: var(--accent2);
+  text-decoration: none;
+}
+.legal-page__footer a:hover {
+  text-decoration: underline;
+}
+.legal-page__sep {
+  margin: 0 8px;
+  opacity: 0.7;
 }

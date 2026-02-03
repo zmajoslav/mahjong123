@@ -384,11 +384,21 @@ function updateUI() {
   }
 }
 
+var renderBoardScheduled = null;
 function renderBoard() {
+  if (renderBoardScheduled) return;
   var board = $('board');
   if (!board || !game) return;
+  renderBoardScheduled = requestAnimationFrame(function () {
+    renderBoardScheduled = null;
+    renderBoardImpl(board);
+  });
+}
+function renderBoardImpl(board) {
+  if (!game) return;
   var state = game.getState();
-  board.innerHTML = '';
+  var tiles = state.tiles;
+  if (!tiles || tiles.length === 0) return;
   var highlightCb = $('highlightPlayableTop') || $('highlightPlayable');
   if (highlightCb && highlightCb.checked) {
     board.classList.add('board--highlight-playable');
@@ -396,7 +406,6 @@ function renderBoard() {
     board.classList.remove('board--highlight-playable');
   }
 
-  const tiles = state.tiles;
   const maxLayer = Math.max.apply(null, tiles.map(function (t) { return t.layer; })) || 0;
 
   var isLevel1 = currentLayout === 'supereasy';
@@ -411,6 +420,8 @@ function renderBoard() {
   var minLeft = Math.min.apply(null, tiles.map(function (t) { return t.col * tileW + t.layer * layerOffsetX; }));
   var offsetY = minTop < 0 ? -minTop : 0;
   var offsetX = minLeft < 0 ? -minLeft : 0;
+
+  var fragment = document.createDocumentFragment();
   tiles.forEach(function (t, i) {
     var el = document.createElement('div');
     var suitCls = tileSuitClass(t.kind);
@@ -421,10 +432,9 @@ function renderBoard() {
     el.dataset.layer = t.layer;
     el.style.width = tileW + 'px';
     el.style.height = tileH + 'px';
-    if (isNewGame) el.style.animationDelay = Math.min(i * 5, 350) + 'ms';
+    if (isNewGame) el.style.animationDelay = Math.min(i * 4, 280) + 'ms';
     el.style.left = (t.col * tileW + t.layer * layerOffsetX + offsetX) + 'px';
     el.style.top = (t.row * tileH + t.layer * layerOffsetY + offsetY) + 'px';
-    // Free (playable) tiles get higher z-index so they're never hidden under overlapping tiles
     var baseZ = t.layer * 100 + t.row * 10 + t.col;
     el.style.zIndex = t.free ? 5000 + baseZ : baseZ;
     var sym = tileSymbol(t.kind);
@@ -433,7 +443,7 @@ function renderBoard() {
     if (suitCls) cls += ' ' + suitCls;
     el.innerHTML = '<span class="' + cls + '" title="' + escapeHtml(t.kind) + '">' + escapeHtml(sym) + '</span>';
     el.addEventListener('click', onTileClick);
-    board.appendChild(el);
+    fragment.appendChild(el);
   });
 
   var maxRight = Math.max.apply(null, tiles.map(function (t) {
@@ -447,7 +457,15 @@ function renderBoard() {
   board.style.width = w + 'px';
   board.style.height = h + 'px';
 
-  // Auto-scale board to fit viewport
+  if (board.replaceChildren) {
+    board.replaceChildren(fragment);
+  } else {
+    board.innerHTML = '';
+    while (fragment.firstChild) {
+      board.appendChild(fragment.firstChild);
+    }
+  }
+
   requestAnimationFrame(function () {
     scaleToFit();
   });
@@ -618,7 +636,7 @@ function onTileClick(ev) {
     setTimeout(function () {
       renderBoard();
       updateUI();
-    }, 120);
+    }, 260);
   } else {
     selectedTileId = null;
     document.querySelectorAll('.tile--selected').forEach(function (e) { e.classList.remove('tile--selected'); });
@@ -630,7 +648,8 @@ function showLevelCompleteThenModal(state) {
   var overlay = document.createElement('div');
   overlay.className = 'level-complete';
   overlay.setAttribute('aria-live', 'polite');
-  overlay.innerHTML = '<div class="level-complete__inner"><span class="level-complete__icon">🏆</span><p class="level-complete__text">Level complete!</p></div>';
+  var lc = typeof window.t === 'function' ? window.t('ui.levelComplete') : 'Level complete!';
+  overlay.innerHTML = '<div class="level-complete__inner"><span class="level-complete__icon">🏆</span><p class="level-complete__text">' + lc + '</p></div>';
   document.body.appendChild(overlay);
   requestAnimationFrame(function () { overlay.classList.add('level-complete--visible'); });
   setTimeout(function () {
@@ -648,15 +667,16 @@ function showWinModal(state) {
   var bodyHtml = '<div class="win-summary">';
   bodyHtml += '<p class="win-summary__score">🌟 Score: <strong>' + state.score + '</strong></p>';
   bodyHtml += '<p class="win-summary__time">⏱ Time: <strong>' + formatTime(state.elapsed) + '</strong></p>';
-  bodyHtml += '<p class="win-summary__cheer">You cleared all the tiles! You\'re a star! ⭐</p>';
+  var t = typeof window.t === 'function' ? window.t : function (k) { return k; };
+  bodyHtml += '<p class="win-summary__cheer">' + (t('win.cheer') || 'You cleared all the tiles! You\'re a star!') + ' ⭐</p>';
   bodyHtml += '<label class="field">';
-  bodyHtml += '<div class="field__label">Your name (for high scores)</div>';
-  bodyHtml += '<input class="field__input" id="winNameInput" placeholder="Enter your name" maxlength="32" autocomplete="off">';
+  bodyHtml += '<div class="field__label">' + (t('ui.yourName') || 'Your name (for high scores)') + '</div>';
+  bodyHtml += '<input class="field__input" id="winNameInput" placeholder="' + (t('ui.enterName') || 'Enter your name') + '" maxlength="32" autocomplete="off">';
   bodyHtml += '</label>';
-  bodyHtml += '<button class="btn btn--primary" id="submitScoreBtn">Save to leaderboard ⭐</button>';
-  bodyHtml += '<button class="btn btn--ghost" id="newGameFromWin">Play again! 🎮</button>';
+  bodyHtml += '<button class="btn btn--primary" id="submitScoreBtn">' + (t('ui.saveToLeaderboard') || 'Save to leaderboard') + ' ⭐</button>';
+  bodyHtml += '<button class="btn btn--ghost" id="newGameFromWin">' + (t('ui.playAgain') || 'Play again') + '! 🎮</button>';
   bodyHtml += '<div class="win-share">';
-  bodyHtml += '<p class="win-share__label">Share your score:</p>';
+  bodyHtml += '<p class="win-share__label">' + (t('win.shareLabel') || 'Share your score:') + '</p>';
   bodyHtml += '<div class="win-share__buttons">';
   bodyHtml += '<button class="btn btn--facebook" id="shareFacebookBtn"><span class="btn__icon">f</span> Facebook</button>';
   bodyHtml += '<button class="btn btn--twitter" id="shareTwitterBtn"><span class="btn__icon">𝕏</span> Twitter</button>';
@@ -690,11 +710,11 @@ function showWinModal(state) {
     var nameInput = $('winNameInput');
     var name = nameInput ? nameInput.value.trim() : '';
     if (!name) {
-      showToast('Please enter your name to save to the leaderboard.', 'error');
+      showToast(typeof window.t === 'function' ? window.t('toasts.enterName') : 'Please enter your name to save to the leaderboard.', 'error');
       return;
     }
     submitScore(state, name, function () {
-      showToast('Score saved! You\'re on the leaderboard!', 'success');
+      showToast(typeof window.t === 'function' ? window.t('toasts.scoreSaved') : 'Score saved! You\'re on the leaderboard!', 'success');
       closeModal();
       loadLeaderboard();
     });
@@ -719,10 +739,12 @@ function showWinModal(state) {
   });
 }
 
-function submitScore(state, onSuccess) {
+function submitScore(state, displayName, onSuccess) {
   apiRequest('/api/scores', {
     method: 'POST',
+    public: true,
     body: {
+      displayName: displayName,
       layoutName: currentLayout,
       score: state.score,
       elapsedSeconds: state.elapsed,
@@ -730,7 +752,7 @@ function submitScore(state, onSuccess) {
   }).then(function () {
     if (onSuccess) onSuccess();
   }).catch(function (err) {
-    showToast('Could not save score: ' + err.message, 'error');
+    showToast((typeof window.t === 'function' ? window.t('toasts.couldNotSave') : 'Could not save score: ') + err.message, 'error');
   });
 }
 
@@ -785,7 +807,7 @@ function closeModal() {
 function showStuckModal() {
   stopTimer();
   clearAutoHint();
-  announce('No moves left. Shuffle or start a new game.');
+  announce(typeof window.t === 'function' ? window.t('toasts.noMoves') : 'No moves left. Shuffle or start a new game.');
   var bodyHtml = '<div class="win-summary">';
   bodyHtml += '<p class="win-summary__cheer">No moves available! Shuffle to mix things up or start a new game.</p>';
   bodyHtml += '<button class="btn btn--primary" id="stuckShuffleBtn">Shuffle tiles 🔀</button>';
@@ -806,7 +828,7 @@ function showStuckModal() {
       startAutoHintTimer();
       renderBoard();
       updateUI();
-      showToast('Tiles shuffled! 🔀', 'info');
+      showToast((typeof window.t === 'function' ? window.t('toasts.tilesShuffled') : 'Tiles shuffled!') + ' 🔀', 'info');
     }
   });
   

@@ -1,15 +1,71 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://mahjongboss.com/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mahjongboss.com/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mahjongboss.com/"/>
     <lastmod>2026-02-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://mahjongboss.com/#play</loc>
+    <loc>https://mahjongboss.com/es/</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://mahjongboss.com/es/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mahjongboss.com/"/>
     <lastmod>2026-02-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://mahjongboss.com/fr/</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://mahjongboss.com/fr/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mahjongboss.com/"/>
+    <lastmod>2026-02-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://mahjongboss.com/de/</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mahjongboss.com/de/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mahjongboss.com/"/>
+    <lastmod>2026-02-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://mahjongboss.com/pt/</loc>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://mahjongboss.com/pt/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mahjongboss.com/"/>
+    <lastmod>2026-02-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://mahjongboss.com/pl/</loc>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://mahjongboss.com/pl/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mahjongboss.com/"/>
+    <lastmod>2026-02-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://mahjongboss.com/it/</loc>
+    <xhtml:link rel="alternate" hreflang="it" href="https://mahjongboss.com/it/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mahjongboss.com/"/>
+    <lastmod>2026-02-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://mahjongboss.com/privacy.html</loc>
+    <lastmod>2026-02-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://mahjongboss.com/terms.html</loc>
+    <lastmod>2026-02-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
 </urlset>

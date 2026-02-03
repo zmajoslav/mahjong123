@@ -1,8 +1,17 @@
 /* Service worker: cache static assets for offline play and faster repeat visits */
-const CACHE_NAME = 'mahjong-v2';
+const CACHE_NAME = 'mahjong-v4';
 const STATIC_URLS = [
   '/',
   '/index.html',
+  '/es/',
+  '/fr/',
+  '/de/',
+  '/pt/',
+  '/pl/',
+  '/it/',
+  '/privacy.html',
+  '/terms.html',
+  '/i18n/strings.js',
   '/styles.css',
   '/client.js',
   '/solitaire-engine.js',
