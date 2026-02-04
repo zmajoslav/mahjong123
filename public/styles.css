@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Outfit:wght@400;500;600;700&display=swap');
+/* Fonts loaded via <link> in HTML with display=swap to avoid render-blocking @import */
 
 :root {
   --bg0: #0c0a08;
@@ -449,6 +449,7 @@ body {
   animation: particleOut 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards;
   box-shadow: 0 0 6px rgba(255, 255, 255, 0.4);
   transform: translate3d(0, 0, 50px) scale(1) rotate(0deg);
+  will-change: transform;
 }
 @keyframes particleOut {
   0% { transform: translate3d(0, 0, 50px) scale(1) rotate(0deg); opacity: 1; }
@@ -487,6 +488,7 @@ body {
   z-index: 2000;
   text-shadow: 0 2px 4px rgba(0,0,0,0.5);
   animation: floatUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  will-change: transform;
 }
 .floating-text--combo {
   color: var(--accent2);
@@ -1210,10 +1212,10 @@ kbd {
     6px 12px 16px rgba(0, 0, 0, 0.4),
     inset 0 1px 0 rgba(255, 255, 255, 0.6),
     inset -1px -1px 0 rgba(0, 0, 0, 0.06),
-    0 0 0 4px rgba(94, 234, 212, 0.95),
-    0 0 20px rgba(94, 234, 212, 0.35),
-    0 0 40px rgba(94, 234, 212, 0.15);
-  outline: 3px solid rgba(94, 234, 212, 0.9);
+    0 0 0 4px rgba(251, 191, 36, 0.9),
+    0 0 20px rgba(251, 191, 36, 0.3),
+    0 0 40px rgba(251, 191, 36, 0.1);
+  outline: 3px solid rgba(251, 191, 36, 0.85);
   outline-offset: 2px;
   filter: brightness(1.05);
   transition: box-shadow 0.2s ease, filter 0.2s ease, outline-color 0.2s ease;
@@ -1233,9 +1235,48 @@ kbd {
     8px 16px 24px rgba(0, 0, 0, 0.45),
     inset 0 1px 0 rgba(255, 255, 255, 0.55),
     inset -1px -1px 0 rgba(0, 0, 0, 0.06),
-    0 0 0 4px rgba(94, 234, 212, 0.95),
-    0 0 24px rgba(94, 234, 212, 0.5),
-    0 0 48px rgba(94, 234, 212, 0.2);
+    0 0 0 4px rgba(251, 191, 36, 0.95),
+    0 0 24px rgba(251, 191, 36, 0.45),
+    0 0 48px rgba(251, 191, 36, 0.15);
+}
+/* Hint overrides playable highlight so the hinted pair stays green */
+.board--highlight-playable .tile--free.tile--hint {
+  box-shadow:
+    0 2px 0 #c9b89a,
+    0 4px 0 #b8a078,
+    0 6px 0 #a89068,
+    0 8px 0 #987858,
+    0 10px 0 #8a6c50,
+    0 12px 0 #7a6044,
+    0 14px 0 #6c543a,
+    0 16px 0 #5e4832,
+    0 18px 4px rgba(0, 0, 0, 0.3),
+    6px 12px 16px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    0 0 0 4px rgba(52, 211, 153, 0.85),
+    0 0 20px rgba(52, 211, 153, 0.4),
+    0 0 40px rgba(52, 211, 153, 0.15);
+  outline: 4px solid rgba(52, 211, 153, 0.95);
+  outline-offset: 5px;
+}
+.board--highlight-playable .tile--free.tile--hint:hover {
+  box-shadow:
+    0 4px 0 #c9b89a,
+    0 8px 0 #b8a078,
+    0 12px 0 #a89068,
+    0 16px 0 #987858,
+    0 20px 0 #8a6c50,
+    0 24px 0 #7a6044,
+    0 28px 0 #6c543a,
+    0 32px 0 #5e4832,
+    0 33px 0 1px rgba(100, 75, 50, 0.95),
+    0 34px 6px rgba(0, 0, 0, 0.35),
+    8px 16px 24px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.55),
+    inset -1px -1px 0 rgba(0, 0, 0, 0.06),
+    0 0 0 4px rgba(52, 211, 153, 0.9),
+    0 0 24px rgba(52, 211, 153, 0.5),
+    0 0 48px rgba(52, 211, 153, 0.2);
 }
 .tile--selected {
   outline: 4px solid #fde047;
@@ -1259,7 +1300,7 @@ kbd {
 }
 .tile--hint {
   z-index: 99999 !important;
-  outline: 4px solid rgba(94, 234, 212, 0.9);
+  outline: 4px solid rgba(52, 211, 153, 0.95);
   outline-offset: 5px;
   box-shadow:
     0 2px 0 #c9b89a,
@@ -1273,7 +1314,9 @@ kbd {
     0 18px 4px rgba(0, 0, 0, 0.3),
     6px 12px 16px rgba(0, 0, 0, 0.4),
     inset 0 1px 0 rgba(255, 255, 255, 0.6),
-    0 0 0 4px rgba(94, 234, 212, 0.5);
+    0 0 0 4px rgba(52, 211, 153, 0.85),
+    0 0 20px rgba(52, 211, 153, 0.4),
+    0 0 40px rgba(52, 211, 153, 0.15);
   animation: pulseHint 0.8s ease-in-out 2;
 }
 .tile--matched {
@@ -1303,8 +1346,8 @@ kbd {
 }
 
 @keyframes pulseHint {
-  0%, 100% { outline-color: var(--good); }
-  50% { outline-color: var(--accent2); }
+  0%, 100% { outline-color: rgba(52, 211, 153, 0.95); }
+  50% { outline-color: rgba(74, 222, 128, 0.95); }
 }
 
 /* Traditional Mahjong symbols - maximized readability */
@@ -1936,6 +1979,35 @@ select:focus-visible {
 .landing__content strong {
   color: var(--text);
   font-weight: 600;
+}
+.landing__howto {
+  margin: 32px 0 24px;
+}
+.landing__howto-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0 0 12px;
+}
+.landing__howto-steps {
+  margin: 0;
+  padding-left: 1.25rem;
+  list-style: decimal;
+}
+.landing__howto-steps li {
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+.landing__howto-steps li h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 0 2px;
+  color: var(--text);
+}
+.landing__howto-steps li p {
+  font-size: 0.95rem;
+  margin: 0;
+  color: var(--muted);
 }
 .landing__faq {
   margin-top: 40px;

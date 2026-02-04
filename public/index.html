@@ -48,7 +48,9 @@
   <meta property="og:image" content="https://mahjongboss.com/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Mahjong Boss – Free Mahjong Solitaire online with Daily Challenge and leaderboard">
   <meta property="og:locale" content="en_US">
+  <meta property="og:site_name" content="Mahjong Boss">
   
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
@@ -61,14 +63,26 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <link rel="manifest" href="/manifest.json">
   
+  <!-- Preload LCP-critical CSS so it is discovered immediately (LCP request discovery) -->
+  <link rel="preload" href="/styles.css" as="style">
   <link rel="stylesheet" href="/styles.css">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🀄</text></svg>">
   
-  <!-- Preconnect to optimize font loading -->
+  <!-- Fonts: load async so they don't block first paint (render blocking / 3rd parties) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Outfit:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Outfit:wght@400;500;600;700&display=swap"></noscript>
   
   <!-- Structured Data / Schema.org -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Mahjong Boss",
+    "url": "https://mahjongboss.com/"
+  }
+  </script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -91,6 +105,11 @@
     "applicationCategory": "GameApplication",
     "operatingSystem": "Any",
     "browserRequirements": "Requires JavaScript",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Mahjong Boss",
+      "url": "https://mahjongboss.com/"
+    },
     "offers": {
       "@type": "Offer",
       "price": "0",
@@ -104,6 +123,20 @@
   }
   </script>
   
+  <!-- HowTo Schema (how to play – can surface as rich result) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Play Mahjong Solitaire",
+    "description": "Match pairs of identical tiles that are free on the left or right with nothing on top. Clear all tiles to win.",
+    "step": [
+      { "@type": "HowToStep", "name": "Choose a layout", "text": "Pick Daily Challenge or a level (24 to 104 tiles)." },
+      { "@type": "HowToStep", "name": "Find matching tiles", "text": "Click two tiles with the same design. They must not be blocked by other tiles and must be free on the left or right with nothing on top." },
+      { "@type": "HowToStep", "name": "Clear the board", "text": "Keep matching pairs until all tiles are removed to win." }
+    ]
+  }
+  </script>
   <!-- FAQ Schema -->
   <script type="application/ld+json">
   {
@@ -178,6 +211,14 @@
       <div class="landing__seo">
         <h2 class="landing__seo-title">Free Mahjong Solitaire – Shanghai Solitaire Tile Matching Puzzle</h2>
         <p>Play <strong>Mahjong Solitaire</strong> (also called <strong>Shanghai Solitaire</strong>) online for free. This classic <strong>Shanghai Mahjong</strong> tile matching puzzle challenges you to clear the board by pairing identical tiles. Choose from 8 layouts including the <strong>Daily Challenge</strong>—same puzzle for everyone each day—or levels from 24 tiles (easy) to 104 tiles (hard).</p>
+        <section class="landing__howto" aria-labelledby="howto-heading">
+          <h2 id="howto-heading" class="landing__howto-title">How to Play Mahjong Solitaire</h2>
+          <ol class="landing__howto-steps">
+            <li><h3>Choose a layout</h3><p>Pick Daily Challenge or a level from 24 to 104 tiles.</p></li>
+            <li><h3>Match free tiles</h3><p>Click two identical tiles that are free on the left or right with nothing on top.</p></li>
+            <li><h3>Clear the board</h3><p>Keep matching pairs until all tiles are removed to win.</p></li>
+          </ol>
+        </section>
         <p><strong>How to play:</strong> Click two <strong>identical</strong> tiles (same design) that are not blocked by others. Tiles must be free on the left or right and have nothing on top. Each flower matches only the same flower; each season matches only the same season. Clear all tiles to win!</p>
         <p><strong>Features:</strong> No download required—play directly in your browser on desktop, tablet, or mobile. <strong>Mahjong with hints</strong>: auto-hints help when you're stuck. Undo moves, shuffle tiles, or compete on the <strong>mahjong leaderboard</strong>. Large, easy-to-read tiles make this <strong>free mahjong puzzle</strong> ideal for relaxed play.</p>
         <div class="landing__faq">
@@ -381,8 +422,8 @@
     </div>
   </div>
 
-  <script src="/i18n/strings.js"></script>
-  <script src="/solitaire-engine.js"></script>
-  <script src="/client.js"></script>
+  <script src="/i18n/strings.js" defer></script>
+  <script src="/solitaire-engine.js" defer></script>
+  <script src="/client.js" defer></script>
 </body>
 </html>

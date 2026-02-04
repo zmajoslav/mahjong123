@@ -48,7 +48,9 @@
   <meta property="og:image" content="https://mahjongboss.com/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Mahjong Boss – मुफ्त महजॉन्ग सॉलिटेयर ऑनलाइन | बिना डाउनलोड, दैनिक चैलेंज">
   <meta property="og:locale" content="hi_IN">
+  <meta property="og:site_name" content="Mahjong Boss">
   
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
@@ -61,14 +63,26 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <link rel="manifest" href="/manifest.json">
   
+  <!-- Preload LCP-critical CSS so it is discovered immediately (LCP request discovery) -->
+  <link rel="preload" href="/styles.css" as="style">
   <link rel="stylesheet" href="/styles.css">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🀄</text></svg>">
   
-  <!-- Preconnect to optimize font loading -->
+  <!-- Fonts: load async so they don't block first paint (render blocking / 3rd parties) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Outfit:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Outfit:wght@400;500;600;700&display=swap"></noscript>
   
   <!-- Structured Data / Schema.org -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Mahjong Boss",
+    "url": "https://mahjongboss.com/hi/"
+  }
+  </script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -91,6 +105,11 @@
     "applicationCategory": "GameApplication",
     "operatingSystem": "Any",
     "browserRequirements": "Requires JavaScript",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Mahjong Boss",
+      "url": "https://mahjongboss.com/hi/"
+    },
     "offers": {
       "@type": "Offer",
       "price": "0",
@@ -104,6 +123,20 @@
   }
   </script>
   
+  <!-- HowTo Schema (how to play – can surface as rich result) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Play Mahjong Solitaire",
+    "description": "Match जोड़े of identical टाइल that are free on the left or right with nothing on top. Clear all टाइल to win.",
+    "step": [
+      { "@type": "HowToStep", "name": "Choose a layout", "text": "Pick दैनिक चैलेंज or a level (24 to 104 टाइल)." },
+      { "@type": "HowToStep", "name": "Find matching टाइल", "text": "Click two टाइल with the same design. They must not be blocked by other टाइल and must be free on the left or right with nothing on top." },
+      { "@type": "HowToStep", "name": "Clear the board", "text": "Keep matching जोड़े until all टाइल are removed to win." }
+    ]
+  }
+  </script>
   <!-- FAQ Schema -->
   <script type="application/ld+json">
   {
@@ -178,6 +211,14 @@
       <div class="landing__seo">
         <h2 class="landing__seo-title">मुफ्त महजॉन्ग सॉलिटेयर – शंघाई टाइल पज़ल</h2>
         <p><strong>महजॉन्ग सॉलिटेयर</strong> (शंघाई सॉलिटेयर) मुफ्त ऑनलाइन खेलें। एक जैसी टाइल के जोड़े मिलाकर बोर्ड खाली करने वाली क्लासिक पज़ल। 8 लेआउट, <strong>दैनिक चैलेंज</strong>।</p>
+        <section class="landing__howto" aria-labelledby="howto-heading">
+          <h2 id="howto-heading" class="landing__howto-title">महजॉन्ग सॉलिटेयर कैसे खेलें</h2>
+          <ol class="landing__howto-steps">
+            <li><h3>लेआउट चुनें</h3><p>Pick दैनिक चैलेंज or a level from 24 to 104 टाइल.</p></li>
+            <li><h3>मुक्त टाइल मिलाएं</h3><p>Click two identical टाइल that are free on the left or right with nothing on top.</p></li>
+            <li><h3>बोर्ड साफ करें</h3><p>Keep matching जोड़े until all टाइल are removed to win.</p></li>
+          </ol>
+        </section>
         <p><strong>कैसे खेलें:</strong> दो <strong>एक जैसी</strong> टाइल (एक ही डिज़ाइन) क्लिक करें जो बंद न हों। बाएं या दाएं खुली होनी चाहिए। सब हटाएं और जीतें!</p>
         <p><strong>फीचर:</strong> बिना डाउनलोड—ब्राउज़र में खेलें। हिंट, पूर्ववत, शफल, <strong>लीडरबोर्ड</strong>।</p>
         <div class="landing__faq">
@@ -381,8 +422,8 @@
     </div>
   </div>
 
-  <script src="/i18n/strings.js"></script>
-  <script src="/solitaire-engine.js"></script>
-  <script src="/client.js"></script>
+  <script src="/i18n/strings.js" defer></script>
+  <script src="/solitaire-engine.js" defer></script>
+  <script src="/client.js" defer></script>
 </body>
 </html>

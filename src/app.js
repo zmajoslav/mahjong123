@@ -1,4 +1,5 @@
 const path = require('path');
+const compression = require('compression');
 const cors = require('cors');
 const express = require('express');
 const helmet = require('helmet');
@@ -10,10 +11,13 @@ const { buildApiRouter } = require('./routes/apiRoutes');
 // Resolve public folder relative to project root (works when cwd is not project root, e.g. cPanel)
 const publicDir = path.resolve(__dirname, '..', 'public');
 
+const STATIC_EXTENSIONS = ['.js', '.css', '.png', '.jpg', '.jpeg', '.gif', '.svg', '.ico', '.webp', '.woff', '.woff2', '.txt', '.xml', '.json'];
+
 function createApp({ env, pool }) {
   const app = express();
 
   app.set('trust proxy', 1);
+  app.use(compression());
   app.use(helmet());
   app.use(cors({
     origin: env.ALLOWED_ORIGINS,
@@ -40,6 +44,14 @@ function createApp({ env, pool }) {
 
   app.use('/api', requirePool, buildApiRouter({ pool }));
 
+  // Long cache for static assets (Lighthouse: "Use efficient cache lifetimes")
+  app.use((req, res, next) => {
+    const ext = path.extname(req.path).toLowerCase();
+    if (STATIC_EXTENSIONS.includes(ext)) {
+      res.setHeader('Cache-Control', 'public, max-age=31536000');
+    }
+    next();
+  });
   app.use(express.static(publicDir));
   app.get('/privacy.html', (_req, res) => res.sendFile(path.join(publicDir, 'privacy.html')));
   app.get('/terms.html', (_req, res) => res.sendFile(path.join(publicDir, 'terms.html')));

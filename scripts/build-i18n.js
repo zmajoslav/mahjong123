@@ -31,6 +31,7 @@ function getReplacementMap(lang) {
     ['<meta name="keywords" content="mahjong solitaire, free mahjong solitaire, shanghai mahjong, shanghai solitaire, tile matching game, free mahjong no download, mahjong daily challenge, mahjong puzzle, online mahjong, mahjong with hints, mahjong leaderboard, brain game, matching game">', '<meta name="keywords" content="' + t.meta.keywords.replace(/"/g, '&quot;') + '">'],
     ['Free Mahjong Solitaire – Daily Challenge, Hints & Leaderboard', t.og.title],
     ['Free Mahjong Solitaire – Daily Challenge & Leaderboard', t.twitter.title],
+    ['<meta property="og:image:alt" content="Mahjong Boss – Free Mahjong Solitaire online with Daily Challenge and leaderboard">', '<meta property="og:image:alt" content="' + (t.og.imageAlt || t.meta.title).replace(/"/g, '&quot;') + '">'],
     // Schema.org BreadcrumbList – localized home label (escape for JSON)
     ['"name": "Home",', '"name": "' + (t.seo.breadcrumbHome || 'Home').replace(/\\/g, '\\\\').replace(/"/g, '\\"') + '",'],
     // A11y (before UI text so e.g. "Highlight playable tiles" isn't broken by "Highlight playable")
@@ -72,6 +73,11 @@ function getReplacementMap(lang) {
     ['<strong>How to play:</strong> Click two <strong>identical</strong> tiles (same design) that are not blocked by others. Tiles must be free on the left or right and have nothing on top. Each flower matches only the same flower; each season matches only the same season. Clear all tiles to win!', t.seo.p2],
     ['Play <strong>Mahjong Solitaire</strong> (also called <strong>Shanghai Solitaire</strong>) online for free. This classic <strong>Shanghai Mahjong</strong> tile matching puzzle challenges you to clear the board by pairing identical tiles. Choose from 8 layouts including the <strong>Daily Challenge</strong>—same puzzle for everyone each day—or levels from 24 tiles (easy) to 104 tiles (hard).', t.seo.p1],
     ['Free Mahjong Solitaire – Shanghai Solitaire Tile Matching Puzzle', t.seo.title],
+    // How to Play section (fallback to en if locale missing keys)
+    ['<h2 id="howto-heading" class="landing__howto-title">How to Play Mahjong Solitaire</h2>', '<h2 id="howto-heading" class="landing__howto-title">' + (t.seo.howToTitle || translations.en.seo.howToTitle) + '</h2>'],
+    ['<h3>Choose a layout</h3>', '<h3>' + (t.seo.howToStep1 || translations.en.seo.howToStep1) + '</h3>'],
+    ['<h3>Match free tiles</h3>', '<h3>' + (t.seo.howToStep2 || translations.en.seo.howToStep2) + '</h3>'],
+    ['<h3>Clear the board</h3>', '<h3>' + (t.seo.howToStep3 || translations.en.seo.howToStep3) + '</h3>'],
     ['<h3 class="landing__faq-title">FAQ</h3>', '<h3 class="landing__faq-title">' + t.seo.faqTitle + '</h3>'],
     ["It's a single-player tile-matching puzzle. Match pairs of identical tiles to clear the board. Also called Shanghai Solitaire.", t.faq.whatIs],
     // Help panel

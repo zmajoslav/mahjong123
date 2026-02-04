@@ -649,20 +649,23 @@ function scaleToFit() {
   var board = $('board');
   if (!stage || !inner || !board) return;
 
-  var stageW = stage.clientWidth;
-  var stageH = stage.clientHeight;
-  var boardW = board.offsetWidth;
-  var boardH = board.offsetHeight;
+  // Defer layout reads to next frame to avoid forced reflow (read after DOM/style invalidation)
+  requestAnimationFrame(function () {
+    var stageW = stage.clientWidth;
+    var stageH = stage.clientHeight;
+    var boardW = board.offsetWidth;
+    var boardH = board.offsetHeight;
 
-  if (boardW === 0 || boardH === 0) return;
+    if (boardW === 0 || boardH === 0) return;
 
-  var padding = window.innerWidth <= 400 ? 16 : (window.innerWidth < 600 ? 24 : 48);
-  var scaleX = (stageW - padding) / boardW;
-  var scaleY = (stageH - padding) / boardH;
-  var scale = Math.min(scaleX, scaleY, 1);
+    var padding = window.innerWidth <= 400 ? 16 : (window.innerWidth < 600 ? 24 : 48);
+    var scaleX = (stageW - padding) / boardW;
+    var scaleY = (stageH - padding) / boardH;
+    var scale = Math.min(scaleX, scaleY, 1);
 
-  inner.style.transformOrigin = 'center center';
-  inner.style.transform = 'scale(' + scale + ')';
+    inner.style.transformOrigin = 'center center';
+    inner.style.transform = 'scale(' + scale + ')';
+  });
 }
 
 function centerStageView() {
@@ -1294,23 +1297,28 @@ function init() {
         }
       }, 5000);
     } else {
-      setTimeout(startGame, 200);
+      // Defer game creation until Play is clicked so initial load stays light (Lighthouse trace)
       landingPlayBtn.addEventListener('click', function () {
         trackEvent('play_clicked');
         gameWrap.classList.add('game-wrap--visible');
         landing.classList.add('landing--hidden');
-        if (loadingOverlay && !loadingOverlay.classList.contains('hidden')) {
-          setTimeout(function () {
-            loadingOverlay.classList.add('hidden');
+        if (!game) {
+          if (loadingOverlay) loadingOverlay.classList.remove('hidden');
+          startGame();
+        } else {
+          if (loadingOverlay && !loadingOverlay.classList.contains('hidden')) {
+            setTimeout(function () {
+              loadingOverlay.classList.add('hidden');
+              showToast('Let\'s play! Have fun! 🎮', 'success');
+              if (localStorage.getItem('mahjongTutorialSeen') !== 'true') {
+                showTutorialOverlay();
+              }
+            }, 300);
+          } else {
             showToast('Let\'s play! Have fun! 🎮', 'success');
             if (localStorage.getItem('mahjongTutorialSeen') !== 'true') {
               showTutorialOverlay();
             }
-          }, 300);
-        } else {
-          showToast('Let\'s play! Have fun! 🎮', 'success');
-          if (localStorage.getItem('mahjongTutorialSeen') !== 'true') {
-            showTutorialOverlay();
           }
         }
         setTimeout(function () {
@@ -1510,8 +1518,20 @@ function init() {
   }
 }
 
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', init);
-} else {
-  init();
-}
+(function bootstrap() {
+  var landing = document.getElementById('landing');
+  var usePreloader = landing && window.location.hash !== '#play';
+  if (usePreloader) {
+    // Defer all JS until after load so Lighthouse gets a clean trace (no NO_NAVSTART)
+    window.addEventListener('load', function onLoad() {
+      window.removeEventListener('load', onLoad);
+      init();
+    });
+  } else {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+  }
+})();

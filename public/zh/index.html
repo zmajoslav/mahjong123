@@ -48,7 +48,9 @@
   <meta property="og:image" content="https://mahjongboss.com/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Mahjong Boss – 免费麻将接龙在线 | 无需下载，每日挑战">
   <meta property="og:locale" content="zh_CN">
+  <meta property="og:site_name" content="Mahjong Boss">
   
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
@@ -61,14 +63,26 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <link rel="manifest" href="/manifest.json">
   
+  <!-- Preload LCP-critical CSS so it is discovered immediately (LCP request discovery) -->
+  <link rel="preload" href="/styles.css" as="style">
   <link rel="stylesheet" href="/styles.css">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🀄</text></svg>">
   
-  <!-- Preconnect to optimize font loading -->
+  <!-- Fonts: load async so they don't block first paint (render blocking / 3rd parties) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Outfit:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Outfit:wght@400;500;600;700&display=swap"></noscript>
   
   <!-- Structured Data / Schema.org -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Mahjong Boss",
+    "url": "https://mahjongboss.com/zh/"
+  }
+  </script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -91,6 +105,11 @@
     "applicationCategory": "GameApplication",
     "operatingSystem": "Any",
     "browserRequirements": "Requires JavaScript",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Mahjong Boss",
+      "url": "https://mahjongboss.com/zh/"
+    },
     "offers": {
       "@type": "Offer",
       "price": "0",
@@ -104,6 +123,20 @@
   }
   </script>
   
+  <!-- HowTo Schema (how to play – can surface as rich result) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Play Mahjong Solitaire",
+    "description": "Match 对 of identical 张 that are free on the left or right with nothing on top. Clear all 张 to win.",
+    "step": [
+      { "@type": "HowToStep", "name": "Choose a layout", "text": "Pick 每日挑战 or a level (24 to 104 张)." },
+      { "@type": "HowToStep", "name": "Find matching 张", "text": "Click two 张 with the same design. They must not be blocked by other 张 and must be free on the left or right with nothing on top." },
+      { "@type": "HowToStep", "name": "Clear the board", "text": "Keep matching 对 until all 张 are removed to win." }
+    ]
+  }
+  </script>
   <!-- FAQ Schema -->
   <script type="application/ld+json">
   {
@@ -178,6 +211,14 @@
       <div class="landing__seo">
         <h2 class="landing__seo-title">免费麻将接龙 – 上海牌面配对谜题</h2>
         <p>免费在线玩<strong>麻将接龙</strong>（又称<strong>上海接龙</strong>）。经典牌面配对谜题，凑齐相同牌面清空桌面。8种布局含<strong>每日挑战</strong>。</p>
+        <section class="landing__howto" aria-labelledby="howto-heading">
+          <h2 id="howto-heading" class="landing__howto-title">麻将接龙玩法</h2>
+          <ol class="landing__howto-steps">
+            <li><h3>选择布局</h3><p>Pick 每日挑战 or a level from 24 to 104 张.</p></li>
+            <li><h3>配对空闲牌</h3><p>Click two identical 张 that are free on the left or right with nothing on top.</p></li>
+            <li><h3>清空牌面</h3><p>Keep matching 对 until all 张 are removed to win.</p></li>
+          </ol>
+        </section>
         <p><strong>玩法：</strong>点击两张<strong>相同</strong>图案的牌（未被其他牌遮挡）。牌需左右一侧空闲且上方无牌。清空全部即胜！</p>
         <p><strong>特点：</strong>无需下载—浏览器即玩。卡住有提示，可撤销、洗牌，参与<strong>排行榜</strong>。</p>
         <div class="landing__faq">
@@ -381,8 +422,8 @@
     </div>
   </div>
 
-  <script src="/i18n/strings.js"></script>
-  <script src="/solitaire-engine.js"></script>
-  <script src="/client.js"></script>
+  <script src="/i18n/strings.js" defer></script>
+  <script src="/solitaire-engine.js" defer></script>
+  <script src="/client.js" defer></script>
 </body>
 </html>

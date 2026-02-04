@@ -48,7 +48,9 @@
   <meta property="og:image" content="https://mahjongboss.com/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Mahjong Boss – Mahjong Solitaire Gratis Online | Tanpa Unduh, Tantangan Harian">
   <meta property="og:locale" content="id_ID">
+  <meta property="og:site_name" content="Mahjong Boss">
   
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
@@ -61,14 +63,26 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <link rel="manifest" href="/manifest.json">
   
+  <!-- Preload LCP-critical CSS so it is discovered immediately (LCP request discovery) -->
+  <link rel="preload" href="/styles.css" as="style">
   <link rel="stylesheet" href="/styles.css">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🀄</text></svg>">
   
-  <!-- Preconnect to optimize font loading -->
+  <!-- Fonts: load async so they don't block first paint (render blocking / 3rd parties) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Outfit:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Outfit:wght@400;500;600;700&display=swap"></noscript>
   
   <!-- Structured Data / Schema.org -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Mahjong Boss",
+    "url": "https://mahjongboss.com/id/"
+  }
+  </script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -91,6 +105,11 @@
     "applicationCategory": "GameApplication",
     "operatingSystem": "Any",
     "browserRequirements": "Requires JavaScript",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Mahjong Boss",
+      "url": "https://mahjongboss.com/id/"
+    },
     "offers": {
       "@type": "Offer",
       "price": "0",
@@ -104,6 +123,20 @@
   }
   </script>
   
+  <!-- HowTo Schema (how to play – can surface as rich result) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Play Mahjong Solitaire",
+    "description": "Match pasang of identical ubin that are free on the left or right with nothing on top. Clear all ubin to win.",
+    "step": [
+      { "@type": "HowToStep", "name": "Choose a layout", "text": "Pick Tantangan Harian or a level (24 to 104 ubin)." },
+      { "@type": "HowToStep", "name": "Find matching ubin", "text": "Click two ubin with the same design. They must not be blocked by other ubin and must be free on the left or right with nothing on top." },
+      { "@type": "HowToStep", "name": "Clear the board", "text": "Keep matching pasang until all ubin are removed to win." }
+    ]
+  }
+  </script>
   <!-- FAQ Schema -->
   <script type="application/ld+json">
   {
@@ -178,6 +211,14 @@
       <div class="landing__seo">
         <h2 class="landing__seo-title">Mahjong Solitaire Gratis – Teka-teki ubin Shanghai</h2>
         <p>Main <strong>Mahjong Solitaire</strong> (Shanghai Solitaire) gratis online. Teka-teki klasik: cocokkan ubin identik. 8 tata letak, <strong>Tantangan Harian</strong>.</p>
+        <section class="landing__howto" aria-labelledby="howto-heading">
+          <h2 id="howto-heading" class="landing__howto-title">Cara main Mahjong Solitaire</h2>
+          <ol class="landing__howto-steps">
+            <li><h3>Pilih tata letak</h3><p>Pick Tantangan Harian or a level from 24 to 104 ubin.</p></li>
+            <li><h3>Cocokkan ubin bebas</h3><p>Click two identical ubin that are free on the left or right with nothing on top.</p></li>
+            <li><h3>Bersihkan papan</h3><p>Keep matching pasang until all ubin are removed to win.</p></li>
+          </ol>
+        </section>
         <p><strong>Cara main:</strong> Klik dua ubin <strong>identik</strong> (desain sama) yang tidak terhalang. Harus bebas kiri atau kanan. Bersihkan semua!</p>
         <p><strong>Fitur:</strong> Tanpa unduh—main di browser. Petunjuk, urungkan, acak, <strong>papan peringkat</strong>.</p>
         <div class="landing__faq">
@@ -381,8 +422,8 @@
     </div>
   </div>
 
-  <script src="/i18n/strings.js"></script>
-  <script src="/solitaire-engine.js"></script>
-  <script src="/client.js"></script>
+  <script src="/i18n/strings.js" defer></script>
+  <script src="/solitaire-engine.js" defer></script>
+  <script src="/client.js" defer></script>
 </body>
 </html>
