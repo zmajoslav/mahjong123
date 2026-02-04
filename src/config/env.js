@@ -5,7 +5,7 @@ const { z } = require('zod');
 const FALLBACKS = {
   NODE_ENV: 'production',
   PORT: 3001,
-  HOST: '127.0.0.1',
+  HOST: '0.0.0.0',
   JWT_SECRET: 'mahjongboss-super-secret-2026-xyz',
   ALLOWED_ORIGINS: 'https://mahjongboss.com',
   DB_HOST: 'localhost',

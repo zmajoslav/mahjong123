@@ -18,20 +18,26 @@ function createApp({ env, pool }) {
 
   app.set('trust proxy', 1);
   app.use(compression());
+  
+  // Set CSP header as early as possible
+  app.use((req, res, next) => {
+    res.setHeader(
+      'Content-Security-Policy',
+      "default-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; " +
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com; " +
+      "script-src-elem 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com; " +
+      "script-src-attr 'unsafe-inline'; " +
+      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
+      "font-src 'self' https://fonts.gstatic.com data:; " +
+      "connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com; " +
+      "img-src 'self' data: blob: https://www.googletagmanager.com https://*.google-analytics.com; " +
+      "object-src 'none';"
+    );
+    next();
+  });
+
   app.use(helmet({
-    contentSecurityPolicy: {
-      directives: {
-        "default-src": ["'self'"],
-        "script-src": ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https://www.googletagmanager.com", "https://www.google-analytics.com"],
-        "script-src-elem": ["'self'", "'unsafe-inline'", "https://www.googletagmanager.com", "https://www.google-analytics.com"],
-        "script-src-attr": ["'unsafe-inline'"],
-        "style-src": ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
-        "font-src": ["'self'", "https://fonts.gstatic.com", "data:"],
-        "connect-src": ["'self'", "https://fonts.googleapis.com", "https://fonts.gstatic.com", "https://www.google-analytics.com", "https://*.google-analytics.com", "https://*.analytics.google.com", "https://*.googletagmanager.com"],
-        "img-src": ["'self'", "data:", "blob:", "https://www.googletagmanager.com", "https://*.google-analytics.com"],
-        "object-src": ["'none'"],
-      },
-    },
+    contentSecurityPolicy: false,
   }));
   app.use(cors({
     origin: env.ALLOWED_ORIGINS,
@@ -61,7 +67,11 @@ function createApp({ env, pool }) {
   // Long cache for static assets (Lighthouse: "Use efficient cache lifetimes")
   app.use((req, res, next) => {
     const ext = path.extname(req.path).toLowerCase();
-    if (STATIC_EXTENSIONS.includes(ext)) {
+    if (req.path === '/sw.js') {
+      res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+      res.setHeader('Pragma', 'no-cache');
+      res.setHeader('Expires', '0');
+    } else if (STATIC_EXTENSIONS.includes(ext)) {
       res.setHeader('Cache-Control', 'public, max-age=31536000');
     }
     next();

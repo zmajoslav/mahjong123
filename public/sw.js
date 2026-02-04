@@ -1,5 +1,5 @@
 /* Service worker: cache static assets for offline play and faster repeat visits */
-const CACHE_NAME = 'mahjong-v7';
+const CACHE_NAME = 'mahjong-v9';
 const STATIC_URLS = [
   '/',
   '/index.html',
