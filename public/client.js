@@ -965,7 +965,7 @@ function scaleToFit() {
 
     if (boardW === 0 || boardH === 0) return;
 
-    var padding = window.innerWidth <= 400 ? 16 : (window.innerWidth < 600 ? 24 : 48);
+    var padding = window.innerWidth <= 400 ? 8 : (window.innerWidth < 600 ? 16 : 48);
     var scaleX = (stageW - padding) / boardW;
     var scaleY = (stageH - padding) / boardH;
     var scale = Math.min(scaleX, scaleY, 1);
@@ -1877,7 +1877,7 @@ function init() {
   }
 
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/sw.js?v=22').catch(function () {});
+    navigator.serviceWorker.register('/sw.js?v=23').catch(function () {});
   }
 }
 

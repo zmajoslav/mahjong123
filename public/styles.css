@@ -1788,52 +1788,81 @@ kbd {
 }
 
 @media (max-width: 600px) {
-  html { font-size: 16px; }
+  html { font-size: 14px; }
+  .top-nav {
+    height: auto;
+    min-height: 60px;
+  }
   .top-nav__inner {
-    padding: 12px 16px;
-    gap: 12px;
+    padding: 8px 12px;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  .brand {
+    gap: 6px;
   }
   .brand__logo {
-    width: 40px;
-    height: 40px;
-    font-size: 26px;
+    width: 32px;
+    height: 32px;
+    font-size: 20px;
   }
   .brand__title {
-    font-size: 1.35rem;
+    font-size: 1.15rem;
   }
   .brand__subtitle {
-    font-size: 0.8rem;
-    margin-top: 0;
+    display: none;
+  }
+  .top-nav__center {
+    order: 3;
+    width: 100%;
+    justify-content: space-between;
+    padding-top: 4px;
+    border-top: 1px solid var(--border);
+    margin-top: 4px;
   }
   .top-nav__layout {
-    padding: 10px 14px;
-    font-size: 0.95rem;
+    padding: 6px 10px;
+    font-size: 0.85rem;
+    max-width: 140px;
+  }
+  .top-nav__toggle {
+    gap: 4px;
   }
   .top-nav__toggle .toggle__input {
-    width: 28px;
-    height: 28px;
-    min-width: 28px;
-    min-height: 28px;
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    min-height: 24px;
   }
   .top-nav__toggle-label {
     display: none;
   }
-  .stat {
-    padding: 10px 14px;
-    font-size: 0.9rem;
+  .top-nav__stats {
+    gap: 6px;
   }
-  .stat strong { font-size: 1.05rem; }
+  .stat {
+    padding: 6px 10px;
+    font-size: 0.85rem;
+  }
+  .stat strong { font-size: 0.95rem; }
   .stat--progress,
-  .stat:last-of-type {
+  .stat--combo,
+  .stat:last-of-type,
+  .stat:nth-last-of-type(3) {
     display: none;
   }
+  .bottom-nav {
+    height: 60px;
+  }
   .bottom-nav__inner {
-    padding: 12px 16px;
-    gap: 8px;
+    padding: 8px 12px;
+    gap: 6px;
   }
   .bottom-nav__btn {
-    padding: 12px 16px;
-    font-size: 0.9rem;
+    padding: 8px 12px;
+    font-size: 0.85rem;
+    height: 44px;
   }
   .bottom-nav__btn span:last-child {
     display: none;
@@ -1842,66 +1871,66 @@ kbd {
     display: inline;
   }
   .stage {
-    padding: 12px 10px;
-    min-height: 320px;
+    padding: 4px;
+    min-height: 280px;
   }
   .stage__inner {
-    padding: 16px;
+    padding: 8px;
   }
   .board {
-    min-height: 400px;
+    min-height: 300px;
   }
   .layout--fullscreen {
-    padding: 12px;
+    padding: 4px;
   }
   .menu-btn {
-    top: 80px;
-    left: 12px;
-    padding: 10px 12px;
+    top: 120px;
+    left: 8px;
+    padding: 8px 10px;
   }
   .menu-btn__label {
     display: none;
   }
   .modal {
-    width: calc(100vw - 24px);
-    margin: 12px;
+    width: calc(100vw - 16px);
+    margin: 8px;
   }
   .modal__header,
   .modal__body {
-    padding: 20px 24px;
+    padding: 16px 20px;
   }
   .modal__title {
-    font-size: 1.6rem;
+    font-size: 1.4rem;
   }
   .toast-container {
-    bottom: 16px;
-    right: 16px;
-    left: 16px;
+    bottom: 70px;
+    right: 12px;
+    left: 12px;
   }
   .landing {
-    padding: 40px 20px 60px;
+    padding: 30px 16px 50px;
   }
   .landing__title {
-    font-size: clamp(2rem, 6vw, 2.8rem);
+    font-size: clamp(1.8rem, 5vw, 2.4rem);
   }
   .landing__tagline {
-    font-size: 1rem;
+    font-size: 0.9rem;
   }
   .landing__play {
-    padding: 16px 36px;
-    font-size: 1.1rem;
+    padding: 14px 30px;
+    font-size: 1rem;
   }
   .landing__content {
-    margin-top: 32px;
-    padding-top: 32px;
+    margin-top: 24px;
+    padding-top: 24px;
   }
   .sidebar--overlay {
     width: 100%;
     max-width: 100%;
-    padding: 20px 16px;
+    padding: 16px 12px;
   }
   .panel {
-    padding: 20px;
+    padding: 16px;
   }
   .panel__grid {
     grid-template-columns: 1fr;
