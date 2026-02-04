@@ -639,7 +639,7 @@ body {
 /* === MENU BUTTON (FAB) === */
 .menu-btn {
   position: fixed;
-  top: 40px;
+  top: 100px;
   left: 16px;
   z-index: 600;
   display: flex;
