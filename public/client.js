@@ -1143,7 +1143,17 @@ function showWinModal(state) {
     btn.disabled = true;
     btn.textContent = 'Saving...';
 
-    submitScore(state, name, function () {
+    // Ensure we use public: true for guest scores to avoid "Missing Bearer Token"
+    apiRequest('/api/scores', {
+      method: 'POST',
+      public: true,
+      body: {
+        displayName: name,
+        layoutName: currentLayout,
+        score: state.score,
+        elapsedSeconds: state.elapsed,
+      },
+    }).then(function () {
       showToast(typeof window.t === 'function' ? window.t('toasts.scoreSaved') : 'Score saved! You\'re on the leaderboard!', 'success');
       btn.textContent = 'Saved! ✅';
       // Refresh sidebar if it's open
@@ -1152,6 +1162,10 @@ function showWinModal(state) {
         loadLeaderboard();
         renderStatsPanel();
       }
+    }).catch(function (err) {
+      btn.disabled = false;
+      btn.textContent = (t('ui.saveToLeaderboard') || 'Save Score') + ' 🏆';
+      showToast((typeof window.t === 'function' ? window.t('toasts.couldNotSave') : 'Could not save score: ') + err.message, 'error');
     });
   });
   $('newGameFromWin')?.addEventListener('click', function () {
