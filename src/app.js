@@ -30,7 +30,6 @@ function createApp({ env, pool }) {
         "connect-src": ["'self'", "https://fonts.googleapis.com", "https://fonts.gstatic.com", "https://www.google-analytics.com", "https://*.google-analytics.com", "https://*.analytics.google.com", "https://*.googletagmanager.com"],
         "img-src": ["'self'", "data:", "blob:", "https://www.googletagmanager.com", "https://*.google-analytics.com"],
         "object-src": ["'none'"],
-        "upgrade-insecure-requests": [],
       },
     },
   }));
