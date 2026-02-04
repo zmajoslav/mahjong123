@@ -2,7 +2,7 @@ require('dotenv').config();
 
 const { createApp } = require('./src/app');
 const { loadEnv } = require('./src/config/env');
-const { ensureExtensions } = require('./src/db/migrations');
+const { ensureExtensions, runSchema } = require('./src/db/migrations');
 const { getPool } = require('./src/db/pool');
 
 async function main() {
@@ -12,6 +12,7 @@ async function main() {
   if (env.DATABASE_URL) {
     pool = getPool(env.DATABASE_URL);
     await ensureExtensions(pool);
+    await runSchema(pool);
   }
 
   const app = createApp({ env, pool });
