@@ -66,9 +66,11 @@ function createApp({ env, pool }) {
     if (err instanceof HttpError) {
       return res.status(err.statusCode).json({ error: { code: err.code, message: err.message } });
     }
+    // Log the full error for debugging
+    console.error('Unexpected error:', err);
     // Production: don’t leak internal details.
     if (env.NODE_ENV === 'production') {
-      return res.status(500).json({ error: { code: 'INTERNAL', message: 'Internal Server Error' } });
+      return res.status(500).json({ error: { code: 'INTERNAL', message: 'Internal Server Error: ' + err.message } });
     }
     return res.status(500).json({ error: { code: 'INTERNAL', message: err.message } });
   });

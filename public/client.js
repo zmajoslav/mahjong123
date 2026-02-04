@@ -221,7 +221,13 @@ function getTileSvg(kind) {
 
   if (suit === 'D') { // Dots
     var colors = ['#1d4ed8', '#059669', '#dc2626'];
-    var dot = function(cx, cy, r, fill) { return '<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="'+fill+'" stroke="rgba(0,0,0,0.2)" stroke-width="1"/>'; };
+    var dot = function(cx, cy, r, fill) { 
+      if (!fill || fill.indexOf('#') !== 0) {
+        console.error('Invalid fill color for dot:', fill, {cx, cy, r});
+        fill = '#000000';
+      }
+      return '<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="'+fill+'" stroke="rgba(0,0,0,0.2)" stroke-width="1"/>'; 
+    };
     if (val === '1') content = dot(50, 60, 35, colors[2]) + dot(50, 60, 15, '#fbbf24');
     else if (val === '2') content = dot(50, 35, 18, colors[0]) + dot(50, 85, 18, colors[1]);
     else if (val === '3') content = dot(25, 30, 15, colors[0]) + dot(50, 60, 15, colors[2]) + dot(75, 90, 15, colors[1]);
@@ -233,7 +239,13 @@ function getTileSvg(kind) {
     else if (val === '9') content = dot(20, 25, 10, colors[0]) + dot(50, 25, 10, colors[0]) + dot(80, 25, 10, colors[0]) + dot(20, 60, 10, colors[2]) + dot(50, 60, 10, colors[2]) + dot(80, 60, 10, colors[2]) + dot(20, 95, 10, colors[1]) + dot(50, 95, 10, colors[1]) + dot(80, 95, 10, colors[1]);
   } else if (suit === 'B') { // Bamboos
     var colors = ['#059669', '#dc2626', '#1d4ed8'];
-    var stick = function(x, y, w, h, fill) { return '<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" rx="4" fill="'+fill+'" stroke="rgba(0,0,0,0.2)" stroke-width="1"/>'; };
+    var stick = function(x, y, w, h, fill) { 
+      if (!fill || fill.indexOf('#') !== 0) {
+        console.error('Invalid fill color for stick:', fill, {x, y, w, h});
+        fill = '#000000';
+      }
+      return '<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" rx="4" fill="'+fill+'" stroke="rgba(0,0,0,0.2)" stroke-width="1"/>'; 
+    };
     if (val === '1') content = '<path d="M50 20 L80 90 L20 90 Z" fill="'+colors[0]+'" stroke="black" stroke-width="1"/><circle cx="50" cy="45" r="10" fill="'+colors[1]+'"/>'; // Simplified bird
     else if (val === '2') content = stick(45, 20, 10, 35, colors[0]) + stick(45, 65, 10, 35, colors[1]);
     else if (val === '3') content = stick(45, 20, 10, 35, colors[1]) + stick(25, 65, 10, 35, colors[0]) + stick(65, 65, 10, 35, colors[0]);
