@@ -1747,7 +1747,7 @@ function init() {
   }
 
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/sw.js?v=18').catch(function () {});
+    navigator.serviceWorker.register('/sw.js?v=19').catch(function () {});
   }
 }
 
@@ -1770,8 +1770,11 @@ function init() {
 
   // Server-side Google Analytics (CSP-safe)
   // Sends page views and events through our own server to avoid CSP blocks
+  // Analytics will be enabled once the server /api/analytics endpoint is deployed
   (function initAnalytics() {
     var GA_CLIENT_ID_KEY = 'mahjong_ga_cid';
+    var analyticsEndpointVerified = false;
+    var pendingEvents = [];
     
     function getClientId() {
       var cid = localStorage.getItem(GA_CLIENT_ID_KEY);
@@ -1786,18 +1789,31 @@ function init() {
       return cid;
     }
 
-    function trackPageView() {
-      var clientId = getClientId();
+    function sendAnalytics(data) {
+      if (!analyticsEndpointVerified) {
+        pendingEvents.push(data);
+        return;
+      }
       fetch('/api/analytics', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          event_name: 'page_view',
-          page_path: window.location.pathname,
-          page_title: document.title,
-          client_id: clientId
-        })
-      }).catch(function() { /* ignore errors */ });
+        body: JSON.stringify(data)
+      }).catch(function() { /* silently ignore */ });
+    }
+
+    function flushPending() {
+      while (pendingEvents.length > 0) {
+        sendAnalytics(pendingEvents.shift());
+      }
+    }
+
+    function trackPageView() {
+      sendAnalytics({
+        event_name: 'page_view',
+        page_path: window.location.pathname,
+        page_title: document.title,
+        client_id: getClientId()
+      });
     }
 
     // Track page view on load
@@ -1807,20 +1823,25 @@ function init() {
       window.addEventListener('load', trackPageView);
     }
 
-    // Expose for custom event tracking
+    // Expose for custom event tracking (used by existing trackEvent calls)
     window.trackEvent = function(eventName, params) {
-      var clientId = getClientId();
-      fetch('/api/analytics', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          event_name: eventName,
-          page_path: window.location.pathname,
-          page_title: document.title,
-          client_id: clientId,
-          params: params
-        })
-      }).catch(function() { /* ignore errors */ });
+      sendAnalytics({
+        event_name: eventName,
+        page_path: window.location.pathname,
+        page_title: document.title,
+        client_id: getClientId(),
+        params: params
+      });
     };
+
+    // Verify endpoint exists before sending (uses GET to /health as proxy check)
+    fetch('/health')
+      .then(function(res) {
+        if (res.ok) {
+          analyticsEndpointVerified = true;
+          flushPending();
+        }
+      })
+      .catch(function() { /* endpoint not ready, analytics disabled */ });
   })();
 })();
