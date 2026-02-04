@@ -21,34 +21,14 @@ function createApp({ env, pool }) {
   app.set('trust proxy', 1);
   app.use(compression());
   
-  // Set CSP header as early as possible with Nonce support
   app.use((req, res, next) => {
-    const nonce = crypto.randomBytes(16).toString('base64');
-    res.locals.nonce = nonce;
-
-    // We still keep it permissive but add the nonce for the specific GTM scripts
-    const csp = [
-      "default-src * 'unsafe-inline' 'unsafe-eval' data: blob:;",
-      `script-src * 'unsafe-inline' 'unsafe-eval' data: blob: 'nonce-${nonce}';`,
-      `script-src-elem * 'unsafe-inline' 'unsafe-eval' data: blob: 'nonce-${nonce}';`,
-      "script-src-attr 'unsafe-inline';",
-      "style-src * 'unsafe-inline';",
-      "img-src * data: blob:;",
-      "font-src * data:;",
-      "connect-src *;",
-      "frame-src *;",
-      "object-src 'none';"
-    ].join(' ');
-
-    res.setHeader('Content-Security-Policy', csp);
-    res.setHeader('X-Content-Security-Policy', csp);
-    res.setHeader('X-WebKit-CSP', csp);
+    res.locals.nonce = crypto.randomBytes(16).toString('base64');
     next();
   });
 
-  app.use(helmet({
-    contentSecurityPolicy: false,
-  }));
+  // app.use(helmet({
+  //   contentSecurityPolicy: false,
+  // }));
   app.use(cors({
     origin: env.ALLOWED_ORIGINS,
     credentials: true,
@@ -86,11 +66,29 @@ function createApp({ env, pool }) {
     }
     next();
   });
+  const setCsp = (res) => {
+    const nonce = res.locals.nonce;
+    const csp = [
+      "default-src * 'unsafe-inline' 'unsafe-eval' data: blob:;",
+      `script-src * 'unsafe-inline' 'unsafe-eval' data: blob: 'nonce-${nonce}';`,
+      `script-src-elem * 'unsafe-inline' 'unsafe-eval' data: blob: 'nonce-${nonce}';`,
+      "script-src-attr 'unsafe-inline';",
+      "style-src * 'unsafe-inline';",
+      "img-src * data: blob:;",
+      "font-src * data:;",
+      "connect-src *;",
+      "frame-src *;",
+      "object-src 'none';"
+    ].join(' ');
+    res.setHeader('Content-Security-Policy', csp);
+  };
+
   const sendHtmlWithNonce = (req, res, filePath) => {
     fs.readFile(filePath, 'utf8', (err, data) => {
       if (err) {
         return res.status(404).send('Not Found');
       }
+      setCsp(res);
       const nonce = res.locals.nonce;
       // Inject nonce into all script tags
       const html = data.replace(/<script/g, `<script nonce="${nonce}"`);
