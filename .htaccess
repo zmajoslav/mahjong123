@@ -1,11 +1,10 @@
 RewriteEngine On
 
-# Force removal of any existing CSP headers and set our custom one
+# Remove any existing CSP headers to let the Node.js app handle it with dynamic nonces
 <IfModule mod_headers.c>
     Header always unset Content-Security-Policy
     Header always unset X-Content-Security-Policy
     Header always unset X-WebKit-CSP
-    Header always set Content-Security-Policy "default-src * 'unsafe-inline' 'unsafe-eval' data: blob:; script-src * 'unsafe-inline' 'unsafe-eval' data: blob:; script-src-elem * 'unsafe-inline' 'unsafe-eval' data: blob:; style-src * 'unsafe-inline'; img-src * data: blob:; font-src * data:; connect-src *; frame-src *; object-src 'none';"
 </IfModule>
 
 RewriteCond %{REQUEST_FILENAME} !-f

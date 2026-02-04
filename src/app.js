@@ -1,9 +1,11 @@
 const path = require('path');
+const crypto = require('crypto');
 const compression = require('compression');
 const cors = require('cors');
 const express = require('express');
 const helmet = require('helmet');
 const morgan = require('morgan');
+const fs = require('fs');
 
 const { HttpError } = require('./util/httpErrors');
 const { buildApiRouter } = require('./routes/apiRoutes');
@@ -19,12 +21,28 @@ function createApp({ env, pool }) {
   app.set('trust proxy', 1);
   app.use(compression());
   
-  // Set CSP header as early as possible
+  // Set CSP header as early as possible with Nonce support
   app.use((req, res, next) => {
-    // Attempt to override any existing headers
-    res.setHeader('Content-Security-Policy', "default-src * 'unsafe-inline' 'unsafe-eval' data: blob:; script-src * 'unsafe-inline' 'unsafe-eval' data: blob:; script-src-elem * 'unsafe-inline' 'unsafe-eval' data: blob:; style-src * 'unsafe-inline'; img-src * data: blob:; font-src * data:; connect-src *; frame-src *; object-src 'none';");
-    res.setHeader('X-Content-Security-Policy', "default-src * 'unsafe-inline' 'unsafe-eval' data: blob:;");
-    res.setHeader('X-WebKit-CSP', "default-src * 'unsafe-inline' 'unsafe-eval' data: blob:;");
+    const nonce = crypto.randomBytes(16).toString('base64');
+    res.locals.nonce = nonce;
+
+    // We still keep it permissive but add the nonce for the specific GTM scripts
+    const csp = [
+      "default-src * 'unsafe-inline' 'unsafe-eval' data: blob:;",
+      `script-src * 'unsafe-inline' 'unsafe-eval' data: blob: 'nonce-${nonce}';`,
+      `script-src-elem * 'unsafe-inline' 'unsafe-eval' data: blob: 'nonce-${nonce}';`,
+      "script-src-attr 'unsafe-inline';",
+      "style-src * 'unsafe-inline';",
+      "img-src * data: blob:;",
+      "font-src * data:;",
+      "connect-src *;",
+      "frame-src *;",
+      "object-src 'none';"
+    ].join(' ');
+
+    res.setHeader('Content-Security-Policy', csp);
+    res.setHeader('X-Content-Security-Policy', csp);
+    res.setHeader('X-WebKit-CSP', csp);
     next();
   });
 
@@ -68,14 +86,42 @@ function createApp({ env, pool }) {
     }
     next();
   });
-  app.use(express.static(publicDir));
-  app.get('/privacy.html', (_req, res) => res.sendFile(path.join(publicDir, 'privacy.html')));
-  app.get('/terms.html', (_req, res) => res.sendFile(path.join(publicDir, 'terms.html')));
-  ['es', 'fr', 'de', 'pt', 'pl', 'it'].forEach((lang) => {
-    app.get('/' + lang, (_req, res) => res.sendFile(path.join(publicDir, lang, 'index.html')));
-    app.get('/' + lang + '/', (_req, res) => res.sendFile(path.join(publicDir, lang, 'index.html')));
+  const sendHtmlWithNonce = (req, res, filePath) => {
+    fs.readFile(filePath, 'utf8', (err, data) => {
+      if (err) {
+        return res.status(404).send('Not Found');
+      }
+      const nonce = res.locals.nonce;
+      // Inject nonce into all script tags
+      const html = data.replace(/<script/g, `<script nonce="${nonce}"`);
+      res.send(html);
+    });
+  };
+
+  app.get('/privacy.html', (req, res) => sendHtmlWithNonce(req, res, path.join(publicDir, 'privacy.html')));
+  app.get('/terms.html', (req, res) => sendHtmlWithNonce(req, res, path.join(publicDir, 'terms.html')));
+  
+  // Localized routes
+  const langs = ['es', 'fr', 'de', 'pt', 'pl', 'it', 'nl', 'ru', 'ja', 'zh', 'ko', 'ar', 'hi', 'tr', 'sv', 'cs', 'sk', 'uk', 'ro', 'el', 'id', 'th', 'vi', 'hu'];
+  langs.forEach((lang) => {
+    app.get('/' + lang, (req, res) => sendHtmlWithNonce(req, res, path.join(publicDir, lang, 'index.html')));
+    app.get('/' + lang + '/', (req, res) => sendHtmlWithNonce(req, res, path.join(publicDir, lang, 'index.html')));
   });
-  app.get('*', (_req, res) => res.sendFile(path.join(publicDir, 'index.html')));
+
+  // Serve static assets EXCEPT HTML
+  app.use(express.static(publicDir, {
+    index: false,
+    extensions: STATIC_EXTENSIONS.filter(e => e !== '.html').map(e => e.slice(1))
+  }));
+
+  // Default route for index.html
+  app.get('*', (req, res, next) => {
+    const ext = path.extname(req.path).toLowerCase();
+    if (!ext || ext === '.html') {
+      return sendHtmlWithNonce(req, res, path.join(publicDir, 'index.html'));
+    }
+    next();
+  });
 
   // eslint-disable-next-line no-unused-vars
   app.use((err, _req, res, _next) => {

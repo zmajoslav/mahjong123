@@ -1747,7 +1747,7 @@ function init() {
   }
 
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/sw.js?v=11').catch(function () {});
+    navigator.serviceWorker.register('/sw.js?v=12').catch(function () {});
   }
 }
 
