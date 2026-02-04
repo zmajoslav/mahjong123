@@ -21,15 +21,16 @@ function createApp({ env, pool }) {
   app.use(helmet({
     contentSecurityPolicy: {
       directives: {
-        ...helmet.contentSecurityPolicy.getDefaultDirectives(),
-        "default-src": ["'self'", "https://fonts.googleapis.com", "https://fonts.gstatic.com"],
-        "script-src": ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https://www.googletagmanager.com"],
+        "default-src": ["'self'"],
+        "script-src": ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https://www.googletagmanager.com", "https://www.google-analytics.com"],
+        "script-src-elem": ["'self'", "'unsafe-inline'", "https://www.googletagmanager.com", "https://www.google-analytics.com"],
         "script-src-attr": ["'unsafe-inline'"],
         "style-src": ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
         "font-src": ["'self'", "https://fonts.gstatic.com", "data:"],
         "connect-src": ["'self'", "https://fonts.googleapis.com", "https://fonts.gstatic.com", "https://www.google-analytics.com", "https://*.google-analytics.com", "https://*.analytics.google.com", "https://*.googletagmanager.com"],
         "img-src": ["'self'", "data:", "blob:", "https://www.googletagmanager.com", "https://*.google-analytics.com"],
-        "upgrade-insecure-requests": null,
+        "object-src": ["'none'"],
+        "upgrade-insecure-requests": [],
       },
     },
   }));
