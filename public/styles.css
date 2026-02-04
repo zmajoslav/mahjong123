@@ -246,6 +246,13 @@ body {
     0 2px 8px rgba(94, 234, 212, 0.15),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
   transition: all 0.3s ease;
+  overflow: hidden;
+}
+.brand__logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
 }
 .brand:hover .brand__logo {
   transform: scale(1.05) rotate(5deg);
@@ -1980,6 +1987,16 @@ select:focus-visible {
 .landing__hero {
   max-width: 700px;
   margin-bottom: 48px;
+}
+.landing__logo {
+  margin-bottom: 24px;
+}
+.landing__logo img {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  display: block;
+  border-radius: 50%;
 }
 .landing__title {
   font-family: 'Cormorant Garamond', serif;
