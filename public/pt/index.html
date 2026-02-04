@@ -358,31 +358,54 @@
 
     <!-- Sidebar (hidden by default, overlay when shown) -->
     <aside class="sidebar sidebar--overlay sidebar--hidden" id="sidebar">
-      <button class="sidebar__close" id="sidebarClose" type="button" aria-label="Fechar menu">✕ Close</button>
+      <button class="sidebar__close" id="sidebarClose" type="button" aria-label="Close sidebar">âœ• Close</button>
       <section class="panel">
         <div class="panel__header">
-          <h2>Ajuda</h2>
+          <h2><span class="panel__icon">â“</span> Help</h2>
         </div>
-        <div class="hint" style="margin-top: 0; font-size: 1.05rem;">
-          Use a barra superior para escolher layout e destacar peças jogáveis.<br>
-          Use a barra inferior para ações do jogo.<br>
-          Dica: arraste o tabuleiro para mover.
+        <div class="menu-item">
+          <div class="menu-item__content">
+            <p class="menu-item__text">Use the top bar to choose a layout and highlight playable tiles.</p>
+          </div>
         </div>
-        <div class="hint" style="margin-top: 14px; font-size: 1.05rem;">
-          Atalhos: <kbd>N</kbd> Nova partida · <kbd>Ctrl+Z</kbd> Desfazer · <kbd>H</kbd> Dica
+        <div class="menu-item">
+          <div class="menu-item__content">
+            <p class="menu-item__text">Use the bottom bar for game actions.</p>
+          </div>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item__content">
+            <p class="menu-item__text"><strong>Tip:</strong> Drag the board to move around.</p>
+          </div>
+        </div>
+        
+        <div class="shortcut-list">
+          <div class="shortcut-item">
+            <span class="shortcut-label">New deal</span>
+            <kbd>N</kbd>
+          </div>
+          <div class="shortcut-item">
+            <span class="shortcut-label">Undo</span>
+            <kbd>Ctrl+Z</kbd>
+          </div>
+          <div class="shortcut-item">
+            <span class="shortcut-label">Hint</span>
+            <kbd>H</kbd>
+          </div>
         </div>
       </section>
 
       <section class="panel">
         <div class="panel__header">
-          <h2>Estatísticas</h2>
+          <h2><span class="panel__icon">ðŸ“Š</span> Statistics</h2>
         </div>
         <div id="statsPanel" class="stats-panel"></div>
       </section>
+      
       <section class="panel">
         <div class="panel__header">
-          <h2>Classificação</h2>
-          <button type="button" class="btn btn--ghost" id="loadClassificaçãoBtn">Atualizar</button>
+          <h2><span class="panel__icon">ðŸ†</span> Leaderboard</h2>
+          <button type="button" class="btn btn--ghost btn--sm" id="loadLeaderboardBtn">Refresh</button>
         </div>
         <div id="leaderboard" class="leaderboard"></div>
       </section>

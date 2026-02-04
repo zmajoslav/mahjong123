@@ -23,7 +23,7 @@ function createApp({ env, pool }) {
   
   app.use((req, res, next) => {
     res.locals.nonce = crypto.randomBytes(16).toString('base64');
-    res.setHeader('X-App-Debug-Version', '21');
+    res.setHeader('X-App-Debug-Version', '27');
     next();
   });
 

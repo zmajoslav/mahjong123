@@ -358,31 +358,54 @@
 
     <!-- Sidebar (hidden by default, overlay when shown) -->
     <aside class="sidebar sidebar--overlay sidebar--hidden" id="sidebar">
-      <button class="sidebar__close" id="sidebarĐóng" type="button" aria-label="Đóng">✕ Close</button>
+      <button class="sidebar__close" id="sidebarClose" type="button" aria-label="Close sidebar">âœ• Close</button>
       <section class="panel">
         <div class="panel__header">
-          <h2>Trợ giúp</h2>
+          <h2><span class="panel__icon">â“</span> Help</h2>
         </div>
-        <div class="hint" style="margin-top: 0; font-size: 1.05rem;">
-          Thanh trên: bố cục và làm nổi quân có thể chơi.<br>
-          Thanh dưới: hành động trong game.<br>
-          Mẹo: kéo bàn để di chuyển.
+        <div class="menu-item">
+          <div class="menu-item__content">
+            <p class="menu-item__text">Use the top bar to choose a layout and highlight playable tiles.</p>
+          </div>
         </div>
-        <div class="hint" style="margin-top: 14px; font-size: 1.05rem;">
-          Phím tắt: <kbd>N</kbd> Ván mới · <kbd>Ctrl+Z</kbd> Hoàn tác · <kbd>H</kbd> Gợi ý
+        <div class="menu-item">
+          <div class="menu-item__content">
+            <p class="menu-item__text">Use the bottom bar for game actions.</p>
+          </div>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item__content">
+            <p class="menu-item__text"><strong>Tip:</strong> Drag the board to move around.</p>
+          </div>
+        </div>
+        
+        <div class="shortcut-list">
+          <div class="shortcut-item">
+            <span class="shortcut-label">New deal</span>
+            <kbd>N</kbd>
+          </div>
+          <div class="shortcut-item">
+            <span class="shortcut-label">Undo</span>
+            <kbd>Ctrl+Z</kbd>
+          </div>
+          <div class="shortcut-item">
+            <span class="shortcut-label">Hint</span>
+            <kbd>H</kbd>
+          </div>
         </div>
       </section>
 
       <section class="panel">
         <div class="panel__header">
-          <h2>Thống kê</h2>
+          <h2><span class="panel__icon">ðŸ“Š</span> Statistics</h2>
         </div>
         <div id="statsPanel" class="stats-panel"></div>
       </section>
+      
       <section class="panel">
         <div class="panel__header">
-          <h2>Bảng xếp hạng</h2>
-          <button type="button" class="btn btn--ghost" id="loadBảng xếp hạngBtn">Làm mới</button>
+          <h2><span class="panel__icon">ðŸ†</span> Leaderboard</h2>
+          <button type="button" class="btn btn--ghost btn--sm" id="loadLeaderboardBtn">Refresh</button>
         </div>
         <div id="leaderboard" class="leaderboard"></div>
       </section>

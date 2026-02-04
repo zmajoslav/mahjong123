@@ -358,31 +358,54 @@
 
     <!-- Sidebar (hidden by default, overlay when shown) -->
     <aside class="sidebar sidebar--overlay sidebar--hidden" id="sidebar">
-      <button class="sidebar__close" id="sidebar닫기" type="button" aria-label="닫기">✕ Close</button>
+      <button class="sidebar__close" id="sidebarClose" type="button" aria-label="Close sidebar">âœ• Close</button>
       <section class="panel">
         <div class="panel__header">
-          <h2>도움말</h2>
+          <h2><span class="panel__icon">â“</span> Help</h2>
         </div>
-        <div class="hint" style="margin-top: 0; font-size: 1.05rem;">
-          상단 바에서 레이아웃과 놓을 수 있는 타일 강조.<br>
-          하단 바에서 게임 조작.<br>
-          팁: 보드를 드래그해서 이동.
+        <div class="menu-item">
+          <div class="menu-item__content">
+            <p class="menu-item__text">Use the top bar to choose a layout and highlight playable tiles.</p>
+          </div>
         </div>
-        <div class="hint" style="margin-top: 14px; font-size: 1.05rem;">
-          단축키: <kbd>N</kbd> 새 게임 · <kbd>Ctrl+Z</kbd> 실행 취소 · <kbd>H</kbd> 힌트
+        <div class="menu-item">
+          <div class="menu-item__content">
+            <p class="menu-item__text">Use the bottom bar for game actions.</p>
+          </div>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item__content">
+            <p class="menu-item__text"><strong>Tip:</strong> Drag the board to move around.</p>
+          </div>
+        </div>
+        
+        <div class="shortcut-list">
+          <div class="shortcut-item">
+            <span class="shortcut-label">New deal</span>
+            <kbd>N</kbd>
+          </div>
+          <div class="shortcut-item">
+            <span class="shortcut-label">Undo</span>
+            <kbd>Ctrl+Z</kbd>
+          </div>
+          <div class="shortcut-item">
+            <span class="shortcut-label">Hint</span>
+            <kbd>H</kbd>
+          </div>
         </div>
       </section>
 
       <section class="panel">
         <div class="panel__header">
-          <h2>통계</h2>
+          <h2><span class="panel__icon">ðŸ“Š</span> Statistics</h2>
         </div>
         <div id="statsPanel" class="stats-panel"></div>
       </section>
+      
       <section class="panel">
         <div class="panel__header">
-          <h2>리더보드</h2>
-          <button type="button" class="btn btn--ghost" id="load리더보드Btn">새로고침</button>
+          <h2><span class="panel__icon">ðŸ†</span> Leaderboard</h2>
+          <button type="button" class="btn btn--ghost btn--sm" id="loadLeaderboardBtn">Refresh</button>
         </div>
         <div id="leaderboard" class="leaderboard"></div>
       </section>

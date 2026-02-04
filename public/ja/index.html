@@ -358,31 +358,54 @@
 
     <!-- Sidebar (hidden by default, overlay when shown) -->
     <aside class="sidebar sidebar--overlay sidebar--hidden" id="sidebar">
-      <button class="sidebar__close" id="sidebar閉じる" type="button" aria-label="閉じる">✕ Close</button>
+      <button class="sidebar__close" id="sidebarClose" type="button" aria-label="Close sidebar">âœ• Close</button>
       <section class="panel">
         <div class="panel__header">
-          <h2>ヘルプ</h2>
+          <h2><span class="panel__icon">â“</span> Help</h2>
         </div>
-        <div class="hint" style="margin-top: 0; font-size: 1.05rem;">
-          上バーでレイアウトと打てる牌の強調。<br>
-          下バーでゲーム操作。<br>
-          ヒント: 盤面をドラッグして移動。
+        <div class="menu-item">
+          <div class="menu-item__content">
+            <p class="menu-item__text">Use the top bar to choose a layout and highlight playable tiles.</p>
+          </div>
         </div>
-        <div class="hint" style="margin-top: 14px; font-size: 1.05rem;">
-          ショートカット: <kbd>N</kbd> 新規 · <kbd>Ctrl+Z</kbd> 元に戻す · <kbd>H</kbd> ヒント
+        <div class="menu-item">
+          <div class="menu-item__content">
+            <p class="menu-item__text">Use the bottom bar for game actions.</p>
+          </div>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item__content">
+            <p class="menu-item__text"><strong>Tip:</strong> Drag the board to move around.</p>
+          </div>
+        </div>
+        
+        <div class="shortcut-list">
+          <div class="shortcut-item">
+            <span class="shortcut-label">New deal</span>
+            <kbd>N</kbd>
+          </div>
+          <div class="shortcut-item">
+            <span class="shortcut-label">Undo</span>
+            <kbd>Ctrl+Z</kbd>
+          </div>
+          <div class="shortcut-item">
+            <span class="shortcut-label">Hint</span>
+            <kbd>H</kbd>
+          </div>
         </div>
       </section>
 
       <section class="panel">
         <div class="panel__header">
-          <h2>統計</h2>
+          <h2><span class="panel__icon">ðŸ“Š</span> Statistics</h2>
         </div>
         <div id="statsPanel" class="stats-panel"></div>
       </section>
+      
       <section class="panel">
         <div class="panel__header">
-          <h2>リーダーボード</h2>
-          <button type="button" class="btn btn--ghost" id="loadリーダーボードBtn">更新</button>
+          <h2><span class="panel__icon">ðŸ†</span> Leaderboard</h2>
+          <button type="button" class="btn btn--ghost btn--sm" id="loadLeaderboardBtn">Refresh</button>
         </div>
         <div id="leaderboard" class="leaderboard"></div>
       </section>
