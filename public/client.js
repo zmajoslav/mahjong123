@@ -160,13 +160,13 @@ function startZenEvents() {
         if (soundMuted || !ambienceNode) return;
         
         // C Major Pentatonic notes for bells
-        var notes = [523.25, 587.33, 659.25, 783.99, 880.00, 1046.50];
+        var notes = [261.63, 329.63, 392.00, 523.25, 659.25];
         var freq = notes[Math.floor(Math.random() * notes.length)];
         
-        // Play a very soft, long bell sound
-        playTone(freq, 3.0, 'sine', 0.015);
+        // Play a very soft, long ethereal note
+        playTone(freq, 5.0, 'sine', 0.012);
         
-        zenEventTimer = setTimeout(nextEvent, 5000 + Math.random() * 10000);
+        zenEventTimer = setTimeout(nextEvent, 8000 + Math.random() * 15000);
     }
     zenEventTimer = setTimeout(nextEvent, 3000);
 }
@@ -185,30 +185,52 @@ function playTone(freq, duration, type, volume) {
   if (ctx.state === 'suspended') ctx.resume();
   
   try {
-    var osc = ctx.createOscillator();
+    // Use two oscillators for a richer, softer "chorus" effect
+    var osc1 = ctx.createOscillator();
+    var osc2 = ctx.createOscillator();
     var gain = ctx.createGain();
     var filter = ctx.createBiquadFilter();
     
-    osc.type = type || 'sine';
-    osc.frequency.setValueAtTime(freq, ctx.currentTime);
+    osc1.type = 'sine';
+    osc2.type = 'sine';
+    
+    // Slight detune for a softer, wider sound
+    osc1.frequency.setValueAtTime(freq, ctx.currentTime);
+    osc2.frequency.setValueAtTime(freq * 1.002, ctx.currentTime);
     
     filter.type = 'lowpass';
-    filter.frequency.setValueAtTime(freq * 4, ctx.currentTime);
-    filter.frequency.exponentialRampToValueAtTime(freq * 1.5, ctx.currentTime + duration);
+    // Much lower filter cutoff for a "warm" sound
+    filter.frequency.setValueAtTime(freq * 1.5, ctx.currentTime);
+    filter.frequency.exponentialRampToValueAtTime(freq * 0.8, ctx.currentTime + duration);
+    filter.Q.value = 0.5;
 
+    // Softer attack (fade in) to remove any "pluck"
     gain.gain.setValueAtTime(0, ctx.currentTime);
-    gain.gain.linearRampToValueAtTime(volume || 0.12, ctx.currentTime + 0.015);
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
+    gain.gain.linearRampToValueAtTime((volume || 0.1) * 0.8, ctx.currentTime + 0.06);
+    gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + duration);
 
-    osc.connect(filter);
+    osc1.connect(filter);
+    osc2.connect(filter);
     filter.connect(gain);
-    gain.connect(ctx.destination);
+    
+    // Send more to reverb, less to direct output for a "distant" feel
+    var dryGain = ctx.createGain();
+    dryGain.gain.value = 0.4;
+    gain.connect(dryGain);
+    dryGain.connect(ctx.destination);
     
     var reverb = getReverb();
-    if (reverb) gain.connect(reverb);
+    if (reverb) {
+        var wetGain = ctx.createGain();
+        wetGain.gain.value = 0.8;
+        gain.connect(wetGain);
+        wetGain.connect(reverb);
+    }
 
-    osc.start(ctx.currentTime);
-    osc.stop(ctx.currentTime + duration + 0.1);
+    osc1.start(ctx.currentTime);
+    osc2.start(ctx.currentTime);
+    osc1.stop(ctx.currentTime + duration + 0.2);
+    osc2.stop(ctx.currentTime + duration + 0.2);
   } catch (e) {}
 }
 
@@ -221,45 +243,49 @@ function playWoodClick() {
     try {
         var osc = ctx.createOscillator();
         var gain = ctx.createGain();
-        osc.type = 'triangle';
-        osc.frequency.setValueAtTime(180, ctx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(60, ctx.currentTime + 0.04);
-        gain.gain.setValueAtTime(0.08, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.04);
+        osc.type = 'sine'; // Even softer than triangle
+        osc.frequency.setValueAtTime(120, ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(40, ctx.currentTime + 0.08);
+        gain.gain.setValueAtTime(0.04, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.08);
         osc.connect(gain);
         gain.connect(ctx.destination);
         osc.start();
-        osc.stop(ctx.currentTime + 0.05);
+        osc.stop(ctx.currentTime + 0.1);
     } catch(e) {}
 }
 
 function playMatch() {
-  // Peaceful pentatonic notes
-  var notes = [523.25, 587.33, 659.25, 783.99, 880.00]; // C5, D5, E5, G5, A5
+  // Ultra-peaceful low-frequency pentatonic notes
+  var notes = [261.63, 293.66, 329.63, 392.00, 440.00]; // C4, D4, E4, G4, A4 (one octave lower)
   var n1 = notes[Math.floor(Math.random() * notes.length)];
-  var n2 = notes[Math.floor(Math.random() * notes.length)];
   
-  playTone(n1, 1.2, 'sine', 0.08);
-  setTimeout(function () { 
-    playTone(n2 * 1.5, 1.5, 'sine', 0.04); 
-  }, 120);
+  // Single, long, ethereal note
+  playTone(n1, 2.5, 'sine', 0.06);
+  
+  // Occasional high harmonic
+  if (Math.random() > 0.5) {
+      setTimeout(function() {
+          playTone(n1 * 2, 3.0, 'sine', 0.02);
+      }, 200);
+  }
 }
 
 function playUndo() {
-  playTone(349.23, 0.6, 'sine', 0.06); // F4
+  playTone(196.00, 1.5, 'sine', 0.04); // G3
 }
 
 function playWin() {
-  var notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+  var notes = [261.63, 329.63, 392.00, 523.25]; // C4, E4, G4, C5
   notes.forEach(function(f, i) {
     setTimeout(function() {
-      playTone(f, 2.0, 'sine', 0.08);
-    }, i * 180);
+      playTone(f, 4.0, 'sine', 0.05);
+    }, i * 400);
   });
 }
 
 function playHint() {
-  playTone(880.00, 0.8, 'sine', 0.04); // A5
+  playTone(440.00, 2.0, 'sine', 0.03); // A4
 }
 
 function setSoundMuted(muted) {
