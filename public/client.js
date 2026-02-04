@@ -1747,7 +1747,7 @@ function init() {
   }
 
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/sw.js?v=17').catch(function () {});
+    navigator.serviceWorker.register('/sw.js?v=18').catch(function () {});
   }
 }
 
@@ -1767,4 +1767,60 @@ function init() {
       init();
     }
   }
+
+  // Server-side Google Analytics (CSP-safe)
+  // Sends page views and events through our own server to avoid CSP blocks
+  (function initAnalytics() {
+    var GA_CLIENT_ID_KEY = 'mahjong_ga_cid';
+    
+    function getClientId() {
+      var cid = localStorage.getItem(GA_CLIENT_ID_KEY);
+      if (!cid) {
+        cid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+          var r = Math.random() * 16 | 0;
+          var v = c === 'x' ? r : (r & 0x3 | 0x8);
+          return v.toString(16);
+        });
+        localStorage.setItem(GA_CLIENT_ID_KEY, cid);
+      }
+      return cid;
+    }
+
+    function trackPageView() {
+      var clientId = getClientId();
+      fetch('/api/analytics', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          event_name: 'page_view',
+          page_path: window.location.pathname,
+          page_title: document.title,
+          client_id: clientId
+        })
+      }).catch(function() { /* ignore errors */ });
+    }
+
+    // Track page view on load
+    if (document.readyState === 'complete') {
+      trackPageView();
+    } else {
+      window.addEventListener('load', trackPageView);
+    }
+
+    // Expose for custom event tracking
+    window.trackEvent = function(eventName, params) {
+      var clientId = getClientId();
+      fetch('/api/analytics', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          event_name: eventName,
+          page_path: window.location.pathname,
+          page_title: document.title,
+          client_id: clientId,
+          params: params
+        })
+      }).catch(function() { /* ignore errors */ });
+    };
+  })();
 })();
