@@ -21,21 +21,10 @@ function createApp({ env, pool }) {
   
   // Set CSP header as early as possible
   app.use((req, res, next) => {
-    res.removeHeader('Content-Security-Policy');
-    res.removeHeader('X-Content-Security-Policy');
-    res.removeHeader('X-WebKit-CSP');
-    
-    res.setHeader(
-      'Content-Security-Policy',
-      "default-src * 'unsafe-inline' 'unsafe-eval' data: blob:; " +
-      "script-src * 'unsafe-inline' 'unsafe-eval' data: blob:; " +
-      "style-src * 'unsafe-inline'; " +
-      "img-src * data: blob:; " +
-      "font-src * data:; " +
-      "connect-src *; " +
-      "frame-src *; " +
-      "object-src 'none';"
-    );
+    // Attempt to override any existing headers
+    res.setHeader('Content-Security-Policy', "default-src * 'unsafe-inline' 'unsafe-eval' data: blob:; script-src * 'unsafe-inline' 'unsafe-eval' data: blob:; script-src-elem * 'unsafe-inline' 'unsafe-eval' data: blob:; style-src * 'unsafe-inline'; img-src * data: blob:; font-src * data:; connect-src *; frame-src *; object-src 'none';");
+    res.setHeader('X-Content-Security-Policy', "default-src * 'unsafe-inline' 'unsafe-eval' data: blob:;");
+    res.setHeader('X-WebKit-CSP', "default-src * 'unsafe-inline' 'unsafe-eval' data: blob:;");
     next();
   });
 

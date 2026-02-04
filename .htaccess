@@ -1,11 +1,11 @@
 RewriteEngine On
 
-# Remove any existing CSP headers and set our custom one at the server level
+# Force removal of any existing CSP headers and set our custom one
 <IfModule mod_headers.c>
-    Header unset Content-Security-Policy
-    Header unset X-Content-Security-Policy
-    Header unset X-WebKit-CSP
-    Header set Content-Security-Policy "default-src * 'unsafe-inline' 'unsafe-eval' data: blob:; script-src * 'unsafe-inline' 'unsafe-eval' data: blob:; style-src * 'unsafe-inline'; img-src * data: blob:; font-src * data:; connect-src *; frame-src *; object-src 'none';"
+    Header always unset Content-Security-Policy
+    Header always unset X-Content-Security-Policy
+    Header always unset X-WebKit-CSP
+    Header always set Content-Security-Policy "default-src * 'unsafe-inline' 'unsafe-eval' data: blob:; script-src * 'unsafe-inline' 'unsafe-eval' data: blob:; script-src-elem * 'unsafe-inline' 'unsafe-eval' data: blob:; style-src * 'unsafe-inline'; img-src * data: blob:; font-src * data:; connect-src *; frame-src *; object-src 'none';"
 </IfModule>
 
 RewriteCond %{REQUEST_FILENAME} !-f
