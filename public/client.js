@@ -868,9 +868,9 @@ function applyHintToDom(tileA, tileB, durationMs) {
 }
 function getTileDimensions(isLevel1) {
   var w = window.innerWidth;
-  if (w <= 400) return { w: isLevel1 ? 52 : 44, h: isLevel1 ? 64 : 52 };
-  if (w <= 600) return { w: isLevel1 ? 64 : 54, h: isLevel1 ? 78 : 64 };
-  if (w <= 900) return { w: isLevel1 ? 88 : 76, h: isLevel1 ? 106 : 90 };
+  if (w <= 400) return { w: isLevel1 ? 64 : 54, h: isLevel1 ? 78 : 64 };
+  if (w <= 600) return { w: isLevel1 ? 76 : 64, h: isLevel1 ? 92 : 78 };
+  if (w <= 900) return { w: isLevel1 ? 96 : 84, h: isLevel1 ? 116 : 100 };
   return { w: isLevel1 ? 120 : 100, h: isLevel1 ? 145 : 120 };
 }
 
@@ -979,10 +979,12 @@ function scaleToFit() {
 
     if (boardW === 0 || boardH === 0) return;
 
-    var padding = window.innerWidth <= 400 ? 8 : (window.innerWidth < 600 ? 16 : 48);
+    var padding = window.innerWidth <= 400 ? 4 : (window.innerWidth < 600 ? 8 : 48);
     var scaleX = (stageW - padding) / boardW;
     var scaleY = (stageH - padding) / boardH;
-    var scale = Math.min(scaleX, scaleY, 1);
+    // Allow scaling up to 1.2x on mobile to fill screen, but keep 1.0x on desktop for sharpness
+    var maxScale = window.innerWidth <= 600 ? 1.2 : 1.0;
+    var scale = Math.min(scaleX, scaleY, maxScale);
 
     inner.style.transformOrigin = 'center center';
     inner.style.transform = 'scale(' + scale + ')';
@@ -1891,7 +1893,7 @@ function init() {
   }
 
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/sw.js?v=28').catch(function () {});
+    navigator.serviceWorker.register('/sw.js?v=29').catch(function () {});
   }
 }
 
