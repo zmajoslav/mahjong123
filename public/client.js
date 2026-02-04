@@ -694,7 +694,7 @@ function getDailyChallengeLayout() {
   return layouts[dayOfYear % layouts.length];
 }
 
-function newGame() {
+function newGame(forceRandom) {
   if (pendingMatchTimeoutId != null) {
     clearTimeout(pendingMatchTimeoutId);
     pendingMatchTimeoutId = null;
@@ -704,12 +704,26 @@ function newGame() {
   winHandledForGame = false;
   stopTimer();
   clearAutoHint();
+  
+  var layoutSelector = $('layoutSelectTop') || $('layoutSelect');
   currentLayout = getLayout();
   var seed = null;
-  if (currentLayout === 'daily') {
+  
+  if (currentLayout === 'daily' && !forceRandom) {
     currentLayout = getDailyChallengeLayout();
     seed = getDailyChallengeSeed();
+  } else if (currentLayout === 'daily' && forceRandom) {
+    // If they click "New deal" in daily mode, give them a random version of today's layout
+    currentLayout = getDailyChallengeLayout();
+    seed = null; // Random
+    
+    // Optional: update selector to show they are no longer in the "official" daily challenge
+    if (layoutSelector) {
+      layoutSelector.value = currentLayout;
+      updateLayoutPreview();
+    }
   }
+  
   game = MahjongSolitaire.createGame(currentLayout, seed);
   selectedTileId = null;
   lastScore = 0;
@@ -1303,7 +1317,7 @@ function showWinModal(state) {
   });
   $('newGameFromWin')?.addEventListener('click', function () {
     closeModal();
-    newGame();
+    newGame(true);
   });
   $('shareFacebookBtn')?.addEventListener('click', function () {
     var text = 'I just scored ' + state.score + ' points in Mahjong Boss Solitaire in ' + formatTime(state.elapsed) + '! Can you beat my score? 🀄🏆';
@@ -1418,7 +1432,7 @@ function showStuckModal() {
 
   $('stuckNewGameBtn')?.addEventListener('click', function () {
     closeModal();
-    newGame();
+    newGame(true);
   });
 }
 
@@ -1704,7 +1718,7 @@ function init() {
   var newDealBtn = $('newDealBtn');
   if (newDealBtn) newDealBtn.addEventListener('click', newGame);
   var newDealBtnNav = $('newDealBtnNav');
-  if (newDealBtnNav) newDealBtnNav.addEventListener('click', newGame);
+  if (newDealBtnNav) newDealBtnNav.addEventListener('click', function() { newGame(true); });
   var centerBtnNav = $('centerBtnNav');
   if (centerBtnNav) centerBtnNav.addEventListener('click', centerStageView);
   var undoBtn = $('undoBtn');
@@ -1838,7 +1852,7 @@ function init() {
     if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
     if (e.key === 'n' || e.key === 'N') {
       e.preventDefault();
-      newGame();
+      newGame(true);
     } else if (e.key === 'c' || e.key === 'C') {
       e.preventDefault();
       centerStageView();
@@ -1877,7 +1891,7 @@ function init() {
   }
 
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/sw.js?v=27').catch(function () {});
+    navigator.serviceWorker.register('/sw.js?v=28').catch(function () {});
   }
 }
 
