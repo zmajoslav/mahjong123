@@ -6,15 +6,9 @@ const express = require('express');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const fs = require('fs');
-const https = require('https');
 
 const { HttpError } = require('./util/httpErrors');
 const { buildApiRouter } = require('./routes/apiRoutes');
-
-// Google Analytics Measurement Protocol (GA4)
-// To get the API Secret: Google Analytics > Admin > Data Streams > Your Stream > Measurement Protocol API secrets
-const GA_MEASUREMENT_ID = 'G-8JXSH47NCK';
-const GA_API_SECRET = process.env.GA_API_SECRET || 'placeholder'; // Set in environment for production
 
 // Resolve public folder relative to project root (works when cwd is not project root, e.g. cPanel)
 const publicDir = path.resolve(__dirname, '..', 'public');
@@ -29,7 +23,7 @@ function createApp({ env, pool }) {
   
   app.use((req, res, next) => {
     res.locals.nonce = crypto.randomBytes(16).toString('base64');
-    res.setHeader('X-App-Debug-Version', '19');
+    res.setHeader('X-App-Debug-Version', '20');
     next();
   });
 
@@ -46,54 +40,6 @@ function createApp({ env, pool }) {
   app.get('/health', (_req, res) => res.json({ ok: true }));
   // Diagnostic: if you see "Mahjong app OK" the domain is hitting this app, not the stub
   app.get('/ping', (_req, res) => res.type('text/plain').send('Mahjong app OK'));
-
-  // Server-side Google Analytics proxy endpoint
-  // This allows tracking without CSP issues since the browser only talks to our server
-  app.post('/api/analytics', (req, res) => {
-    const { event_name, page_path, page_title, client_id } = req.body || {};
-    
-    // Generate a client ID if not provided (should be stored in localStorage on client)
-    const cid = client_id || crypto.randomUUID();
-    
-    const payload = {
-      client_id: cid,
-      events: [{
-        name: event_name || 'page_view',
-        params: {
-          page_location: `https://mahjongboss.com${page_path || '/'}`,
-          page_title: page_title || 'Mahjong Boss',
-          engagement_time_msec: '100',
-        }
-      }]
-    };
-
-    // Send to GA4 Measurement Protocol
-    const postData = JSON.stringify(payload);
-    const options = {
-      hostname: 'www.google-analytics.com',
-      port: 443,
-      path: `/mp/collect?measurement_id=${GA_MEASUREMENT_ID}&api_secret=${GA_API_SECRET}`,
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Content-Length': Buffer.byteLength(postData)
-      }
-    };
-
-    const gaReq = https.request(options, (gaRes) => {
-      // GA4 returns 204 No Content on success
-      res.status(200).json({ ok: true, client_id: cid });
-    });
-
-    gaReq.on('error', (err) => {
-      console.error('GA tracking error:', err.message);
-      // Don't fail the request even if GA fails
-      res.status(200).json({ ok: true, client_id: cid });
-    });
-
-    gaReq.write(postData);
-    gaReq.end();
-  });
 
   app.get('/api/config', (req, res) => {
     const baseUrl = env.BASE_URL || `${req.protocol}://${req.get('host') || req.headers.host || 'localhost'}`;

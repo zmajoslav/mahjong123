@@ -1747,7 +1747,7 @@ function init() {
   }
 
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/sw.js?v=19').catch(function () {});
+    navigator.serviceWorker.register('/sw.js?v=20').catch(function () {});
   }
 }
 
@@ -1768,80 +1768,6 @@ function init() {
     }
   }
 
-  // Server-side Google Analytics (CSP-safe)
-  // Sends page views and events through our own server to avoid CSP blocks
-  // Analytics will be enabled once the server /api/analytics endpoint is deployed
-  (function initAnalytics() {
-    var GA_CLIENT_ID_KEY = 'mahjong_ga_cid';
-    var analyticsEndpointVerified = false;
-    var pendingEvents = [];
-    
-    function getClientId() {
-      var cid = localStorage.getItem(GA_CLIENT_ID_KEY);
-      if (!cid) {
-        cid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-          var r = Math.random() * 16 | 0;
-          var v = c === 'x' ? r : (r & 0x3 | 0x8);
-          return v.toString(16);
-        });
-        localStorage.setItem(GA_CLIENT_ID_KEY, cid);
-      }
-      return cid;
-    }
-
-    function sendAnalytics(data) {
-      if (!analyticsEndpointVerified) {
-        pendingEvents.push(data);
-        return;
-      }
-      fetch('/api/analytics', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-      }).catch(function() { /* silently ignore */ });
-    }
-
-    function flushPending() {
-      while (pendingEvents.length > 0) {
-        sendAnalytics(pendingEvents.shift());
-      }
-    }
-
-    function trackPageView() {
-      sendAnalytics({
-        event_name: 'page_view',
-        page_path: window.location.pathname,
-        page_title: document.title,
-        client_id: getClientId()
-      });
-    }
-
-    // Track page view on load
-    if (document.readyState === 'complete') {
-      trackPageView();
-    } else {
-      window.addEventListener('load', trackPageView);
-    }
-
-    // Expose for custom event tracking (used by existing trackEvent calls)
-    window.trackEvent = function(eventName, params) {
-      sendAnalytics({
-        event_name: eventName,
-        page_path: window.location.pathname,
-        page_title: document.title,
-        client_id: getClientId(),
-        params: params
-      });
-    };
-
-    // Verify endpoint exists before sending (uses GET to /health as proxy check)
-    fetch('/health')
-      .then(function(res) {
-        if (res.ok) {
-          analyticsEndpointVerified = true;
-          flushPending();
-        }
-      })
-      .catch(function() { /* endpoint not ready, analytics disabled */ });
-  })();
+  // Analytics disabled - no external tracking to avoid CSP errors
+  // The existing trackEvent function at the top of the file handles basic event tracking
 })();
