@@ -32,6 +32,7 @@ var soundMuted = localStorage.getItem('soundMuted') === 'true';
 var audioCtx = null;
 var ambienceNode = null;
 var ambienceGain = null;
+var reverbNode = null;
 
 function getAudioCtx() {
   if (audioCtx) return audioCtx;
@@ -39,6 +40,33 @@ function getAudioCtx() {
     audioCtx = new (window.AudioContext || window.webkitAudioContext)();
   } catch (e) {}
   return audioCtx;
+}
+
+function getReverb() {
+    var ctx = getAudioCtx();
+    if (!ctx) return null;
+    if (reverbNode) return reverbNode;
+    
+    try {
+        reverbNode = ctx.createConvolver();
+        var length = ctx.sampleRate * 2.5;
+        var buffer = ctx.createBuffer(2, length, ctx.sampleRate);
+        for (var channel = 0; channel < 2; channel++) {
+            var data = buffer.getChannelData(channel);
+            for (var i = 0; i < length; i++) {
+                data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / length, 3.5);
+            }
+        }
+        reverbNode.buffer = buffer;
+        
+        var reverbGain = ctx.createGain();
+        reverbGain.gain.value = 0.25;
+        reverbNode.connect(reverbGain);
+        reverbGain.connect(ctx.destination);
+    } catch(e) {
+        reverbNode = null;
+    }
+    return reverbNode;
 }
 
 function createPinkNoise() {
@@ -98,6 +126,9 @@ function toggleAmbience(enabled) {
                 
                 // Fade in
                 ambienceGain.gain.setTargetAtTime(0.08, ctx.currentTime, 2);
+
+                // Start random Zen events (soft bells)
+                startZenEvents();
             } catch(e) {
                 console.error("Audio init failed", e);
             }
@@ -110,6 +141,7 @@ function toggleAmbience(enabled) {
         if (ambienceGain) {
             // Fade out
             ambienceGain.gain.setTargetAtTime(0, ctx.currentTime, 0.5);
+            stopZenEvents();
             setTimeout(function() {
                 if (ambienceNode) {
                     ambienceNode.stop();
@@ -121,43 +153,113 @@ function toggleAmbience(enabled) {
     }
 }
 
-function playTone(freq, duration, type) {
+var zenEventTimer = null;
+function startZenEvents() {
+    if (zenEventTimer) return;
+    function nextEvent() {
+        if (soundMuted || !ambienceNode) return;
+        
+        // C Major Pentatonic notes for bells
+        var notes = [523.25, 587.33, 659.25, 783.99, 880.00, 1046.50];
+        var freq = notes[Math.floor(Math.random() * notes.length)];
+        
+        // Play a very soft, long bell sound
+        playTone(freq, 3.0, 'sine', 0.015);
+        
+        zenEventTimer = setTimeout(nextEvent, 5000 + Math.random() * 10000);
+    }
+    zenEventTimer = setTimeout(nextEvent, 3000);
+}
+
+function stopZenEvents() {
+    if (zenEventTimer) {
+        clearTimeout(zenEventTimer);
+        zenEventTimer = null;
+    }
+}
+
+function playTone(freq, duration, type, volume) {
   if (soundMuted) return;
   var ctx = getAudioCtx();
   if (!ctx) return;
-  // Resume context if needed (browsers block auto-play)
   if (ctx.state === 'suspended') ctx.resume();
   
   try {
     var osc = ctx.createOscillator();
     var gain = ctx.createGain();
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-    osc.frequency.value = freq;
+    var filter = ctx.createBiquadFilter();
+    
     osc.type = type || 'sine';
-    gain.gain.setValueAtTime(0.15, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + duration);
+    osc.frequency.setValueAtTime(freq, ctx.currentTime);
+    
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(freq * 4, ctx.currentTime);
+    filter.frequency.exponentialRampToValueAtTime(freq * 1.5, ctx.currentTime + duration);
+
+    gain.gain.setValueAtTime(0, ctx.currentTime);
+    gain.gain.linearRampToValueAtTime(volume || 0.12, ctx.currentTime + 0.015);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
+
+    osc.connect(filter);
+    filter.connect(gain);
+    gain.connect(ctx.destination);
+    
+    var reverb = getReverb();
+    if (reverb) gain.connect(reverb);
+
     osc.start(ctx.currentTime);
-    osc.stop(ctx.currentTime + duration);
+    osc.stop(ctx.currentTime + duration + 0.1);
   } catch (e) {}
 }
 
+function playWoodClick() {
+    if (soundMuted) return;
+    var ctx = getAudioCtx();
+    if (!ctx) return;
+    if (ctx.state === 'suspended') ctx.resume();
+    
+    try {
+        var osc = ctx.createOscillator();
+        var gain = ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(180, ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(60, ctx.currentTime + 0.04);
+        gain.gain.setValueAtTime(0.08, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.04);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.05);
+    } catch(e) {}
+}
+
 function playMatch() {
-  // C Major chord arpeggio: C5, E5, G5
-  playTone(523.25, 0.1, 'sine');
-  setTimeout(function () { playTone(659.25, 0.1, 'sine'); }, 50);
-  setTimeout(function () { playTone(783.99, 0.15, 'sine'); }, 100);
+  // Peaceful pentatonic notes
+  var notes = [523.25, 587.33, 659.25, 783.99, 880.00]; // C5, D5, E5, G5, A5
+  var n1 = notes[Math.floor(Math.random() * notes.length)];
+  var n2 = notes[Math.floor(Math.random() * notes.length)];
+  
+  playTone(n1, 1.2, 'sine', 0.08);
+  setTimeout(function () { 
+    playTone(n2 * 1.5, 1.5, 'sine', 0.04); 
+  }, 120);
 }
+
 function playUndo() {
-  playTone(400, 0.1, 'sine');
+  playTone(349.23, 0.6, 'sine', 0.06); // F4
 }
+
 function playWin() {
-  playTone(523, 0.1, 'sine');
-  setTimeout(function () { playTone(659, 0.1, 'sine'); }, 80);
-  setTimeout(function () { playTone(784, 0.15, 'sine'); }, 160);
+  var notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+  notes.forEach(function(f, i) {
+    setTimeout(function() {
+      playTone(f, 2.0, 'sine', 0.08);
+    }, i * 180);
+  });
 }
+
 function playHint() {
-  playTone(600, 0.08, 'sine');
+  playTone(880.00, 0.8, 'sine', 0.04); // A5
 }
 
 function setSoundMuted(muted) {
@@ -1010,6 +1112,7 @@ function onTileClick(ev) {
 
   if (selectedTileId === null) {
     selectedTileId = id;
+    playWoodClick();
     document.querySelectorAll('.tile--selected').forEach(function (e) { e.classList.remove('tile--selected'); });
     el.classList.add('tile--selected');
     return;
@@ -1017,6 +1120,7 @@ function onTileClick(ev) {
 
   if (selectedTileId === id) {
     selectedTileId = null;
+    playWoodClick();
     el.classList.remove('tile--selected');
     return;
   }
@@ -1044,8 +1148,8 @@ function onTileClick(ev) {
         // Base freq 523 (C5). Add semitones.
         var semitones = Math.min((result.combo - 1) * 2, 12);
         var freq = 523 * Math.pow(2, semitones / 12);
-        playTone(freq, 0.1, 'sine');
-        setTimeout(function() { playTone(freq * 1.25, 0.15, 'triangle'); }, 80);
+        playTone(freq, 0.6, 'sine', 0.06);
+        setTimeout(function() { playTone(freq * 1.5, 0.8, 'sine', 0.03); }, 100);
         if (result.combo >= 10) unlockAchievement('combo_master');
     } else {
         playMatch();
@@ -1176,14 +1280,14 @@ function showWinModal(state) {
     newGame();
   });
   $('shareFacebookBtn')?.addEventListener('click', function () {
-    var text = 'I just scored ' + state.score + ' points in Mahjong Solitaire in ' + formatTime(state.elapsed) + '! Can you beat my score? 🀄🏆';
+    var text = 'I just scored ' + state.score + ' points in Mahjong Boss Solitaire in ' + formatTime(state.elapsed) + '! Can you beat my score? 🀄🏆';
     var url = window.location.origin || 'https://yoursite.com';
     var shareUrl = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(url) + '&quote=' + encodeURIComponent(text);
     window.open(shareUrl, 'facebook-share', 'width=580,height=400,menubar=no,toolbar=no,resizable=yes,scrollbars=yes');
     trackEvent('share_facebook', { score: state.score });
   });
   $('shareTwitterBtn')?.addEventListener('click', function () {
-    var text = 'I just scored ' + state.score + ' points in Mahjong Solitaire in ' + formatTime(state.elapsed) + '! Can you beat my score? 🀄🏆';
+    var text = 'I just scored ' + state.score + ' points in Mahjong Boss Solitaire in ' + formatTime(state.elapsed) + '! Can you beat my score? 🀄🏆';
     var url = window.location.origin || 'https://yoursite.com';
     var shareUrl = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(text) + '&url=' + encodeURIComponent(url);
     window.open(shareUrl, 'twitter-share', 'width=580,height=400,menubar=no,toolbar=no,resizable=yes,scrollbars=yes');
@@ -1747,7 +1851,7 @@ function init() {
   }
 
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/sw.js?v=21').catch(function () {});
+    navigator.serviceWorker.register('/sw.js?v=22').catch(function () {});
   }
 }
 
