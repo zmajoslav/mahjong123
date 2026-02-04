@@ -222,10 +222,6 @@ function getTileSvg(kind) {
   if (suit === 'D') { // Dots
     var colors = ['#1d4ed8', '#059669', '#dc2626'];
     var dot = function(cx, cy, r, fill) { 
-      if (!fill || fill.indexOf('#') !== 0) {
-        console.error('Invalid fill color for dot:', fill, {cx, cy, r});
-        fill = '#000000';
-      }
       return '<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="'+fill+'" stroke="rgba(0,0,0,0.2)" stroke-width="1"/>'; 
     };
     if (val === '1') content = dot(50, 60, 35, colors[2]) + dot(50, 60, 15, '#fbbf24');
@@ -240,18 +236,14 @@ function getTileSvg(kind) {
   } else if (suit === 'B') { // Bamboos
     var colors = ['#059669', '#dc2626', '#1d4ed8'];
     var stick = function(x, y, w, h, fill) { 
-      if (!fill || fill.indexOf('#') !== 0) {
-        console.error('Invalid fill color for stick:', fill, {x, y, w, h});
-        fill = '#000000';
-      }
       return '<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" rx="4" fill="'+fill+'" stroke="rgba(0,0,0,0.2)" stroke-width="1"/>'; 
     };
     if (val === '1') content = '<path d="M50 20 L80 90 L20 90 Z" fill="'+colors[0]+'" stroke="black" stroke-width="1"/><circle cx="50" cy="45" r="10" fill="'+colors[1]+'"/>'; // Simplified bird
     else if (val === '2') content = stick(45, 20, 10, 35, colors[0]) + stick(45, 65, 10, 35, colors[1]);
     else if (val === '3') content = stick(45, 20, 10, 35, colors[1]) + stick(25, 65, 10, 35, colors[0]) + stick(65, 65, 10, 35, colors[0]);
     else if (val === '4') content = stick(25, 20, 10, 35, colors[0]) + stick(65, 20, 10, 35, colors[1]) + stick(25, 65, 10, 35, colors[1]) + stick(65, 65, 10, 35, colors[0]);
-    else if (val === '5') content = stick(20, 20, 10, 35, colors[0]) + stick(70, 20, 10, colors[1]) + stick(45, 42, 10, 35, colors[2]) + stick(20, 65, 10, colors[1]) + stick(70, 65, 10, colors[0]);
-    else if (val === '6') content = stick(20, 20, 10, 35, colors[0]) + stick(45, 20, 10, 35, colors[0]) + stick(70, 20, 10, colors[1]) + stick(20, 65, 10, colors[1]) + stick(45, 65, 10, 35, colors[1]) + stick(70, 65, 10, colors[1]);
+    else if (val === '5') content = stick(20, 20, 10, 35, colors[0]) + stick(70, 20, 10, 35, colors[1]) + stick(45, 42, 10, 35, colors[2]) + stick(20, 65, 10, 35, colors[1]) + stick(70, 65, 10, 35, colors[0]);
+    else if (val === '6') content = stick(20, 20, 10, 35, colors[0]) + stick(45, 20, 10, 35, colors[0]) + stick(70, 20, 10, 35, colors[1]) + stick(20, 65, 10, 35, colors[1]) + stick(45, 65, 10, 35, colors[1]) + stick(70, 65, 10, 35, colors[1]);
     else if (val === '7') content = stick(45, 15, 10, 30, colors[1]) + stick(20, 50, 10, 30, colors[0]) + stick(45, 50, 10, 30, colors[0]) + stick(70, 50, 10, 30, colors[0]) + stick(20, 85, 10, 30, colors[0]) + stick(45, 85, 10, 30, colors[0]) + stick(70, 85, 10, 30, colors[0]);
     else if (val === '8') content = stick(25, 15, 10, 25, colors[0]) + stick(45, 15, 10, 25, colors[1]) + stick(65, 15, 10, 25, colors[0]) + stick(35, 45, 10, 25, colors[2]) + stick(55, 45, 10, 25, colors[2]) + stick(25, 75, 10, 25, colors[1]) + stick(45, 75, 10, 25, colors[0]) + stick(65, 75, 10, 25, colors[1]);
     else if (val === '9') content = stick(20, 15, 10, 25, colors[1]) + stick(45, 15, 10, 25, colors[0]) + stick(70, 15, 10, 25, colors[2]) + stick(20, 45, 10, 25, colors[1]) + stick(45, 45, 10, 25, colors[0]) + stick(70, 45, 10, 25, colors[2]) + stick(20, 75, 10, 25, colors[1]) + stick(45, 75, 10, 25, colors[0]) + stick(70, 75, 10, 25, colors[2]);
@@ -298,8 +290,18 @@ async function apiRequest(path, opts) {
     headers,
     body: opts?.body ? JSON.stringify(opts.body) : undefined,
   });
-  const json = await res.json().catch(function () { return {}; });
-  if (!res.ok) throw new Error(json?.error?.message || 'HTTP ' + res.status);
+  
+  let json;
+  const text = await res.text();
+  try {
+    json = JSON.parse(text);
+  } catch (e) {
+    json = { error: { message: text || 'Invalid JSON response from server' } };
+  }
+
+  if (!res.ok) {
+    throw new Error(json?.error?.message || json?.message || 'HTTP ' + res.status);
+  }
   return json;
 }
 
@@ -1155,17 +1157,7 @@ function showWinModal(state) {
     btn.disabled = true;
     btn.textContent = 'Saving...';
 
-    // Ensure we use public: true for guest scores to avoid "Missing Bearer Token"
-    apiRequest('/api/scores', {
-      method: 'POST',
-      public: true,
-      body: {
-        displayName: name,
-        layoutName: currentLayout,
-        score: state.score,
-        elapsedSeconds: state.elapsed,
-      },
-    }).then(function () {
+    submitScore(state, name, function () {
       showToast(typeof window.t === 'function' ? window.t('toasts.scoreSaved') : 'Score saved! You\'re on the leaderboard!', 'success');
       btn.textContent = 'Saved! ✅';
       // Refresh sidebar if it's open
@@ -1174,10 +1166,9 @@ function showWinModal(state) {
         loadLeaderboard();
         renderStatsPanel();
       }
-    }).catch(function (err) {
+    }, function() {
       btn.disabled = false;
       btn.textContent = (t('ui.saveToLeaderboard') || 'Save Score') + ' 🏆';
-      showToast((typeof window.t === 'function' ? window.t('toasts.couldNotSave') : 'Could not save score: ') + err.message, 'error');
     });
   });
   $('newGameFromWin')?.addEventListener('click', function () {
@@ -1200,7 +1191,7 @@ function showWinModal(state) {
   });
 }
 
-function submitScore(state, displayName, onSuccess) {
+function submitScore(state, displayName, onSuccess, onFail) {
   apiRequest('/api/scores', {
     method: 'POST',
     public: true,
@@ -1213,6 +1204,7 @@ function submitScore(state, displayName, onSuccess) {
   }).then(function () {
     if (onSuccess) onSuccess();
   }).catch(function (err) {
+    if (onFail) onFail(err);
     showToast((typeof window.t === 'function' ? window.t('toasts.couldNotSave') : 'Could not save score: ') + err.message, 'error');
   });
 }
