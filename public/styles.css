@@ -448,10 +448,11 @@ body {
   z-index: 2000;
   animation: particleOut 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards;
   box-shadow: 0 0 6px rgba(255, 255, 255, 0.4);
+  transform: translate3d(0, 0, 50px) scale(1) rotate(0deg);
 }
 @keyframes particleOut {
-  0% { transform: translate3d(0, 0, 50px) scale(1); opacity: 1; }
-  100% { transform: translate3d(var(--tx), var(--ty), 100px) scale(0); opacity: 0; }
+  0% { transform: translate3d(0, 0, 50px) scale(1) rotate(0deg); opacity: 1; }
+  100% { transform: translate3d(var(--tx), var(--ty), 100px) scale(0) rotate(var(--rot, 180deg)); opacity: 0; }
 }
 
 /* === SHOCKWAVE EFFECT === */
@@ -1028,8 +1029,9 @@ kbd {
   transition: opacity 0.4s ease;
 }
 .board--loading {
-  opacity: 0.35;
+  opacity: 0.6;
   pointer-events: none;
+  transition: opacity 0.25s ease;
 }
 
 .tile {
@@ -1817,20 +1819,24 @@ select:focus-visible {
   }
 }
 
-/* === LANDING PAGE === */
+/* === LANDING PAGE (semi-transparent so game is visible behind) === */
 .landing {
-  position: relative;
+  position: fixed;
+  inset: 0;
   z-index: 50;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: flex-start;
   padding: calc(60px + env(safe-area-inset-top, 0)) 24px calc(80px + env(safe-area-inset-bottom, 0));
   text-align: center;
+  overflow-y: auto;
   background:
-    radial-gradient(ellipse 800px 500px at 50% 20%, rgba(180, 100, 50, 0.08), transparent),
-    radial-gradient(ellipse 600px 400px at 30% 70%, rgba(139, 69, 19, 0.05), transparent);
-  transition: opacity 0.35s ease, transform 0.35s ease;
+    linear-gradient(180deg, rgba(12, 10, 8, 0.88) 0%, rgba(12, 10, 8, 0.82) 40%, rgba(12, 10, 8, 0.88) 100%);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s ease;
 }
 .landing--hidden {
   opacity: 0;
@@ -1979,9 +1985,10 @@ select:focus-visible {
 
 /* === GAME WRAP === */
 .game-wrap {
-  display: none;
-  position: relative;
-  z-index: 100;
+  display: flex;
+  position: fixed;
+  inset: 0;
+  z-index: 1;
   flex-direction: column;
   height: 100vh;
   max-height: 100dvh;
@@ -1993,7 +2000,7 @@ select:focus-visible {
     linear-gradient(182deg, var(--bg0) 0%, var(--bg1) 30%, var(--bg2) 100%);
 }
 .game-wrap--visible {
-  display: flex;
+  z-index: 100;
 }
 
 /* === TUTORIAL OVERLAY === */
@@ -2036,38 +2043,65 @@ select:focus-visible {
   line-height: 1.6;
 }
 
-/* === LOADING OVERLAY === */
+/* === LOADING OVERLAY (preloader – game visible behind) === */
 .loading-overlay {
-  position: fixed;
+  position: absolute;
   inset: 0;
-  z-index: 9999;
+  z-index: 100;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 24px;
-  background: linear-gradient(135deg, var(--bg0) 0%, var(--bg1) 50%, var(--bg2) 100%);
+  pointer-events: none;
   opacity: 1;
-  transition: opacity 0.4s ease, visibility 0.4s ease;
+  transition: opacity 0.35s ease, visibility 0.35s ease;
 }
 .loading-overlay.hidden {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
 }
+.loading-overlay__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(12, 14, 22, 0.35);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+.loading-overlay__content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 28px 40px;
+  background: rgba(16, 24, 36, 0.85);
+  border: 1px solid var(--border);
+  border-radius: var(--radiusLg);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4);
+  pointer-events: auto;
+  animation: loadingContentIn 0.3s ease-out;
+}
+@keyframes loadingContentIn {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
 .loading-spinner {
-  width: 60px;
-  height: 60px;
-  border: 4px solid var(--border);
-  border-top-color: var(--accent);
+  width: 52px;
+  height: 52px;
+  border: 3px solid var(--border);
+  border-top-color: var(--accent2);
   border-radius: 50%;
-  animation: spin 1s linear infinite;
+  animation: spin 0.9s linear infinite;
 }
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
 .loading-text {
-  font-size: 1.2rem;
+  margin: 0;
+  font-size: 1.1rem;
   color: var(--textDim);
   font-weight: 500;
   letter-spacing: 0.025em;
@@ -2098,7 +2132,7 @@ select:focus-visible {
 
 /* === TILE HOVER FEEDBACK === */
 .tile--free:hover {
-  transform: translateY(-8px) scale(1.02);
+  transform: translateY(-10px) scale(1.03);
   box-shadow:
     0 4px 0 #e2d4c0,
     0 8px 0 #dcccb4,
@@ -2109,10 +2143,13 @@ select:focus-visible {
     0 28px 0 #ac8a62,
     0 32px 0 #a07e56,
     0 33px 0 1px rgba(100, 75, 50, 0.95),
-    0 34px 6px rgba(0, 0, 0, 0.35),
+    0 36px 8px rgba(0, 0, 0, 0.3),
     8px 16px 24px rgba(0, 0, 0, 0.45),
     inset 0 1px 0 rgba(255, 255, 255, 0.55),
-    inset -1px -1px 0 rgba(0, 0, 0, 0.06);
+    inset -1px -1px 0 rgba(0, 0, 0, 0.06),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+  filter: brightness(1.08);
+  z-index: 1000; /* Ensure hovered tile is always on top */
 }
 .tile--free:active {
   transform: translateY(0) scale(0.98);

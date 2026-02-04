@@ -1,5 +1,5 @@
 /* Service worker: cache static assets for offline play and faster repeat visits */
-const CACHE_NAME = 'mahjong-v4';
+const CACHE_NAME = 'mahjong-v5';
 const STATIC_URLS = [
   '/',
   '/index.html',
@@ -9,6 +9,24 @@ const STATIC_URLS = [
   '/pt/',
   '/pl/',
   '/it/',
+  '/nl/',
+  '/ru/',
+  '/ja/',
+  '/zh/',
+  '/ko/',
+  '/ar/',
+  '/hi/',
+  '/tr/',
+  '/sv/',
+  '/cs/',
+  '/sk/',
+  '/uk/',
+  '/ro/',
+  '/el/',
+  '/id/',
+  '/th/',
+  '/vi/',
+  '/hu/',
   '/privacy.html',
   '/terms.html',
   '/i18n/strings.js',

@@ -19,6 +19,24 @@
   <link rel="alternate" hreflang="pt" href="https://mahjongboss.com/pt/">
   <link rel="alternate" hreflang="pl" href="https://mahjongboss.com/pl/">
   <link rel="alternate" hreflang="it" href="https://mahjongboss.com/it/">
+  <link rel="alternate" hreflang="nl" href="https://mahjongboss.com/nl/">
+  <link rel="alternate" hreflang="ru" href="https://mahjongboss.com/ru/">
+  <link rel="alternate" hreflang="ja" href="https://mahjongboss.com/ja/">
+  <link rel="alternate" hreflang="zh" href="https://mahjongboss.com/zh/">
+  <link rel="alternate" hreflang="ko" href="https://mahjongboss.com/ko/">
+  <link rel="alternate" hreflang="ar" href="https://mahjongboss.com/ar/">
+  <link rel="alternate" hreflang="hi" href="https://mahjongboss.com/hi/">
+  <link rel="alternate" hreflang="tr" href="https://mahjongboss.com/tr/">
+  <link rel="alternate" hreflang="sv" href="https://mahjongboss.com/sv/">
+  <link rel="alternate" hreflang="cs" href="https://mahjongboss.com/cs/">
+  <link rel="alternate" hreflang="sk" href="https://mahjongboss.com/sk/">
+  <link rel="alternate" hreflang="uk" href="https://mahjongboss.com/uk/">
+  <link rel="alternate" hreflang="ro" href="https://mahjongboss.com/ro/">
+  <link rel="alternate" hreflang="el" href="https://mahjongboss.com/el/">
+  <link rel="alternate" hreflang="id" href="https://mahjongboss.com/id/">
+  <link rel="alternate" hreflang="th" href="https://mahjongboss.com/th/">
+  <link rel="alternate" hreflang="vi" href="https://mahjongboss.com/vi/">
+  <link rel="alternate" hreflang="hu" href="https://mahjongboss.com/hu/">
   <link rel="alternate" hreflang="x-default" href="https://mahjongboss.com/">
   <meta name="google-site-verification" content="90FMnVICOeX2FX7vHCXsEh--BvR7iYT8SpC4VJUK4UY">
   
@@ -41,6 +59,7 @@
   
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="manifest" href="/manifest.json">
   
   <link rel="stylesheet" href="/styles.css">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🀄</text></svg>">
@@ -50,6 +69,18 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   
   <!-- Structured Data / Schema.org -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [{
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://mahjongboss.com/"
+    }]
+  }
+  </script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -165,6 +196,24 @@
             <a href="/pt/" hreflang="pt" class="landing__lang">PT</a>
             <a href="/pl/" hreflang="pl" class="landing__lang">PL</a>
             <a href="/it/" hreflang="it" class="landing__lang">IT</a>
+            <a href="/nl/" hreflang="nl" class="landing__lang">NL</a>
+            <a href="/ru/" hreflang="ru" class="landing__lang">RU</a>
+            <a href="/ja/" hreflang="ja" class="landing__lang">JA</a>
+            <a href="/zh/" hreflang="zh" class="landing__lang">ZH</a>
+            <a href="/ko/" hreflang="ko" class="landing__lang">KO</a>
+            <a href="/ar/" hreflang="ar" class="landing__lang">AR</a>
+            <a href="/hi/" hreflang="hi" class="landing__lang">HI</a>
+            <a href="/tr/" hreflang="tr" class="landing__lang">TR</a>
+            <a href="/sv/" hreflang="sv" class="landing__lang">SV</a>
+            <a href="/cs/" hreflang="cs" class="landing__lang">CS</a>
+            <a href="/sk/" hreflang="sk" class="landing__lang">SK</a>
+            <a href="/uk/" hreflang="uk" class="landing__lang">UK</a>
+            <a href="/ro/" hreflang="ro" class="landing__lang">RO</a>
+            <a href="/el/" hreflang="el" class="landing__lang">EL</a>
+            <a href="/id/" hreflang="id" class="landing__lang">ID</a>
+            <a href="/th/" hreflang="th" class="landing__lang">TH</a>
+            <a href="/vi/" hreflang="vi" class="landing__lang">VI</a>
+            <a href="/hu/" hreflang="hu" class="landing__lang">HU</a>
           </span>
           <span class="landing__footer-sep">·</span>
           <a href="/privacy.html">Privacy</a>
@@ -231,10 +280,13 @@
   </nav>
 
   <main class="layout layout--fullscreen">
-    <!-- Loading Overlay (hidden by default, shown during game load) -->
-    <div class="loading-overlay hidden" id="loadingOverlay" aria-live="polite" aria-label="Loading game">
-      <div class="loading-spinner"></div>
-      <p class="loading-text">Loading Mahjong...</p>
+    <!-- Preloader overlay: transparent so the game board is visible behind -->
+    <div class="loading-overlay hidden" id="loadingOverlay" role="status" aria-live="polite" aria-label="Loading game">
+      <div class="loading-overlay__backdrop" aria-hidden="true"></div>
+      <div class="loading-overlay__content">
+        <div class="loading-spinner" aria-hidden="true"></div>
+        <p class="loading-text" id="loadingOverlayText">Loading Mahjong...</p>
+      </div>
     </div>
     
     <!-- Floating menu button -->

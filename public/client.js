@@ -143,8 +143,10 @@ function playTone(freq, duration, type) {
 }
 
 function playMatch() {
-  playTone(523, 0.08, 'sine');
-  setTimeout(function () { playTone(659, 0.12, 'sine'); }, 60);
+  // C Major chord arpeggio: C5, E5, G5
+  playTone(523.25, 0.1, 'sine');
+  setTimeout(function () { playTone(659.25, 0.1, 'sine'); }, 50);
+  setTimeout(function () { playTone(783.99, 0.15, 'sine'); }, 100);
 }
 function playUndo() {
   playTone(400, 0.1, 'sine');
@@ -1105,29 +1107,36 @@ function spawnParticles(elA, elB) {
     var cx = r.left + r.width / 2 - rect.left;
     var cy = r.top + r.height / 2 - rect.top;
     
-    var colors = ['#fcd34d', '#fbbf24', '#f59e0b', '#d97706', '#ffffff'];
+    var colors = ['#fcd34d', '#fbbf24', '#f59e0b', '#d97706', '#ffffff', '#60a5fa', '#34d399'];
     
-    for (var i = 0; i < 12; i++) {
+    for (var i = 0; i < 20; i++) {
       var p = document.createElement('div');
       p.className = 'particle';
       p.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-      var size = Math.random() * 6 + 4;
+      
+      if (Math.random() > 0.5) p.style.borderRadius = '50%';
+      else p.style.borderRadius = '2px';
+
+      var size = Math.random() * 8 + 4;
       p.style.width = size + 'px';
       p.style.height = size + 'px';
       p.style.left = cx + 'px';
       p.style.top = cy + 'px';
       
       var angle = Math.random() * Math.PI * 2;
-      var dist = Math.random() * 60 + 30;
+      var velocity = Math.random() * 0.5 + 0.5;
+      var dist = (Math.random() * 80 + 40) * velocity;
       var tx = Math.cos(angle) * dist;
       var ty = Math.sin(angle) * dist;
+      var rot = (Math.random() * 360 - 180) + 'deg';
       
       p.style.setProperty('--tx', tx + 'px');
       p.style.setProperty('--ty', ty + 'px');
-      p.style.animationDuration = (Math.random() * 0.3 + 0.4) + 's';
+      p.style.setProperty('--rot', rot);
+      p.style.animationDuration = (Math.random() * 0.4 + 0.5) + 's';
       
       board.appendChild(p);
-      setTimeout(function(e) { e.remove(); }, 800, p);
+      setTimeout(function(e) { e.remove(); }, 900, p);
     }
   }
   
@@ -1214,11 +1223,14 @@ function startGame() {
     if (boardEl) boardEl.classList.remove('board--loading');
     if (loadingOverlay) {
       setTimeout(function () {
+        var wasOverlayVisible = !loadingOverlay.classList.contains('hidden');
         loadingOverlay.classList.add('hidden');
         gameStartInProgress = false;
-        showToast('Let\'s play! Have fun! 🎮', 'success');
-        if (localStorage.getItem('mahjongTutorialSeen') !== 'true') {
-          showTutorialOverlay();
+        if (wasOverlayVisible) {
+          showToast('Let\'s play! Have fun! 🎮', 'success');
+          if (localStorage.getItem('mahjongTutorialSeen') !== 'true') {
+            showTutorialOverlay();
+          }
         }
       }, 300);
     } else {
@@ -1282,21 +1294,28 @@ function init() {
         }
       }, 5000);
     } else {
+      setTimeout(startGame, 200);
       landingPlayBtn.addEventListener('click', function () {
         trackEvent('play_clicked');
-        landing.classList.add('landing--hidden');
         gameWrap.classList.add('game-wrap--visible');
-        if (loadingOverlay) loadingOverlay.classList.remove('hidden');
+        landing.classList.add('landing--hidden');
+        if (loadingOverlay && !loadingOverlay.classList.contains('hidden')) {
+          setTimeout(function () {
+            loadingOverlay.classList.add('hidden');
+            showToast('Let\'s play! Have fun! 🎮', 'success');
+            if (localStorage.getItem('mahjongTutorialSeen') !== 'true') {
+              showTutorialOverlay();
+            }
+          }, 300);
+        } else {
+          showToast('Let\'s play! Have fun! 🎮', 'success');
+          if (localStorage.getItem('mahjongTutorialSeen') !== 'true') {
+            showTutorialOverlay();
+          }
+        }
         setTimeout(function () {
           landing.style.display = 'none';
-          startGame();
-        }, 300);
-        setTimeout(function () {
-          if (loadingOverlay && !loadingOverlay.classList.contains('hidden')) {
-            loadingOverlay.classList.add('hidden');
-            showToast('Loading timed out. Click Play to try again.', 'error');
-          }
-        }, 5500);
+        }, 400);
       });
     }
   } else {

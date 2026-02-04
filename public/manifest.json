@@ -1,0 +1,16 @@
+{
+  "name": "Mahjong Boss",
+  "short_name": "Mahjong",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0c0a08",
+  "theme_color": "#0a2818",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "/og-image.png",
+      "sizes": "1200x630",
+      "type": "image/png"
+    }
+  ]
+}
