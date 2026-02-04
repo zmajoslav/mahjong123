@@ -277,19 +277,26 @@
         </div>
       </div>
       <div class="top-nav__center">
-        <select class="top-nav__layout" id="layoutSelectTop" aria-label="Розкладка">
-          <option value="daily" selected>Щоденний виклик</option>
-          <option value="supereasy">Рівень 1 (24 плитки)</option>
-          <option value="easy">Рівень 2 (48 плиток)</option>
-          <option value="turtle">Рівень 3 (72 плитки)</option>
-          <option value="pyramid">Рівень 4 (80 плиток)</option>
-          <option value="hard">Рівень 5 (104 плитки)</option>
-          <option value="fort">Фортеця (80 плиток)</option>
-          <option value="caterpillar">Гусінь (72 плитки)</option>
-        </select>
+        <div class="layout-selector-wrap">
+          <select class="top-nav__layout" id="layoutSelectTop" aria-label="Розкладка">
+            <option value="daily" selected>Щоденний виклик</option>
+            <option value="supereasy">Рівень 1 (24 плитки)</option>
+            <option value="easy">Рівень 2 (48 плиток)</option>
+            <option value="turtle">Рівень 3 (72 плитки)</option>
+            <option value="pyramid">Рівень 4 (80 плиток)</option>
+            <option value="hard">Рівень 5 (104 плитки)</option>
+            <option value="fort">Фортеця (80 плиток)</option>
+            <option value="caterpillar">Гусінь (72 плитки)</option>
+          </select>
+          <div id="layoutPreview" class="layout-preview"></div>
+        </div>
         <label class="top-nav__toggle" aria-label="Підсвітити ходи">
           <input type="checkbox" id="highlightPlayableTop" class="toggle__input" checked>
           <span class="top-nav__toggle-label">Підсвітити ходи</span>
+        </label>
+        <label class="top-nav__toggle" title="Hard Mode: No hints, faster timer" aria-label="Hard Mode">
+          <input type="checkbox" id="hardModeToggle" class="toggle__input">
+          <span class="top-nav__toggle-label">Hard Mode</span>
         </label>
       </div>
       <div class="top-nav__stats">

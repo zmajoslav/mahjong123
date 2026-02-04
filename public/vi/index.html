@@ -277,19 +277,26 @@
         </div>
       </div>
       <div class="top-nav__center">
-        <select class="top-nav__layout" id="layoutSelectTop" aria-label="Bố cục">
-          <option value="daily" selected>Thử Thách Hàng Ngày</option>
-          <option value="supereasy">Mức 1 (24 quân)</option>
-          <option value="easy">Mức 2 (48 quân)</option>
-          <option value="turtle">Mức 3 (72 quân)</option>
-          <option value="pyramid">Mức 4 (80 quân)</option>
-          <option value="hard">Mức 5 (104 quân)</option>
-          <option value="fort">Pháo đài (80 quân)</option>
-          <option value="caterpillar">Sâu (72 quân)</option>
-        </select>
+        <div class="layout-selector-wrap">
+          <select class="top-nav__layout" id="layoutSelectTop" aria-label="Bố cục">
+            <option value="daily" selected>Thử Thách Hàng Ngày</option>
+            <option value="supereasy">Mức 1 (24 quân)</option>
+            <option value="easy">Mức 2 (48 quân)</option>
+            <option value="turtle">Mức 3 (72 quân)</option>
+            <option value="pyramid">Mức 4 (80 quân)</option>
+            <option value="hard">Mức 5 (104 quân)</option>
+            <option value="fort">Pháo đài (80 quân)</option>
+            <option value="caterpillar">Sâu (72 quân)</option>
+          </select>
+          <div id="layoutPreview" class="layout-preview"></div>
+        </div>
         <label class="top-nav__toggle" aria-label="Làm nổi quân có thể chơi">
           <input type="checkbox" id="highlightPlayableTop" class="toggle__input" checked>
           <span class="top-nav__toggle-label">Làm nổi có thể chơi</span>
+        </label>
+        <label class="top-nav__toggle" title="Hard Mode: No hints, faster timer" aria-label="Hard Mode">
+          <input type="checkbox" id="hardModeToggle" class="toggle__input">
+          <span class="top-nav__toggle-label">Hard Mode</span>
         </label>
       </div>
       <div class="top-nav__stats">

@@ -52,6 +52,7 @@ module.exports = {
       shuffleTiles: 'Shuffle tiles',
       newGame: 'New game',
       levelComplete: 'Level complete!',
+      hardMode: 'Hard Mode',
     },
     win: { cheer: 'You cleared all the tiles! You\'re a star!', shareLabel: 'Share your score:' },
     toasts: {

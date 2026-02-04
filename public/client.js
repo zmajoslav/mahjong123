@@ -209,6 +209,55 @@ function tileSuitClass(kind) {
   return '';
 }
 
+function getTileSvg(kind) {
+  if (!kind) return '';
+  var suit = kind[0];
+  var val = kind.substring(1);
+  
+  // Base SVG wrapper
+  var start = '<svg viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">';
+  var end = '</svg>';
+  var content = '';
+
+  if (suit === 'D') { // Dots
+    var colors = ['#1d4ed8', '#059669', '#dc2626'];
+    var dot = function(cx, cy, r, fill) { return '<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="'+fill+'" stroke="rgba(0,0,0,0.2)" stroke-width="1"/>'; };
+    if (val === '1') content = dot(50, 60, 35, colors[2]) + dot(50, 60, 15, '#fbbf24');
+    else if (val === '2') content = dot(50, 35, 18, colors[0]) + dot(50, 85, 18, colors[1]);
+    else if (val === '3') content = dot(25, 30, 15, colors[0]) + dot(50, 60, 15, colors[2]) + dot(75, 90, 15, colors[1]);
+    else if (val === '4') content = dot(30, 35, 15, colors[0]) + dot(70, 35, 15, colors[1]) + dot(30, 85, 15, colors[1]) + dot(70, 85, 15, colors[0]);
+    else if (val === '5') content = dot(25, 30, 14, colors[0]) + dot(75, 30, 14, colors[1]) + dot(50, 60, 14, colors[2]) + dot(25, 90, 14, colors[1]) + dot(75, 90, 14, colors[0]);
+    else if (val === '6') content = dot(30, 30, 13, colors[0]) + dot(70, 30, 13, colors[0]) + dot(30, 60, 13, colors[2]) + dot(70, 60, 13, colors[2]) + dot(30, 90, 13, colors[2]) + dot(70, 90, 13, colors[2]);
+    else if (val === '7') content = dot(20, 25, 11, colors[0]) + dot(50, 45, 11, colors[0]) + dot(80, 65, 11, colors[0]) + dot(30, 85, 11, colors[2]) + dot(70, 85, 11, colors[2]) + dot(30, 105, 11, colors[2]) + dot(70, 105, 11, colors[2]);
+    else if (val === '8') content = dot(30, 20, 10, colors[2]) + dot(70, 20, 10, colors[2]) + dot(30, 45, 10, colors[2]) + dot(70, 45, 10, colors[2]) + dot(30, 70, 10, colors[2]) + dot(70, 70, 10, colors[2]) + dot(30, 95, 10, colors[2]) + dot(70, 95, 10, colors[2]);
+    else if (val === '9') content = dot(20, 25, 10, colors[0]) + dot(50, 25, 10, colors[0]) + dot(80, 25, 10, colors[0]) + dot(20, 60, 10, colors[2]) + dot(50, 60, 10, colors[2]) + dot(80, 60, 10, colors[2]) + dot(20, 95, 10, colors[1]) + dot(50, 95, 10, colors[1]) + dot(80, 95, 10, colors[1]);
+  } else if (suit === 'B') { // Bamboos
+    var colors = ['#059669', '#dc2626', '#1d4ed8'];
+    var stick = function(x, y, w, h, fill) { return '<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" rx="4" fill="'+fill+'" stroke="rgba(0,0,0,0.2)" stroke-width="1"/>'; };
+    if (val === '1') content = '<path d="M50 20 L80 90 L20 90 Z" fill="'+colors[0]+'" stroke="black" stroke-width="1"/><circle cx="50" cy="45" r="10" fill="'+colors[1]+'"/>'; // Simplified bird
+    else if (val === '2') content = stick(45, 20, 10, 35, colors[0]) + stick(45, 65, 10, 35, colors[1]);
+    else if (val === '3') content = stick(45, 20, 10, 35, colors[1]) + stick(25, 65, 10, 35, colors[0]) + stick(65, 65, 10, 35, colors[0]);
+    else if (val === '4') content = stick(25, 20, 10, 35, colors[0]) + stick(65, 20, 10, 35, colors[1]) + stick(25, 65, 10, 35, colors[1]) + stick(65, 65, 10, 35, colors[0]);
+    else if (val === '5') content = stick(20, 20, 10, 35, colors[0]) + stick(70, 20, 10, colors[1]) + stick(45, 42, 10, 35, colors[2]) + stick(20, 65, 10, colors[1]) + stick(70, 65, 10, colors[0]);
+    else if (val === '6') content = stick(20, 20, 10, 35, colors[0]) + stick(45, 20, 10, 35, colors[0]) + stick(70, 20, 10, colors[1]) + stick(20, 65, 10, colors[1]) + stick(45, 65, 10, 35, colors[1]) + stick(70, 65, 10, colors[1]);
+    else if (val === '7') content = stick(45, 15, 10, 30, colors[1]) + stick(20, 50, 10, 30, colors[0]) + stick(45, 50, 10, 30, colors[0]) + stick(70, 50, 10, 30, colors[0]) + stick(20, 85, 10, 30, colors[0]) + stick(45, 85, 10, 30, colors[0]) + stick(70, 85, 10, 30, colors[0]);
+    else if (val === '8') content = stick(25, 15, 10, 25, colors[0]) + stick(45, 15, 10, 25, colors[1]) + stick(65, 15, 10, 25, colors[0]) + stick(35, 45, 10, 25, colors[2]) + stick(55, 45, 10, 25, colors[2]) + stick(25, 75, 10, 25, colors[1]) + stick(45, 75, 10, 25, colors[0]) + stick(65, 75, 10, 25, colors[1]);
+    else if (val === '9') content = stick(20, 15, 10, 25, colors[1]) + stick(45, 15, 10, 25, colors[0]) + stick(70, 15, 10, 25, colors[2]) + stick(20, 45, 10, 25, colors[1]) + stick(45, 45, 10, 25, colors[0]) + stick(70, 45, 10, 25, colors[2]) + stick(20, 75, 10, 25, colors[1]) + stick(45, 75, 10, 25, colors[0]) + stick(70, 75, 10, 25, colors[2]);
+  } else if (suit === 'C') { // Characters
+    content = '<text x="50" y="50" font-size="45" text-anchor="middle" fill="#dc2626" font-weight="bold">'+val+'</text><text x="50" y="100" font-size="40" text-anchor="middle" fill="#1e293b" font-weight="bold">萬</text>';
+  } else if (kind === 'E') content = '<text x="50" y="75" font-size="60" text-anchor="middle" fill="#1e293b" font-weight="bold">東</text>';
+  else if (kind === 'S') content = '<text x="50" y="75" font-size="60" text-anchor="middle" fill="#1e293b" font-weight="bold">南</text>';
+  else if (kind === 'W') content = '<text x="50" y="75" font-size="60" text-anchor="middle" fill="#1e293b" font-weight="bold">西</text>';
+  else if (kind === 'N') content = '<text x="50" y="75" font-size="60" text-anchor="middle" fill="#1e293b" font-weight="bold">北</text>';
+  else if (kind === 'RD') content = '<text x="50" y="75" font-size="60" text-anchor="middle" fill="#dc2626" font-weight="bold">中</text>';
+  else if (kind === 'GD') content = '<text x="50" y="75" font-size="60" text-anchor="middle" fill="#059669" font-weight="bold">發</text>';
+  else if (kind === 'WD') content = '<rect x="20" y="25" width="60" height="70" fill="none" stroke="#1d4ed8" stroke-width="8" rx="4"/>';
+  else if (suit === 'F') content = '<text x="50" y="70" font-size="50" text-anchor="middle" fill="#c026d3">🌸</text><text x="50" y="105" font-size="25" text-anchor="middle" fill="#c026d3">'+val+'</text>';
+  else if (suit === 'S' && val.length === 1) content = '<text x="50" y="70" font-size="50" text-anchor="middle" fill="#0d9488">🍂</text><text x="50" y="105" font-size="25" text-anchor="middle" fill="#0d9488">'+val+'</text>';
+
+  return content ? start + content + end : null;
+}
+
 function $(id) {
   return document.getElementById(id);
 }
@@ -286,6 +335,33 @@ function getLayout() {
   return (sel && sel.value) || 'turtle';
 }
 
+function updateLayoutPreview() {
+  var layout = getLayout();
+  if (layout === 'daily') layout = getDailyChallengeLayout();
+  var previewEl = $('layoutPreview');
+  if (!previewEl) return;
+  
+  var svg = '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">';
+  if (layout === 'turtle') {
+    svg += '<rect x="30" y="30" width="40" height="40" fill="var(--accent2)" opacity="0.6"/>';
+    svg += '<rect x="20" y="20" width="20" height="20" fill="var(--accent2)" opacity="0.4"/>';
+    svg += '<rect x="60" y="20" width="20" height="20" fill="var(--accent2)" opacity="0.4"/>';
+    svg += '<rect x="20" y="60" width="20" height="20" fill="var(--accent2)" opacity="0.4"/>';
+    svg += '<rect x="60" y="60" width="20" height="20" fill="var(--accent2)" opacity="0.4"/>';
+  } else if (layout === 'pyramid') {
+    svg += '<rect x="40" y="40" width="20" height="20" fill="var(--accent2)" opacity="0.8"/>';
+    svg += '<rect x="30" y="30" width="40" height="40" fill="var(--accent2)" opacity="0.5"/>';
+    svg += '<rect x="20" y="20" width="60" height="60" fill="var(--accent2)" opacity="0.2"/>';
+  } else if (layout === 'hard') {
+    svg += '<rect x="10" y="10" width="80" height="80" fill="var(--accent2)" opacity="0.3"/>';
+    svg += '<rect x="25" y="25" width="50" height="50" fill="var(--accent2)" opacity="0.6"/>';
+  } else {
+    svg += '<circle cx="50" cy="50" r="30" fill="var(--accent2)" opacity="0.5"/>';
+  }
+  svg += '</svg>';
+  previewEl.innerHTML = svg;
+}
+
 function clearAutoHint() {
   if (autoHintTimeout) {
     clearTimeout(autoHintTimeout);
@@ -296,6 +372,10 @@ function clearAutoHint() {
 function startAutoHintTimer() {
   clearAutoHint();
   if (!game) return;
+  
+  var hardMode = $('hardModeToggle') && $('hardModeToggle').checked;
+  if (hardMode) return;
+
   autoHintTimeout = setTimeout(function () {
     autoHintTimeout = null;
     if (!game) return;
@@ -326,6 +406,36 @@ function startAutoHintTimer() {
 }
 
 var STATS_KEY = 'mahjongStats';
+var ACHIEVEMENTS_KEY = 'mahjongAchievements';
+
+var ACHIEVEMENTS = [
+  { id: 'first_win', name: 'First Win', desc: 'Win your first game', icon: '🏆' },
+  { id: 'daily_hero', name: 'Daily Hero', desc: 'Win a Daily Challenge', icon: '📅' },
+  { id: 'speed_demon', name: 'Speed Demon', desc: 'Win in under 3 minutes', icon: '⚡' },
+  { id: 'combo_master', name: 'Combo Master', desc: 'Reach a 10x combo', icon: '🔥' },
+  { id: 'layout_explorer', name: 'Layout Explorer', desc: 'Win on 5 different layouts', icon: '🗺️' },
+];
+
+function loadAchievements() {
+  try {
+    var a = localStorage.getItem(ACHIEVEMENTS_KEY);
+    return a ? JSON.parse(a) : [];
+  } catch (e) {
+    return [];
+  }
+}
+
+function unlockAchievement(id) {
+  var unlocked = loadAchievements();
+  if (unlocked.indexOf(id) === -1) {
+    unlocked.push(id);
+    localStorage.setItem(ACHIEVEMENTS_KEY, JSON.stringify(unlocked));
+    var ach = ACHIEVEMENTS.find(function(a) { return a.id === id; });
+    if (ach) {
+      showToast('Achievement Unlocked: ' + ach.name + ' ' + ach.icon, 'success');
+    }
+  }
+}
 
 function loadStats() {
   try {
@@ -359,6 +469,36 @@ function recordGameWin(layout, score, elapsed) {
   if (!stats.bestTime[layout] || elapsed < stats.bestTime[layout]) {
     stats.bestTime[layout] = elapsed;
   }
+  
+  // Daily Streak
+  if (layout === 'daily' || (getLayout() === 'daily')) {
+    var today = getDailyChallengeSeed();
+    var lastWin = localStorage.getItem('lastDailyWinDate');
+    var currentStreak = parseInt(localStorage.getItem('dailyStreak') || '0', 10);
+    
+    if (lastWin !== today) {
+      var yesterday = new Date();
+      yesterday.setDate(yesterday.getDate() - 1);
+      var yesterdayStr = yesterday.getFullYear() + '-' + String(yesterday.getMonth() + 1).padStart(2, '0') + '-' + String(yesterday.getDate()).padStart(2, '0');
+      
+      if (lastWin === yesterdayStr) {
+        currentStreak++;
+      } else {
+        currentStreak = 1;
+      }
+      localStorage.setItem('dailyStreak', currentStreak);
+      localStorage.setItem('lastDailyWinDate', today);
+      showToast('Daily Streak: ' + currentStreak + ' days! 🔥', 'success');
+      unlockAchievement('daily_hero');
+    }
+  }
+  
+  unlockAchievement('first_win');
+  if (elapsed < 180) unlockAchievement('speed_demon');
+  
+  var wonLayouts = Object.keys(stats.bestScore || {}).length;
+  if (wonLayouts >= 5) unlockAchievement('layout_explorer');
+  
   saveStats(stats);
 }
 
@@ -366,9 +506,26 @@ function renderStatsPanel() {
   var el = $('statsPanel');
   if (!el) return;
   var stats = loadStats();
+  var streak = parseInt(localStorage.getItem('dailyStreak') || '0', 10);
   var layouts = ['supereasy', 'easy', 'turtle', 'pyramid', 'hard', 'fort', 'caterpillar'];
   var names = { supereasy: 'L1', easy: 'L2', turtle: 'L3', pyramid: 'L4', hard: 'L5', fort: 'Fort', caterpillar: 'Caterpillar' };
   var html = '<p class="stats-summary"><strong>' + (stats.gamesPlayed || 0) + '</strong> games · <strong>' + (stats.gamesWon || 0) + '</strong> wins</p>';
+  if (streak > 0) {
+    html += '<p class="stats-streak">Daily Streak: <strong>' + streak + '</strong> days 🔥</p>';
+  }
+  
+  var unlocked = loadAchievements();
+  if (unlocked.length > 0) {
+    html += '<div class="achievements-list">';
+    ACHIEVEMENTS.forEach(function(ach) {
+      var isUnlocked = unlocked.indexOf(ach.id) !== -1;
+      html += '<div class="achievement-item ' + (isUnlocked ? 'unlocked' : 'locked') + '" title="' + ach.desc + '">';
+      html += '<span class="achievement-icon">' + ach.icon + '</span>';
+      html += '</div>';
+    });
+    html += '</div>';
+  }
+
   html += '<table class="stats-table"><thead><tr><th>Layout</th><th>Best score</th><th>Best time</th></tr></thead><tbody>';
   layouts.forEach(function (l) {
     var bestS = stats.bestScore && stats.bestScore[l] ? stats.bestScore[l] : '—';
@@ -613,7 +770,15 @@ function renderBoardImpl(board) {
     var cls = sym !== t.kind ? 'tile__kind' : 'tile__kind tile__kind--fallback';
     var suitCls = tileSuitClass(t.kind);
     if (suitCls) cls += ' ' + suitCls;
-    el.innerHTML = '<span class="' + cls + '" title="' + escapeHtml(t.kind) + '">' + escapeHtml(sym) + '</span>';
+    
+    // Use SVG for tile faces
+    var svgContent = getTileSvg(t.kind);
+    if (svgContent) {
+      el.innerHTML = '<div class="tile__svg-wrap">' + svgContent + '</div>';
+    } else {
+      el.innerHTML = '<span class="' + cls + '" title="' + escapeHtml(t.kind) + '">' + escapeHtml(sym) + '</span>';
+    }
+    
     el.addEventListener('click', onTileClick);
     fragment.appendChild(el);
   });
@@ -867,6 +1032,7 @@ function onTileClick(ev) {
         var freq = 523 * Math.pow(2, semitones / 12);
         playTone(freq, 0.1, 'sine');
         setTimeout(function() { playTone(freq * 1.25, 0.15, 'triangle'); }, 80);
+        if (result.combo >= 10) unlockAchievement('combo_master');
     } else {
         playMatch();
     }
@@ -915,13 +1081,17 @@ function showWinModal(state) {
   bodyHtml += '<p class="win-summary__time">⏱ Time: <strong>' + formatTime(state.elapsed) + '</strong></p>';
   var t = typeof window.t === 'function' ? window.t : function (k) { return k; };
   bodyHtml += '<p class="win-summary__cheer">' + (t('win.cheer') || 'You cleared all the tiles! You\'re a star!') + ' ⭐</p>';
-  bodyHtml += '<label class="field">';
-  bodyHtml += '<div class="field__label">' + (t('ui.yourName') || 'Your name (for high scores)') + '</div>';
-  bodyHtml += '<input class="field__input" id="winNameInput" placeholder="' + (t('ui.enterName') || 'Enter your name') + '" maxlength="32" autocomplete="off">';
-  bodyHtml += '</label>';
-  bodyHtml += '<button class="btn btn--primary" id="submitScoreBtn">' + (t('ui.saveToLeaderboard') || 'Save to leaderboard') + ' ⭐</button>';
-  bodyHtml += '<button class="btn btn--ghost" id="newGameFromWin">' + (t('ui.playAgain') || 'Play again') + '! 🎮</button>';
-  bodyHtml += '<div class="win-share">';
+  
+  // Name input for guest leaderboard
+  bodyHtml += '<div class="field" style="margin-top: 20px;">';
+  bodyHtml += '<label class="field__label" for="winNameInput">' + (t('ui.yourName') || 'Your Name') + '</label>';
+  bodyHtml += '<input class="field__input" id="winNameInput" placeholder="' + (t('ui.enterName') || 'Enter name for leaderboard...') + '" maxlength="32" autocomplete="off">';
+  bodyHtml += '</div>';
+  
+  bodyHtml += '<button class="btn btn--primary" id="submitScoreBtn" style="width: 100%; margin-top: 10px;">' + (t('ui.saveToLeaderboard') || 'Save Score') + ' 🏆</button>';
+  bodyHtml += '<button class="btn btn--ghost" id="newGameFromWin" style="width: 100%; margin-top: 10px;">' + (t('ui.playAgain') || 'Play Again') + ' 🎮</button>';
+  
+  bodyHtml += '<div class="win-share" style="margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px;">';
   bodyHtml += '<p class="win-share__label">' + (t('win.shareLabel') || 'Share your score:') + '</p>';
   bodyHtml += '<div class="win-share__buttons">';
   bodyHtml += '<button class="btn btn--facebook" id="shareFacebookBtn"><span class="btn__icon">f</span> Facebook</button>';
@@ -930,7 +1100,7 @@ function showWinModal(state) {
   bodyHtml += '</div>';
   bodyHtml += '</div>';
 
-  $('modalTitle').innerHTML = '<span class="modal__title-icon">🏆</span> Amazing! You did it! 🎉🌟';
+  $('modalTitle').innerHTML = '<span class="modal__title-icon">🏆</span> Amazing! You did it! 🎉';
   $('modalBody').innerHTML = bodyHtml;
   var modalEl = $('modalBackdrop').querySelector('.modal');
   var confetti = $('confetti');
@@ -952,6 +1122,13 @@ function showWinModal(state) {
   }
   $('modalBackdrop').classList.remove('hidden');
 
+  // Pre-fill name from localStorage if available
+  var savedName = localStorage.getItem('mahjongPlayerName');
+  if (savedName) {
+    var nameInput = $('winNameInput');
+    if (nameInput) nameInput.value = savedName;
+  }
+
   $('submitScoreBtn')?.addEventListener('click', function () {
     var nameInput = $('winNameInput');
     var name = nameInput ? nameInput.value.trim() : '';
@@ -959,10 +1136,22 @@ function showWinModal(state) {
       showToast(typeof window.t === 'function' ? window.t('toasts.enterName') : 'Please enter your name to save to the leaderboard.', 'error');
       return;
     }
+    // Save name for next time
+    localStorage.setItem('mahjongPlayerName', name);
+    
+    var btn = this;
+    btn.disabled = true;
+    btn.textContent = 'Saving...';
+
     submitScore(state, name, function () {
       showToast(typeof window.t === 'function' ? window.t('toasts.scoreSaved') : 'Score saved! You\'re on the leaderboard!', 'success');
-      closeModal();
-      loadLeaderboard();
+      btn.textContent = 'Saved! ✅';
+      // Refresh sidebar if it's open
+      var sidebar = $('sidebar');
+      if (sidebar && !sidebar.classList.contains('sidebar--hidden')) {
+        loadLeaderboard();
+        renderStatsPanel();
+      }
     });
   });
   $('newGameFromWin')?.addEventListener('click', function () {
@@ -1405,6 +1594,13 @@ function init() {
   function doHint(e) {
     if (e) e.preventDefault();
     if (!game || matchInProgress) return;
+    
+    var hardMode = $('hardModeToggle') && $('hardModeToggle').checked;
+    if (hardMode) {
+      showToast('Hints disabled in Hard Mode!', 'error');
+      return false;
+    }
+
     startAutoHintTimer();
     var r = game.hint();
     if (r.ok) {
@@ -1451,6 +1647,23 @@ function init() {
     localStorage.setItem('highlightPlayable', this.checked);
   });
   
+  var hardModeToggle = $('hardModeToggle');
+  if (hardModeToggle) {
+    hardModeToggle.addEventListener('change', function() {
+      localStorage.setItem('hardMode', this.checked);
+      if (this.checked) {
+        clearAutoHint();
+        showToast('Hard Mode Enabled: No hints!', 'info');
+      } else {
+        startAutoHintTimer();
+      }
+    });
+    var storedHardMode = localStorage.getItem('hardMode');
+    if (storedHardMode !== null) {
+      hardModeToggle.checked = storedHardMode === 'true';
+    }
+  }
+  
   var ambienceToggle = $('ambienceToggle');
   if (ambienceToggle) {
       ambienceToggle.addEventListener('change', function() {
@@ -1467,7 +1680,9 @@ function init() {
     newGame();
     loadLeaderboard();
     renderStatsPanel();
+    updateLayoutPreview();
   });
+  updateLayoutPreview();
 
   setupStagePanning();
 

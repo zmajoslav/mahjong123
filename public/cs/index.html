@@ -277,19 +277,26 @@
         </div>
       </div>
       <div class="top-nav__center">
-        <select class="top-nav__layout" id="layoutSelectTop" aria-label="Rozložení">
-          <option value="daily" selected>Denní výzva</option>
-          <option value="supereasy">Úroveň 1 (24 kamenů)</option>
-          <option value="easy">Úroveň 2 (48 kamenů)</option>
-          <option value="turtle">Úroveň 3 (72 kamenů)</option>
-          <option value="pyramid">Úroveň 4 (80 kamenů)</option>
-          <option value="hard">Úroveň 5 (104 kamenů)</option>
-          <option value="fort">Pevnost (80 kamenů)</option>
-          <option value="caterpillar">Housenka (72 kamenů)</option>
-        </select>
+        <div class="layout-selector-wrap">
+          <select class="top-nav__layout" id="layoutSelectTop" aria-label="Rozložení">
+            <option value="daily" selected>Denní výzva</option>
+            <option value="supereasy">Úroveň 1 (24 kamenů)</option>
+            <option value="easy">Úroveň 2 (48 kamenů)</option>
+            <option value="turtle">Úroveň 3 (72 kamenů)</option>
+            <option value="pyramid">Úroveň 4 (80 kamenů)</option>
+            <option value="hard">Úroveň 5 (104 kamenů)</option>
+            <option value="fort">Pevnost (80 kamenů)</option>
+            <option value="caterpillar">Housenka (72 kamenů)</option>
+          </select>
+          <div id="layoutPreview" class="layout-preview"></div>
+        </div>
         <label class="top-nav__toggle" aria-label="Zvýraznit hratelné kameny">
           <input type="checkbox" id="highlightPlayableTop" class="toggle__input" checked>
           <span class="top-nav__toggle-label">Zvýraznit hratelné</span>
+        </label>
+        <label class="top-nav__toggle" title="Hard Mode: No hints, faster timer" aria-label="Hard Mode">
+          <input type="checkbox" id="hardModeToggle" class="toggle__input">
+          <span class="top-nav__toggle-label">Hard Mode</span>
         </label>
       </div>
       <div class="top-nav__stats">

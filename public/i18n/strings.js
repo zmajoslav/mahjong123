@@ -35,7 +35,8 @@ window.TRANSLATIONS = {
       "stuckMsg": "No moves available! Shuffle to mix things up or start a new game.",
       "shuffleTiles": "Shuffle tiles",
       "newGame": "New game",
-      "levelComplete": "Level complete!"
+      "levelComplete": "Level complete!",
+      "hardMode": "Hard Mode"
     },
     "toasts": {
       "enterName": "Please enter your name to save to the leaderboard.",
@@ -85,7 +86,8 @@ window.TRANSLATIONS = {
       "stuckMsg": "¡No hay movimientos! Mezcla las fichas o empieza una partida nueva.",
       "shuffleTiles": "Mezclar fichas",
       "newGame": "Nueva partida",
-      "levelComplete": "¡Nivel completado!"
+      "levelComplete": "¡Nivel completado!",
+      "hardMode": "Hard Mode"
     },
     "toasts": {
       "enterName": "Por favor escribe tu nombre para guardar en la clasificación.",
@@ -135,7 +137,8 @@ window.TRANSLATIONS = {
       "stuckMsg": "Aucun coup possible ! Mélangez les tuiles ou démarrez une nouvelle partie.",
       "shuffleTiles": "Mélanger les tuiles",
       "newGame": "Nouvelle partie",
-      "levelComplete": "Niveau terminé !"
+      "levelComplete": "Niveau terminé !",
+      "hardMode": "Hard Mode"
     },
     "toasts": {
       "enterName": "Veuillez entrer votre nom pour enregistrer au classement.",
@@ -185,7 +188,8 @@ window.TRANSLATIONS = {
       "stuckMsg": "Keine Züge möglich! Mische die Steine oder starte ein neues Spiel.",
       "shuffleTiles": "Steine mischen",
       "newGame": "Neues Spiel",
-      "levelComplete": "Level abgeschlossen!"
+      "levelComplete": "Level abgeschlossen!",
+      "hardMode": "Hard Mode"
     },
     "toasts": {
       "enterName": "Bitte gib deinen Namen ein, um in der Bestenliste zu speichern.",
@@ -235,7 +239,8 @@ window.TRANSLATIONS = {
       "stuckMsg": "Sem jogadas! Embaralhe as peças ou inicie uma nova partida.",
       "shuffleTiles": "Embaralhar peças",
       "newGame": "Nova partida",
-      "levelComplete": "Level complete!"
+      "levelComplete": "Level complete!",
+      "hardMode": "Hard Mode"
     },
     "toasts": {
       "enterName": "Por favor digite seu nome para salvar na classificação.",
@@ -285,7 +290,8 @@ window.TRANSLATIONS = {
       "stuckMsg": "Brak ruchów! Potasuj płytki lub zacznij nową grę.",
       "shuffleTiles": "Potasuj płytki",
       "newGame": "Nowa gra",
-      "levelComplete": "Poziom ukończony!"
+      "levelComplete": "Poziom ukończony!",
+      "hardMode": "Hard Mode"
     },
     "toasts": {
       "enterName": "Wpisz imię, aby zapisać do wyników.",
@@ -335,7 +341,8 @@ window.TRANSLATIONS = {
       "stuckMsg": "Nessuna mossa possibile! Mescola le tessere o inizia una nuova partita.",
       "shuffleTiles": "Mescola tessere",
       "newGame": "Nuova partita",
-      "levelComplete": "Livello completato!"
+      "levelComplete": "Livello completato!",
+      "hardMode": "Hard Mode"
     },
     "toasts": {
       "enterName": "Inserisci il tuo nome per salvare in classifica.",
@@ -385,7 +392,8 @@ window.TRANSLATIONS = {
       "stuckMsg": "Geen zetten meer! Schud de tegels of begin een nieuw spel.",
       "shuffleTiles": "Tegels schudden",
       "newGame": "Nieuw spel",
-      "levelComplete": "Level voltooid!"
+      "levelComplete": "Level voltooid!",
+      "hardMode": "Hard Mode"
     },
     "toasts": {
       "enterName": "Voer je naam in om op de leaderboard op te slaan.",
@@ -435,7 +443,8 @@ window.TRANSLATIONS = {
       "stuckMsg": "Нет ходов! Перемешайте плитки или начните новую игру.",
       "shuffleTiles": "Перемешать плитки",
       "newGame": "Новая игра",
-      "levelComplete": "Уровень пройден!"
+      "levelComplete": "Уровень пройден!",
+      "hardMode": "Hard Mode"
     },
     "toasts": {
       "enterName": "Введите имя для сохранения в таблицу лидеров.",
@@ -485,7 +494,8 @@ window.TRANSLATIONS = {
       "stuckMsg": "手がない！シャッフルするか新しいゲームを始めよう。",
       "shuffleTiles": "牌をシャッフル",
       "newGame": "新しいゲーム",
-      "levelComplete": "クリア！"
+      "levelComplete": "クリア！",
+      "hardMode": "Hard Mode"
     },
     "toasts": {
       "enterName": "リーダーボードに保存するには名前を入力してください。",
@@ -535,7 +545,8 @@ window.TRANSLATIONS = {
       "stuckMsg": "无牌可出！洗牌或开始新局。",
       "shuffleTiles": "洗牌",
       "newGame": "新局",
-      "levelComplete": "关卡完成！"
+      "levelComplete": "关卡完成！",
+      "hardMode": "Hard Mode"
     },
     "toasts": {
       "enterName": "请输入昵称以保存到排行榜。",
@@ -585,7 +596,8 @@ window.TRANSLATIONS = {
       "stuckMsg": "놓을 수 있는 짝이 없습니다! 섞거나 새 게임을 시작하세요.",
       "shuffleTiles": "타일 섞기",
       "newGame": "새 게임",
-      "levelComplete": "클리어!"
+      "levelComplete": "클리어!",
+      "hardMode": "Hard Mode"
     },
     "toasts": {
       "enterName": "리더보드에 저장하려면 이름을 입력하세요.",
@@ -635,7 +647,8 @@ window.TRANSLATIONS = {
       "stuckMsg": "لا توجد حركات! اخلط القطع أو ابدأ لعبة جديدة.",
       "shuffleTiles": "خلط القطع",
       "newGame": "لعبة جديدة",
-      "levelComplete": "تم المستوى!"
+      "levelComplete": "تم المستوى!",
+      "hardMode": "Hard Mode"
     },
     "toasts": {
       "enterName": "أدخل اسمك للحفظ في لوحة المتصدرين.",
@@ -685,7 +698,8 @@ window.TRANSLATIONS = {
       "stuckMsg": "कोई चाल नहीं! टाइल शफल करें या नया गेम शुरू करें।",
       "shuffleTiles": "टाइल शफल करें",
       "newGame": "नया गेम",
-      "levelComplete": "स्तर पूरा!"
+      "levelComplete": "स्तर पूरा!",
+      "hardMode": "Hard Mode"
     },
     "toasts": {
       "enterName": "लीडरबोर्ड में सहेजने के लिए नाम दर्ज करें।",
@@ -735,7 +749,8 @@ window.TRANSLATIONS = {
       "stuckMsg": "Hamle yok! Taşları karıştırın veya yeni oyun başlatın.",
       "shuffleTiles": "Taşları karıştır",
       "newGame": "Yeni oyun",
-      "levelComplete": "Seviye tamamlandı!"
+      "levelComplete": "Seviye tamamlandı!",
+      "hardMode": "Hard Mode"
     },
     "toasts": {
       "enterName": "Lider tablosuna kaydetmek için adınızı girin.",
@@ -785,7 +800,8 @@ window.TRANSLATIONS = {
       "stuckMsg": "Inga drag! Blanda brickorna eller starta nytt spel.",
       "shuffleTiles": "Blanda brickor",
       "newGame": "Nytt spel",
-      "levelComplete": "Nivå klar!"
+      "levelComplete": "Nivå klar!",
+      "hardMode": "Hard Mode"
     },
     "toasts": {
       "enterName": "Ange namn för att spara till topplistan.",
@@ -835,7 +851,8 @@ window.TRANSLATIONS = {
       "stuckMsg": "Žádné tahy! Zamíchejte kameny nebo začněte novou hru.",
       "shuffleTiles": "Zamíchat kameny",
       "newGame": "Nová hra",
-      "levelComplete": "Úroveň dokončena!"
+      "levelComplete": "Úroveň dokončena!",
+      "hardMode": "Hard Mode"
     },
     "toasts": {
       "enterName": "Zadejte jméno pro uložení do žebříčku.",
@@ -885,7 +902,8 @@ window.TRANSLATIONS = {
       "stuckMsg": "Žiadne ťahy! Zamiešajte kamene alebo začnite novú hru.",
       "shuffleTiles": "Zamiešať kamene",
       "newGame": "Nová hra",
-      "levelComplete": "Úroveň dokončená!"
+      "levelComplete": "Úroveň dokončená!",
+      "hardMode": "Hard Mode"
     },
     "toasts": {
       "enterName": "Zadajte meno pre uloženie do rebríčka.",
@@ -935,7 +953,8 @@ window.TRANSLATIONS = {
       "stuckMsg": "Немає ходів! Перемішайте плитки або почніть нову гру.",
       "shuffleTiles": "Перемішати плитки",
       "newGame": "Нова гра",
-      "levelComplete": "Рівень пройдено!"
+      "levelComplete": "Рівень пройдено!",
+      "hardMode": "Hard Mode"
     },
     "toasts": {
       "enterName": "Введіть ім'я для збереження в таблицю лідерів.",
@@ -985,7 +1004,8 @@ window.TRANSLATIONS = {
       "stuckMsg": "Fără mutări! Amestecați plăcile sau începeți o partidă nouă.",
       "shuffleTiles": "Amestecați plăcile",
       "newGame": "Partidă nouă",
-      "levelComplete": "Nivel completat!"
+      "levelComplete": "Nivel completat!",
+      "hardMode": "Hard Mode"
     },
     "toasts": {
       "enterName": "Introduceți numele pentru a salva în clasament.",
@@ -1035,7 +1055,8 @@ window.TRANSLATIONS = {
       "stuckMsg": "Δεν υπάρχουν κινήσεις! Ανακατέψτε ή ξεκινήστε νέο παιχνίδι.",
       "shuffleTiles": "Ανακάτεμα πλακιδίων",
       "newGame": "Νέο παιχνίδι",
-      "levelComplete": "Επίπεδο ολοκληρώθηκε!"
+      "levelComplete": "Επίπεδο ολοκληρώθηκε!",
+      "hardMode": "Hard Mode"
     },
     "toasts": {
       "enterName": "Εισάγετε όνομα για αποθήκευση στην κατάταξη.",
@@ -1085,7 +1106,8 @@ window.TRANSLATIONS = {
       "stuckMsg": "Tidak ada langkah! Acak ubin atau mulai permainan baru.",
       "shuffleTiles": "Acak ubin",
       "newGame": "Permainan baru",
-      "levelComplete": "Level selesai!"
+      "levelComplete": "Level selesai!",
+      "hardMode": "Hard Mode"
     },
     "toasts": {
       "enterName": "Masukkan nama untuk menyimpan ke papan peringkat.",
@@ -1135,7 +1157,8 @@ window.TRANSLATIONS = {
       "stuckMsg": "ไม่มีทางเดิน! สับแผ่นหรือเริ่มเกมใหม่",
       "shuffleTiles": "สับแผ่น",
       "newGame": "เกมใหม่",
-      "levelComplete": "ผ่านระดับ!"
+      "levelComplete": "ผ่านระดับ!",
+      "hardMode": "Hard Mode"
     },
     "toasts": {
       "enterName": "ใส่ชื่อเพื่อบันทึกลีดเดอร์บอร์ด",
@@ -1185,7 +1208,8 @@ window.TRANSLATIONS = {
       "stuckMsg": "Không còn nước đi! Xáo trộn quân hoặc bắt đầu ván mới.",
       "shuffleTiles": "Xáo trộn quân",
       "newGame": "Ván mới",
-      "levelComplete": "Hoàn thành mức!"
+      "levelComplete": "Hoàn thành mức!",
+      "hardMode": "Hard Mode"
     },
     "toasts": {
       "enterName": "Nhập tên để lưu vào bảng xếp hạng.",
@@ -1235,7 +1259,8 @@ window.TRANSLATIONS = {
       "stuckMsg": "Nincs lépés! Keverje a lapokat vagy induljon új játék.",
       "shuffleTiles": "Lapok keverése",
       "newGame": "Új játék",
-      "levelComplete": "Szint kész!"
+      "levelComplete": "Szint kész!",
+      "hardMode": "Hard Mode"
     },
     "toasts": {
       "enterName": "Adja meg a nevet a rangsorba mentéshez.",

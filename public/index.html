@@ -277,19 +277,26 @@
         </div>
       </div>
       <div class="top-nav__center">
-        <select class="top-nav__layout" id="layoutSelectTop" aria-label="Layout">
-          <option value="daily" selected>Daily Challenge</option>
-          <option value="supereasy">Level 1 (24 tiles)</option>
-          <option value="easy">Level 2 (48 tiles)</option>
-          <option value="turtle">Level 3 (72 tiles)</option>
-          <option value="pyramid">Level 4 (80 tiles)</option>
-          <option value="hard">Level 5 (104 tiles)</option>
-          <option value="fort">Fort (80 tiles)</option>
-          <option value="caterpillar">Caterpillar (72 tiles)</option>
-        </select>
+        <div class="layout-selector-wrap">
+          <select class="top-nav__layout" id="layoutSelectTop" aria-label="Layout">
+            <option value="daily" selected>Daily Challenge</option>
+            <option value="supereasy">Level 1 (24 tiles)</option>
+            <option value="easy">Level 2 (48 tiles)</option>
+            <option value="turtle">Level 3 (72 tiles)</option>
+            <option value="pyramid">Level 4 (80 tiles)</option>
+            <option value="hard">Level 5 (104 tiles)</option>
+            <option value="fort">Fort (80 tiles)</option>
+            <option value="caterpillar">Caterpillar (72 tiles)</option>
+          </select>
+          <div id="layoutPreview" class="layout-preview"></div>
+        </div>
         <label class="top-nav__toggle" aria-label="Highlight playable tiles">
           <input type="checkbox" id="highlightPlayableTop" class="toggle__input" checked>
           <span class="top-nav__toggle-label">Highlight playable</span>
+        </label>
+        <label class="top-nav__toggle" title="Hard Mode: No hints, faster timer" aria-label="Hard Mode">
+          <input type="checkbox" id="hardModeToggle" class="toggle__input">
+          <span class="top-nav__toggle-label">Hard Mode</span>
         </label>
       </div>
       <div class="top-nav__stats">

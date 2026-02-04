@@ -277,19 +277,26 @@
         </div>
       </div>
       <div class="top-nav__center">
-        <select class="top-nav__layout" id="layoutSelectTop" aria-label="Lay-out">
-          <option value="daily" selected>Dagelijkse Uitdaging</option>
-          <option value="supereasy">Niveau 1 (24 tegels)</option>
-          <option value="easy">Niveau 2 (48 tegels)</option>
-          <option value="turtle">Niveau 3 (72 tegels)</option>
-          <option value="pyramid">Niveau 4 (80 tegels)</option>
-          <option value="hard">Niveau 5 (104 tegels)</option>
-          <option value="fort">Fort (80 tegels)</option>
-          <option value="caterpillar">Rups (72 tegels)</option>
-        </select>
+        <div class="layout-selector-wrap">
+          <select class="top-nav__layout" id="layoutSelectTop" aria-label="Lay-out">
+            <option value="daily" selected>Dagelijkse Uitdaging</option>
+            <option value="supereasy">Niveau 1 (24 tegels)</option>
+            <option value="easy">Niveau 2 (48 tegels)</option>
+            <option value="turtle">Niveau 3 (72 tegels)</option>
+            <option value="pyramid">Niveau 4 (80 tegels)</option>
+            <option value="hard">Niveau 5 (104 tegels)</option>
+            <option value="fort">Fort (80 tegels)</option>
+            <option value="caterpillar">Rups (72 tegels)</option>
+          </select>
+          <div id="layoutPreview" class="layout-preview"></div>
+        </div>
         <label class="top-nav__toggle" aria-label="Speelbare tegels markeren">
           <input type="checkbox" id="highlightPlayableTop" class="toggle__input" checked>
           <span class="top-nav__toggle-label">Speelbare markeren</span>
+        </label>
+        <label class="top-nav__toggle" title="Hard Mode: No hints, faster timer" aria-label="Hard Mode">
+          <input type="checkbox" id="hardModeToggle" class="toggle__input">
+          <span class="top-nav__toggle-label">Hard Mode</span>
         </label>
       </div>
       <div class="top-nav__stats">

@@ -277,19 +277,26 @@
         </div>
       </div>
       <div class="top-nav__center">
-        <select class="top-nav__layout" id="layoutSelectTop" aria-label="เลย์เอาต์">
-          <option value="daily" selected>แชลเลนจ์รายวัน</option>
-          <option value="supereasy">ระดับ 1 (24 แผ่น)</option>
-          <option value="easy">ระดับ 2 (48 แผ่น)</option>
-          <option value="turtle">ระดับ 3 (72 แผ่น)</option>
-          <option value="pyramid">ระดับ 4 (80 แผ่น)</option>
-          <option value="hard">ระดับ 5 (104 แผ่น)</option>
-          <option value="fort">ป้อม (80 แผ่น)</option>
-          <option value="caterpillar">หนอน (72 แผ่น)</option>
-        </select>
+        <div class="layout-selector-wrap">
+          <select class="top-nav__layout" id="layoutSelectTop" aria-label="เลย์เอาต์">
+            <option value="daily" selected>แชลเลนจ์รายวัน</option>
+            <option value="supereasy">ระดับ 1 (24 แผ่น)</option>
+            <option value="easy">ระดับ 2 (48 แผ่น)</option>
+            <option value="turtle">ระดับ 3 (72 แผ่น)</option>
+            <option value="pyramid">ระดับ 4 (80 แผ่น)</option>
+            <option value="hard">ระดับ 5 (104 แผ่น)</option>
+            <option value="fort">ป้อม (80 แผ่น)</option>
+            <option value="caterpillar">หนอน (72 แผ่น)</option>
+          </select>
+          <div id="layoutPreview" class="layout-preview"></div>
+        </div>
         <label class="top-nav__toggle" aria-label="เน้นแผ่นที่เล่นได้">
           <input type="checkbox" id="highlightPlayableTop" class="toggle__input" checked>
           <span class="top-nav__toggle-label">เน้นที่เล่นได้</span>
+        </label>
+        <label class="top-nav__toggle" title="Hard Mode: No hints, faster timer" aria-label="Hard Mode">
+          <input type="checkbox" id="hardModeToggle" class="toggle__input">
+          <span class="top-nav__toggle-label">Hard Mode</span>
         </label>
       </div>
       <div class="top-nav__stats">

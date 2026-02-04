@@ -277,19 +277,26 @@
         </div>
       </div>
       <div class="top-nav__center">
-        <select class="top-nav__layout" id="layoutSelectTop" aria-label="Elrendezés">
-          <option value="daily" selected>Napi kihívás</option>
-          <option value="supereasy">Szint 1 (24 lap)</option>
-          <option value="easy">Szint 2 (48 lap)</option>
-          <option value="turtle">Szint 3 (72 lap)</option>
-          <option value="pyramid">Szint 4 (80 lap)</option>
-          <option value="hard">Szint 5 (104 lap)</option>
-          <option value="fort">Erőd (80 lap)</option>
-          <option value="caterpillar">Hernyó (72 lap)</option>
-        </select>
+        <div class="layout-selector-wrap">
+          <select class="top-nav__layout" id="layoutSelectTop" aria-label="Elrendezés">
+            <option value="daily" selected>Napi kihívás</option>
+            <option value="supereasy">Szint 1 (24 lap)</option>
+            <option value="easy">Szint 2 (48 lap)</option>
+            <option value="turtle">Szint 3 (72 lap)</option>
+            <option value="pyramid">Szint 4 (80 lap)</option>
+            <option value="hard">Szint 5 (104 lap)</option>
+            <option value="fort">Erőd (80 lap)</option>
+            <option value="caterpillar">Hernyó (72 lap)</option>
+          </select>
+          <div id="layoutPreview" class="layout-preview"></div>
+        </div>
         <label class="top-nav__toggle" aria-label="Játékba hozható lapok kijelölése">
           <input type="checkbox" id="highlightPlayableTop" class="toggle__input" checked>
           <span class="top-nav__toggle-label">Kijelölés játékba hozható</span>
+        </label>
+        <label class="top-nav__toggle" title="Hard Mode: No hints, faster timer" aria-label="Hard Mode">
+          <input type="checkbox" id="hardModeToggle" class="toggle__input">
+          <span class="top-nav__toggle-label">Hard Mode</span>
         </label>
       </div>
       <div class="top-nav__stats">

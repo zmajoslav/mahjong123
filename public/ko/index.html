@@ -277,19 +277,26 @@
         </div>
       </div>
       <div class="top-nav__center">
-        <select class="top-nav__layout" id="layoutSelectTop" aria-label="레이아웃">
-          <option value="daily" selected>데일리 챌린지</option>
-          <option value="supereasy">레벨 1 (24장)</option>
-          <option value="easy">레벨 2 (48장)</option>
-          <option value="turtle">레벨 3 (72장)</option>
-          <option value="pyramid">레벨 4 (80장)</option>
-          <option value="hard">레벨 5 (104장)</option>
-          <option value="fort">요새 (80장)</option>
-          <option value="caterpillar">애벌레 (72장)</option>
-        </select>
+        <div class="layout-selector-wrap">
+          <select class="top-nav__layout" id="layoutSelectTop" aria-label="레이아웃">
+            <option value="daily" selected>데일리 챌린지</option>
+            <option value="supereasy">레벨 1 (24장)</option>
+            <option value="easy">레벨 2 (48장)</option>
+            <option value="turtle">레벨 3 (72장)</option>
+            <option value="pyramid">레벨 4 (80장)</option>
+            <option value="hard">레벨 5 (104장)</option>
+            <option value="fort">요새 (80장)</option>
+            <option value="caterpillar">애벌레 (72장)</option>
+          </select>
+          <div id="layoutPreview" class="layout-preview"></div>
+        </div>
         <label class="top-nav__toggle" aria-label="놓을 수 있는 타일 강조">
           <input type="checkbox" id="highlightPlayableTop" class="toggle__input" checked>
           <span class="top-nav__toggle-label">놓을 수 있는 타일 강조</span>
+        </label>
+        <label class="top-nav__toggle" title="Hard Mode: No hints, faster timer" aria-label="Hard Mode">
+          <input type="checkbox" id="hardModeToggle" class="toggle__input">
+          <span class="top-nav__toggle-label">Hard Mode</span>
         </label>
       </div>
       <div class="top-nav__stats">

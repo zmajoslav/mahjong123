@@ -91,6 +91,10 @@ function getReplacementMap(lang) {
     ['No download – play in browser', t.landing.feature3],
     ['Leaderboard & high scores', t.landing.feature4],
     ['Play Now', t.landing.playNow],
+    // Layout selector structure
+    ['<div class="layout-selector-wrap">', '<div class="layout-selector-wrap">'],
+    ['<div id="layoutPreview" class="layout-preview"></div>', '<div id="layoutPreview" class="layout-preview"></div>'],
+    ['Hard Mode', t.ui.hardMode || 'Hard Mode'],
     // Layouts
     ['Daily Challenge', t.layouts.daily],
     ['Level 1 (24 tiles)', t.layouts.supereasy],

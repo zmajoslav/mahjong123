@@ -277,19 +277,26 @@
         </div>
       </div>
       <div class="top-nav__center">
-        <select class="top-nav__layout" id="layoutSelectTop" aria-label="レイアウト">
-          <option value="daily" selected>デイリーチャレンジ</option>
-          <option value="supereasy">レベル1（24枚）</option>
-          <option value="easy">レベル2（48枚）</option>
-          <option value="turtle">レベル3（72枚）</option>
-          <option value="pyramid">レベル4（80枚）</option>
-          <option value="hard">レベル5（104枚）</option>
-          <option value="fort">フォート（80枚）</option>
-          <option value="caterpillar">キャタピラー（72枚）</option>
-        </select>
+        <div class="layout-selector-wrap">
+          <select class="top-nav__layout" id="layoutSelectTop" aria-label="レイアウト">
+            <option value="daily" selected>デイリーチャレンジ</option>
+            <option value="supereasy">レベル1（24枚）</option>
+            <option value="easy">レベル2（48枚）</option>
+            <option value="turtle">レベル3（72枚）</option>
+            <option value="pyramid">レベル4（80枚）</option>
+            <option value="hard">レベル5（104枚）</option>
+            <option value="fort">フォート（80枚）</option>
+            <option value="caterpillar">キャタピラー（72枚）</option>
+          </select>
+          <div id="layoutPreview" class="layout-preview"></div>
+        </div>
         <label class="top-nav__toggle" aria-label="打てる牌を強調">
           <input type="checkbox" id="highlightPlayableTop" class="toggle__input" checked>
           <span class="top-nav__toggle-label">打てる牌を強調</span>
+        </label>
+        <label class="top-nav__toggle" title="Hard Mode: No hints, faster timer" aria-label="Hard Mode">
+          <input type="checkbox" id="hardModeToggle" class="toggle__input">
+          <span class="top-nav__toggle-label">Hard Mode</span>
         </label>
       </div>
       <div class="top-nav__stats">
