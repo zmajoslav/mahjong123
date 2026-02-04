@@ -21,16 +21,19 @@ function createApp({ env, pool }) {
   
   // Set CSP header as early as possible
   app.use((req, res, next) => {
+    res.removeHeader('Content-Security-Policy');
+    res.removeHeader('X-Content-Security-Policy');
+    res.removeHeader('X-WebKit-CSP');
+    
     res.setHeader(
       'Content-Security-Policy',
-      "default-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; " +
-      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com; " +
-      "script-src-elem 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com; " +
-      "script-src-attr 'unsafe-inline'; " +
-      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
-      "font-src 'self' https://fonts.gstatic.com data:; " +
-      "connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com; " +
-      "img-src 'self' data: blob: https://www.googletagmanager.com https://*.google-analytics.com; " +
+      "default-src * 'unsafe-inline' 'unsafe-eval' data: blob:; " +
+      "script-src * 'unsafe-inline' 'unsafe-eval' data: blob:; " +
+      "style-src * 'unsafe-inline'; " +
+      "img-src * data: blob:; " +
+      "font-src * data:; " +
+      "connect-src *; " +
+      "frame-src *; " +
       "object-src 'none';"
     );
     next();
