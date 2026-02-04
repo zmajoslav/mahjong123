@@ -350,42 +350,42 @@ function getTileSvg(kind) {
   if (suit === 'D') { // Dots
     var colors = ['#1d4ed8', '#059669', '#dc2626'];
     var dot = function(cx, cy, r, fill) { 
-      return '<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="'+fill+'" stroke="rgba(0,0,0,0.2)" stroke-width="1"/>'; 
+      return '<circle cx="'+cx+'" cy="'+cy+'" r="'+(r*1.15)+'" fill="'+fill+'" stroke="rgba(0,0,0,0.2)" stroke-width="1"/>'; 
     };
-    if (val === '1') content = dot(50, 60, 35, colors[2]) + dot(50, 60, 15, '#fbbf24');
-    else if (val === '2') content = dot(50, 35, 18, colors[0]) + dot(50, 85, 18, colors[1]);
-    else if (val === '3') content = dot(25, 30, 15, colors[0]) + dot(50, 60, 15, colors[2]) + dot(75, 90, 15, colors[1]);
-    else if (val === '4') content = dot(30, 35, 15, colors[0]) + dot(70, 35, 15, colors[1]) + dot(30, 85, 15, colors[1]) + dot(70, 85, 15, colors[0]);
-    else if (val === '5') content = dot(25, 30, 14, colors[0]) + dot(75, 30, 14, colors[1]) + dot(50, 60, 14, colors[2]) + dot(25, 90, 14, colors[1]) + dot(75, 90, 14, colors[0]);
-    else if (val === '6') content = dot(30, 30, 13, colors[0]) + dot(70, 30, 13, colors[0]) + dot(30, 60, 13, colors[2]) + dot(70, 60, 13, colors[2]) + dot(30, 90, 13, colors[2]) + dot(70, 90, 13, colors[2]);
-    else if (val === '7') content = dot(20, 25, 11, colors[0]) + dot(50, 45, 11, colors[0]) + dot(80, 65, 11, colors[0]) + dot(30, 85, 11, colors[2]) + dot(70, 85, 11, colors[2]) + dot(30, 105, 11, colors[2]) + dot(70, 105, 11, colors[2]);
-    else if (val === '8') content = dot(30, 20, 10, colors[2]) + dot(70, 20, 10, colors[2]) + dot(30, 45, 10, colors[2]) + dot(70, 45, 10, colors[2]) + dot(30, 70, 10, colors[2]) + dot(70, 70, 10, colors[2]) + dot(30, 95, 10, colors[2]) + dot(70, 95, 10, colors[2]);
-    else if (val === '9') content = dot(20, 25, 10, colors[0]) + dot(50, 25, 10, colors[0]) + dot(80, 25, 10, colors[0]) + dot(20, 60, 10, colors[2]) + dot(50, 60, 10, colors[2]) + dot(80, 60, 10, colors[2]) + dot(20, 95, 10, colors[1]) + dot(50, 95, 10, colors[1]) + dot(80, 95, 10, colors[1]);
+    if (val === '1') content = dot(50, 60, 38, colors[2]) + dot(50, 60, 16, '#fbbf24');
+    else if (val === '2') content = dot(50, 32, 20, colors[0]) + dot(50, 88, 20, colors[1]);
+    else if (val === '3') content = dot(25, 28, 17, colors[0]) + dot(50, 60, 17, colors[2]) + dot(75, 92, 17, colors[1]);
+    else if (val === '4') content = dot(28, 32, 17, colors[0]) + dot(72, 32, 17, colors[1]) + dot(28, 88, 17, colors[1]) + dot(72, 88, 17, colors[0]);
+    else if (val === '5') content = dot(25, 28, 16, colors[0]) + dot(75, 28, 16, colors[1]) + dot(50, 60, 16, colors[2]) + dot(25, 92, 16, colors[1]) + dot(75, 92, 16, colors[0]);
+    else if (val === '6') content = dot(28, 28, 15, colors[0]) + dot(72, 28, 15, colors[0]) + dot(28, 60, 15, colors[2]) + dot(72, 60, 15, colors[2]) + dot(28, 92, 15, colors[2]) + dot(72, 92, 15, colors[2]);
+    else if (val === '7') content = dot(20, 22, 12, colors[0]) + dot(50, 42, 12, colors[0]) + dot(80, 62, 12, colors[0]) + dot(30, 82, 12, colors[2]) + dot(70, 82, 12, colors[2]) + dot(30, 102, 12, colors[2]) + dot(70, 102, 12, colors[2]);
+    else if (val === '8') content = dot(30, 18, 11, colors[2]) + dot(70, 18, 11, colors[2]) + dot(30, 43, 11, colors[2]) + dot(70, 43, 11, colors[2]) + dot(30, 68, 11, colors[2]) + dot(70, 68, 11, colors[2]) + dot(30, 93, 11, colors[2]) + dot(70, 93, 11, colors[2]);
+    else if (val === '9') content = dot(20, 22, 11, colors[0]) + dot(50, 22, 11, colors[0]) + dot(80, 22, 11, colors[0]) + dot(20, 60, 11, colors[2]) + dot(50, 60, 11, colors[2]) + dot(80, 60, 11, colors[2]) + dot(20, 98, 11, colors[1]) + dot(50, 98, 11, colors[1]) + dot(80, 98, 11, colors[1]);
   } else if (suit === 'B') { // Bamboos
     var colors = ['#059669', '#dc2626', '#1d4ed8'];
     var stick = function(x, y, w, h, fill) { 
-      return '<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" rx="4" fill="'+fill+'" stroke="rgba(0,0,0,0.2)" stroke-width="1"/>'; 
+      return '<rect x="'+x+'" y="'+y+'" width="'+(w*1.1)+'" height="'+(h*1.1)+'" rx="4" fill="'+fill+'" stroke="rgba(0,0,0,0.2)" stroke-width="1"/>'; 
     };
-    if (val === '1') content = '<path d="M50 20 L80 90 L20 90 Z" fill="'+colors[0]+'" stroke="black" stroke-width="1"/><circle cx="50" cy="45" r="10" fill="'+colors[1]+'"/>'; // Simplified bird
-    else if (val === '2') content = stick(45, 20, 10, 35, colors[0]) + stick(45, 65, 10, 35, colors[1]);
-    else if (val === '3') content = stick(45, 20, 10, 35, colors[1]) + stick(25, 65, 10, 35, colors[0]) + stick(65, 65, 10, 35, colors[0]);
-    else if (val === '4') content = stick(25, 20, 10, 35, colors[0]) + stick(65, 20, 10, 35, colors[1]) + stick(25, 65, 10, 35, colors[1]) + stick(65, 65, 10, 35, colors[0]);
-    else if (val === '5') content = stick(20, 20, 10, 35, colors[0]) + stick(70, 20, 10, 35, colors[1]) + stick(45, 42, 10, 35, colors[2]) + stick(20, 65, 10, 35, colors[1]) + stick(70, 65, 10, 35, colors[0]);
-    else if (val === '6') content = stick(20, 20, 10, 35, colors[0]) + stick(45, 20, 10, 35, colors[0]) + stick(70, 20, 10, 35, colors[1]) + stick(20, 65, 10, 35, colors[1]) + stick(45, 65, 10, 35, colors[1]) + stick(70, 65, 10, 35, colors[1]);
-    else if (val === '7') content = stick(45, 15, 10, 30, colors[1]) + stick(20, 50, 10, 30, colors[0]) + stick(45, 50, 10, 30, colors[0]) + stick(70, 50, 10, 30, colors[0]) + stick(20, 85, 10, 30, colors[0]) + stick(45, 85, 10, 30, colors[0]) + stick(70, 85, 10, 30, colors[0]);
-    else if (val === '8') content = stick(25, 15, 10, 25, colors[0]) + stick(45, 15, 10, 25, colors[1]) + stick(65, 15, 10, 25, colors[0]) + stick(35, 45, 10, 25, colors[2]) + stick(55, 45, 10, 25, colors[2]) + stick(25, 75, 10, 25, colors[1]) + stick(45, 75, 10, 25, colors[0]) + stick(65, 75, 10, 25, colors[1]);
-    else if (val === '9') content = stick(20, 15, 10, 25, colors[1]) + stick(45, 15, 10, 25, colors[0]) + stick(70, 15, 10, 25, colors[2]) + stick(20, 45, 10, 25, colors[1]) + stick(45, 45, 10, 25, colors[0]) + stick(70, 45, 10, 25, colors[2]) + stick(20, 75, 10, 25, colors[1]) + stick(45, 75, 10, 25, colors[0]) + stick(70, 75, 10, 25, colors[2]);
-  } else if (suit === 'C') { // Characters
-    content = '<text x="50" y="50" font-size="45" text-anchor="middle" fill="#dc2626" font-weight="bold">'+val+'</text><text x="50" y="100" font-size="40" text-anchor="middle" fill="#1e293b" font-weight="bold">萬</text>';
-  } else if (kind === 'E') content = '<text x="50" y="75" font-size="60" text-anchor="middle" fill="#1e293b" font-weight="bold">東</text>';
-  else if (kind === 'S') content = '<text x="50" y="75" font-size="60" text-anchor="middle" fill="#1e293b" font-weight="bold">南</text>';
-  else if (kind === 'W') content = '<text x="50" y="75" font-size="60" text-anchor="middle" fill="#1e293b" font-weight="bold">西</text>';
-  else if (kind === 'N') content = '<text x="50" y="75" font-size="60" text-anchor="middle" fill="#1e293b" font-weight="bold">北</text>';
-  else if (kind === 'RD') content = '<text x="50" y="75" font-size="60" text-anchor="middle" fill="#dc2626" font-weight="bold">中</text>';
-  else if (kind === 'GD') content = '<text x="50" y="75" font-size="60" text-anchor="middle" fill="#059669" font-weight="bold">發</text>';
-  else if (kind === 'WD') content = '<rect x="20" y="25" width="60" height="70" fill="none" stroke="#1d4ed8" stroke-width="8" rx="4"/>';
-  else if (suit === 'F') content = '<text x="50" y="70" font-size="50" text-anchor="middle" fill="#c026d3">🌸</text><text x="50" y="105" font-size="25" text-anchor="middle" fill="#c026d3">'+val+'</text>';
-  else if (suit === 'S' && val.length === 1) content = '<text x="50" y="70" font-size="50" text-anchor="middle" fill="#0d9488">🍂</text><text x="50" y="105" font-size="25" text-anchor="middle" fill="#0d9488">'+val+'</text>';
+    if (val === '1') content = '<path d="M50 15 L85 95 L15 95 Z" fill="'+colors[0]+'" stroke="black" stroke-width="1"/><circle cx="50" cy="42" r="12" fill="'+colors[1]+'"/>'; // Simplified bird
+    else if (val === '2') content = stick(44, 18, 12, 38, colors[0]) + stick(44, 64, 12, 38, colors[1]);
+    else if (val === '3') content = stick(44, 18, 12, 38, colors[1]) + stick(22, 64, 12, 38, colors[0]) + stick(66, 64, 12, 38, colors[0]);
+    else if (val === '4') content = stick(22, 18, 12, 38, colors[0]) + stick(66, 18, 12, 38, colors[1]) + stick(22, 64, 12, 38, colors[1]) + stick(66, 64, 12, 38, colors[0]);
+    else if (val === '5') content = stick(18, 18, 12, 38, colors[0]) + stick(70, 18, 12, 38, colors[1]) + stick(44, 41, 12, 38, colors[2]) + stick(18, 64, 12, 38, colors[1]) + stick(70, 64, 12, 38, colors[0]);
+    else if (val === '6') content = stick(18, 18, 12, 38, colors[0]) + stick(44, 18, 12, 38, colors[0]) + stick(70, 18, 12, 38, colors[1]) + stick(18, 64, 12, 38, colors[1]) + stick(44, 64, 12, 38, colors[1]) + stick(70, 64, 12, 38, colors[1]);
+    else if (val === '7') content = stick(44, 12, 12, 32, colors[1]) + stick(18, 48, 12, 32, colors[0]) + stick(44, 48, 12, 32, colors[0]) + stick(70, 48, 12, 32, colors[0]) + stick(18, 84, 12, 32, colors[0]) + stick(44, 84, 12, 32, colors[0]) + stick(70, 84, 12, 32, colors[0]);
+    else if (val === '8') content = stick(22, 12, 12, 28, colors[0]) + stick(44, 12, 12, 28, colors[1]) + stick(66, 12, 12, 28, colors[0]) + stick(33, 44, 12, 28, colors[2]) + stick(55, 44, 12, 28, colors[2]) + stick(22, 76, 12, 28, colors[1]) + stick(44, 76, 12, 28, colors[0]) + stick(66, 76, 12, 28, colors[1]);
+    else if (val === '9') content = stick(18, 12, 12, 28, colors[1]) + stick(44, 12, 12, 28, colors[0]) + stick(70, 12, 12, 28, colors[2]) + stick(18, 44, 12, 28, colors[1]) + stick(44, 44, 12, 28, colors[0]) + stick(70, 44, 12, 28, colors[2]) + stick(18, 76, 12, 28, colors[1]) + stick(44, 76, 12, 28, colors[0]) + stick(70, 76, 12, 28, colors[2]);
+  } else   if (suit === 'C') { // Characters
+    content = '<text x="50" y="50" font-size="52" text-anchor="middle" fill="#dc2626" font-weight="bold">'+val+'</text><text x="50" y="105" font-size="48" text-anchor="middle" fill="#1e293b" font-weight="bold">萬</text>';
+  } else if (kind === 'E') content = '<text x="50" y="80" font-size="75" text-anchor="middle" fill="#1e293b" font-weight="bold">東</text>';
+  else if (kind === 'S') content = '<text x="50" y="80" font-size="75" text-anchor="middle" fill="#1e293b" font-weight="bold">南</text>';
+  else if (kind === 'W') content = '<text x="50" y="80" font-size="75" text-anchor="middle" fill="#1e293b" font-weight="bold">西</text>';
+  else if (kind === 'N') content = '<text x="50" y="80" font-size="75" text-anchor="middle" fill="#1e293b" font-weight="bold">北</text>';
+  else if (kind === 'RD') content = '<text x="50" y="80" font-size="75" text-anchor="middle" fill="#dc2626" font-weight="bold">中</text>';
+  else if (kind === 'GD') content = '<text x="50" y="80" font-size="75" text-anchor="middle" fill="#059669" font-weight="bold">發</text>';
+  else if (kind === 'WD') content = '<rect x="15" y="20" width="70" height="80" fill="none" stroke="#1d4ed8" stroke-width="10" rx="4"/>';
+  else if (suit === 'F') content = '<text x="50" y="75" font-size="65" text-anchor="middle" fill="#c026d3">🌸</text><text x="50" y="110" font-size="30" text-anchor="middle" fill="#c026d3">'+val+'</text>';
+  else if (suit === 'S' && val.length === 1) content = '<text x="50" y="75" font-size="65" text-anchor="middle" fill="#0d9488">🍂</text><text x="50" y="110" font-size="30" text-anchor="middle" fill="#0d9488">'+val+'</text>';
 
   return content ? start + content + end : null;
 }
@@ -1877,7 +1877,7 @@ function init() {
   }
 
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/sw.js?v=23').catch(function () {});
+    navigator.serviceWorker.register('/sw.js?v=25').catch(function () {});
   }
 }
 

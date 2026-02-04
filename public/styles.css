@@ -1544,6 +1544,9 @@ kbd {
     border-width: 2px;
     border-radius: 10px;
   }
+  .tile__svg-wrap {
+    padding: 6px;
+  }
 }
 @media (max-width: 400px) {
   .tile__kind {
@@ -1555,6 +1558,9 @@ kbd {
   }
   .tile {
     border-radius: 8px;
+  }
+  .tile__svg-wrap {
+    padding: 4px;
   }
 }
 
