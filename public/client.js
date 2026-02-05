@@ -1356,18 +1356,31 @@ function onTileClick(ev) {
     if (a) a.classList.add('tile--matched');
     if (b) b.classList.add('tile--matched');
     showMatchPopup(a, b, result.score, result.combo);
-    spawnParticles(a, b);
+    
+    // Get kind from element data or state
+    var kind = a ? a.dataset.kind : (tile ? tile.kind : null);
+    spawnParticles(a, b, kind);
     
     if (result.comboBroken) {
         showToast('Combo Lost!', 'info');
     } else if (result.combo > 1) {
         // Play higher pitch for higher combos
-        // Base freq 523 (C5). Add semitones.
         var semitones = Math.min((result.combo - 1) * 2, 12);
         var freq = 523 * Math.pow(2, semitones / 12);
         playTone(freq, 0.6, 'sine', 0.06);
         setTimeout(function() { playTone(freq * 1.5, 0.8, 'sine', 0.03); }, 100);
         if (result.combo >= 10) unlockAchievement('combo_master');
+        
+        // Screen shake for high combos
+        if (result.combo > 3) {
+            var board = $('board');
+            if (board) {
+                board.classList.remove('board--shake-small');
+                void board.offsetWidth; // Trigger reflow
+                board.classList.add('board--shake-small');
+                setTimeout(function() { board.classList.remove('board--shake-small'); }, 300);
+            }
+        }
     } else {
         playMatch();
     }
@@ -1651,12 +1664,34 @@ function getMatchMessage() {
   return MATCH_MESSAGES[Math.floor(Math.random() * MATCH_MESSAGES.length)];
 }
 
-function spawnParticles(elA, elB) {
+function spawnParticles(elA, elB, kind) {
   if (!elA && !elB) return;
   var board = $('board');
   if (!board) return;
   
   var rect = board.getBoundingClientRect();
+  
+  // Suit-specific colors
+  var colors = ['#fcd34d', '#fbbf24', '#f59e0b', '#d97706', '#ffffff', '#60a5fa', '#34d399']; // Default (Gold/Blue/Green mix)
+  
+  if (kind) {
+      var suit = kind[0];
+      if (suit === 'D') { // Dots (Blue/Red/Green)
+          colors = ['#3b82f6', '#2563eb', '#1d4ed8', '#ef4444', '#10b981']; 
+      } else if (suit === 'B') { // Bamboos (Green/Red)
+          colors = ['#10b981', '#059669', '#047857', '#ef4444', '#d1fae5'];
+      } else if (suit === 'C') { // Characters (Red/Black/Gold)
+          colors = ['#ef4444', '#dc2626', '#b91c1c', '#1f2937', '#fbbf24'];
+      } else if (suit === 'W' || suit === 'N' || suit === 'E' || suit === 'S') { // Winds (Orange/Blue/Grey)
+          colors = ['#f97316', '#ea580c', '#94a3b8', '#cbd5e1', '#ffffff'];
+      } else if (kind === 'RD' || kind === 'GD' || kind === 'WD') { // Dragons
+          if (kind === 'RD') colors = ['#ef4444', '#b91c1c', '#fee2e2', '#ffffff'];
+          if (kind === 'GD') colors = ['#10b981', '#047857', '#d1fae5', '#ffffff'];
+          if (kind === 'WD') colors = ['#3b82f6', '#1d4ed8', '#dbeafe', '#ffffff'];
+      } else if (suit === 'F' || suit === 'S') { // Flowers/Seasons (Pink/Teal/Gold)
+          colors = ['#d946ef', '#c026d3', '#2dd4bf', '#fbbf24', '#ffffff'];
+      }
+  }
   
   function spawnAt(el) {
     if (!el) return;
@@ -1664,9 +1699,7 @@ function spawnParticles(elA, elB) {
     var cx = r.left + r.width / 2 - rect.left;
     var cy = r.top + r.height / 2 - rect.top;
     
-    var colors = ['#fcd34d', '#fbbf24', '#f59e0b', '#d97706', '#ffffff', '#60a5fa', '#34d399'];
-    
-    for (var i = 0; i < 20; i++) {
+    for (var i = 0; i < 24; i++) {
       var p = document.createElement('div');
       p.className = 'particle';
       p.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
@@ -1681,8 +1714,8 @@ function spawnParticles(elA, elB) {
       p.style.top = cy + 'px';
       
       var angle = Math.random() * Math.PI * 2;
-      var velocity = Math.random() * 0.5 + 0.5;
-      var dist = (Math.random() * 80 + 40) * velocity;
+      var velocity = Math.random() * 0.6 + 0.6;
+      var dist = (Math.random() * 90 + 50) * velocity;
       var tx = Math.cos(angle) * dist;
       var ty = Math.sin(angle) * dist;
       var rot = (Math.random() * 360 - 180) + 'deg';
