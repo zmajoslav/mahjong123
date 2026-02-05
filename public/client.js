@@ -1137,11 +1137,21 @@ function renderBoardImpl(board) {
   Object.keys(existingTiles).forEach(function(id) {
       if (!activeIds.has(id)) {
           var el = existingTiles[id];
-          // If it's currently animating out, let it finish?
-          // The match logic handles its own removal visual? No, it just adds class.
-          // In the old code, board.innerHTML = '' nuked everything.
-          // So the 'tile--matched' elements were removed by renderBoard.
-          // If we want to keep that behavior:
+          
+          // PROTECTION: Don't remove selected tiles unless they're matched
+          if (selectedTileId === id && !el.classList.contains('tile--matched')) {
+              console.warn('[DEBUG] PREVENTED removal of selected tile:', id);
+              return; // Skip removal
+          }
+          
+          // DEBUG: Log unexpected tile removals
+          if (!el.classList.contains('tile--matched')) {
+              console.warn('[DEBUG] Removing tile that is NOT matched:', id, 'Classes:', el.className);
+              console.warn('[DEBUG] Game state tiles count:', tiles.length);
+              console.warn('[DEBUG] Active IDs:', Array.from(activeIds));
+              console.warn('[DEBUG] Selected tile ID:', selectedTileId);
+          }
+          
           el.remove();
       }
   });
@@ -1345,11 +1355,14 @@ function onTileClick(ev) {
   const tile = state.tiles.find(function (t) { return t.id === id; });
   if (!tile || !tile.free) return;
 
+  console.log('[DEBUG] Tile clicked - ID:', id, 'Selected:', selectedTileId, 'MatchInProgress:', matchInProgress);
+
   if (selectedTileId === null) {
     selectedTileId = id;
     playWoodClick();
     document.querySelectorAll('.tile--selected').forEach(function (e) { e.classList.remove('tile--selected'); });
     el.classList.add('tile--selected');
+    console.log('[DEBUG] First tile selected, state before:', game.getState().tiles.length, 'tiles');
     return;
   }
 
