@@ -2496,6 +2496,19 @@ select:focus-visible {
   animation: none !important; /* Stop all animations that might interfere */
 }
 
+/* CLICK FIX: Ensure tiles are always clickable and child elements don't interfere */
+.tile {
+  pointer-events: auto;
+  position: relative;
+}
+
+.tile__kind,
+.tile__svg-wrap,
+.tile__svg-wrap svg,
+.tile__svg-wrap * {
+  pointer-events: none !important;
+}
+
 /* === TOAST IMPROVEMENTS === */
 .toast {
   animation: toastSlideIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);

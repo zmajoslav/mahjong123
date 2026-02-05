@@ -1115,9 +1115,9 @@ function renderBoardImpl(board) {
         
         var svgContent = getTileSvg(t.kind);
         if (svgContent) {
-          el.innerHTML = '<div class="tile__svg-wrap">' + svgContent + '</div>';
+          el.innerHTML = '<div class="tile__svg-wrap" style="pointer-events: none;">' + svgContent + '</div>';
         } else {
-          el.innerHTML = '<span class="' + innerCls + '" title="' + escapeHtml(t.kind) + '">' + escapeHtml(sym) + '</span>';
+          el.innerHTML = '<span class="' + innerCls + '" title="' + escapeHtml(t.kind) + '" style="pointer-events: none;">' + escapeHtml(sym) + '</span>';
         }
     }
   });
@@ -1353,8 +1353,36 @@ function escapeHtml(s) {
 
 function onTileClick(ev) {
   if (!game || matchInProgress) return;
+  
+  // Enhanced click detection with debugging
+  console.log('[CLICK DEBUG] Click event:', ev.target, 'className:', ev.target.className);
   const el = ev.target.closest('.tile');
-  if (!el || !el.dataset.id) return;
+  
+  if (!el) {
+    console.warn('[CLICK DEBUG] No tile element found! Target:', ev.target);
+    console.warn('[CLICK DEBUG] Target parent:', ev.target.parentElement);
+    console.warn('[CLICK DEBUG] Target classList:', ev.target.classList ? Array.from(ev.target.classList) : 'no classList');
+    
+    // FALLBACK: Try to find tile element by walking up the DOM tree manually
+    var fallbackEl = ev.target;
+    while (fallbackEl && fallbackEl !== document.body) {
+      if (fallbackEl.classList && fallbackEl.classList.contains('tile') && fallbackEl.dataset.id) {
+        console.log('[CLICK DEBUG] FALLBACK: Found tile via manual traversal:', fallbackEl.dataset.id);
+        // Recursively call with corrected target
+        var correctedEvent = { target: fallbackEl };
+        return onTileClick(correctedEvent);
+      }
+      fallbackEl = fallbackEl.parentElement;
+    }
+    
+    console.warn('[CLICK DEBUG] FALLBACK: Still no tile found after manual traversal');
+    return;
+  }
+  
+  if (!el.dataset.id) {
+    console.warn('[CLICK DEBUG] Tile element has no data-id!', el);
+    return;
+  }
   const id = el.dataset.id;
   const state = game.getState();
   if (!state.tiles || state.tiles.length === 0) return;
