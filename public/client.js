@@ -256,16 +256,19 @@ function playWoodClick() {
 }
 
 function playMatch() {
-  // Satisfying major chord for matches
-  var roots = [261.63, 329.63, 392.00, 523.25]; // C4, E4, G4, C5
-  var root = roots[Math.floor(Math.random() * roots.length)];
+  // Ultra-peaceful low-frequency pentatonic notes
+  var notes = [261.63, 293.66, 329.63, 392.00, 440.00]; // C4, D4, E4, G4, A4 (one octave lower)
+  var n1 = notes[Math.floor(Math.random() * notes.length)];
   
-  // Play root
-  playTone(root, 0.4, 'sine', 0.08);
-  // Play major third slightly later
-  setTimeout(function() { playTone(root * 1.25, 0.4, 'sine', 0.06); }, 30);
-  // Play fifth slightly later
-  setTimeout(function() { playTone(root * 1.5, 0.5, 'sine', 0.04); }, 60);
+  // Single, long, ethereal note
+  playTone(n1, 2.5, 'sine', 0.06);
+  
+  // Occasional high harmonic
+  if (Math.random() > 0.5) {
+      setTimeout(function() {
+          playTone(n1 * 2, 3.0, 'sine', 0.02);
+      }, 200);
+  }
 }
 
 function playUndo() {
@@ -851,7 +854,7 @@ function updateUI() {
   var comboContainer = $('comboContainer');
   if (comboEl) {
     if (state.combo > 1) {
-        comboEl.innerHTML = '<span class="combo-text--pop">x' + state.combo + '</span>';
+        comboEl.textContent = 'x' + state.combo;
         comboEl.parentElement.classList.add('combo-container--active');
         if (comboContainer) comboContainer.classList.add('combo-container--active');
     } else {
@@ -944,6 +947,24 @@ function applyHintToDom(tileA, tileB, durationMs) {
     var b = boardEl.querySelector('[data-id="' + tileB + '"]');
     if (a) a.classList.add('tile--hint');
     if (b) b.classList.add('tile--hint');
+    
+    // Occasionally add special effects to hints
+    if (Math.random() < 0.4) { // 40% chance
+      if (a) addNeonGlow(a);
+      if (b) addNeonGlow(b);
+    }
+    
+    // Power-up icon for successful hint usage
+    if (a && b) {
+      var rectA = a.getBoundingClientRect();
+      var rectB = b.getBoundingClientRect();
+      var centerX = (rectA.left + rectA.width/2 + rectB.left + rectB.width/2) / 2;
+      var centerY = (rectA.top + rectA.height/2 + rectB.top + rectB.height/2) / 2;
+      
+      setTimeout(function() {
+        spawnPowerUpIcon(centerX - 15, centerY - 15, '💡', '#5eead4');
+      }, 500);
+    }
     
     setTimeout(function () {
       if (a) a.classList.remove('tile--hint');
@@ -1314,24 +1335,6 @@ function escapeHtml(s) {
     .replace(/"/g, '&quot;');
 }
 
-function clearHighlights() {
-  document.querySelectorAll('.tile--likely-match').forEach(function(el) {
-    el.classList.remove('tile--likely-match');
-  });
-}
-
-function highlightMatchingTiles(kind) {
-  if (!game) return;
-  var state = game.getState();
-  var matching = state.tiles.filter(function(t) {
-    return t.kind === kind && t.id !== selectedTileId && t.free;
-  });
-  matching.forEach(function(t) {
-    var el = document.querySelector('[data-id="' + t.id + '"]');
-    if (el) el.classList.add('tile--likely-match');
-  });
-}
-
 function onTileClick(ev) {
   if (!game || matchInProgress) return;
   const el = ev.target.closest('.tile');
@@ -1347,7 +1350,6 @@ function onTileClick(ev) {
     playWoodClick();
     document.querySelectorAll('.tile--selected').forEach(function (e) { e.classList.remove('tile--selected'); });
     el.classList.add('tile--selected');
-    highlightMatchingTiles(tile.kind);
     return;
   }
 
@@ -1355,13 +1357,11 @@ function onTileClick(ev) {
     selectedTileId = null;
     playWoodClick();
     el.classList.remove('tile--selected');
-    clearHighlights();
     return;
   }
 
   var result = game.match(selectedTileId, id);
   if (result.ok) {
-    clearHighlights();
     matchInProgress = true;
     playMatch();
     startAutoHintTimer();
@@ -1374,17 +1374,76 @@ function onTileClick(ev) {
     if (a) a.classList.add('tile--matched');
     if (b) b.classList.add('tile--matched');
     showMatchPopup(a, b, result.score, result.combo);
-    spawnParticles(a, b, a ? a.dataset.kind : null);
+    spawnParticles(a, b);
     
     if (result.comboBroken) {
         showToast('Combo Lost!', 'info');
     } else if (result.combo > 1) {
         // Play higher pitch for higher combos
+        // Base freq 523 (C5). Add semitones.
         var semitones = Math.min((result.combo - 1) * 2, 12);
         var freq = 523 * Math.pow(2, semitones / 12);
         playTone(freq, 0.6, 'sine', 0.06);
         setTimeout(function() { playTone(freq * 1.5, 0.8, 'sine', 0.03); }, 100);
         if (result.combo >= 10) unlockAchievement('combo_master');
+
+        // Enhanced visual effects for combos
+        var comboEl = $('comboDisplay');
+        if (comboEl && result.combo >= 5) {
+            comboEl.parentElement.classList.add('combo-text--rainbow');
+            setTimeout(function() {
+                if (comboEl.parentElement) {
+                    comboEl.parentElement.classList.remove('combo-text--rainbow');
+                }
+            }, 2000);
+        }
+
+        // Epic effects for mega combos
+        if (result.combo >= 15) {
+            triggerLightningStrike();
+            triggerScreenFlash();
+            var board = $('board');
+            if (board) {
+                var boardRect = board.getBoundingClientRect();
+                triggerFireworks(boardRect.left + boardRect.width / 2, boardRect.top + boardRect.height / 2);
+                spawnPowerUpIcon(
+                    boardRect.left + boardRect.width / 2 - 20,
+                    boardRect.top + boardRect.height / 2 - 20,
+                    '💫',
+                    '#ff0066'
+                );
+            }
+        } else if (result.combo >= 10) {
+            var board = $('board');
+            if (board) {
+                var boardRect = board.getBoundingClientRect();
+                triggerFireworks(boardRect.left + boardRect.width / 2, boardRect.top + boardRect.height / 2);
+                spawnPowerUpIcon(
+                    boardRect.left + boardRect.width / 2 - 20,
+                    boardRect.top + boardRect.height / 2 - 20,
+                    '⭐',
+                    '#fbbf24'
+                );
+            }
+        } else if (result.combo >= 7) {
+            var board = $('board');
+            if (board) {
+                var boardRect = board.getBoundingClientRect();
+                spawnPowerUpIcon(
+                    boardRect.left + boardRect.width / 2 - 20,
+                    boardRect.top + boardRect.height / 2 - 20,
+                    '✨',
+                    '#5eead4'
+                );
+            }
+        }
+
+        // Score multiplier display
+        if (result.combo >= 5) {
+            var centerX = window.innerWidth / 2;
+            var centerY = window.innerHeight / 2;
+            spawnScoreMultiplier(centerX - 30, centerY - 100, result.combo);
+        }
 
         // Screen shake for high combos
         if (result.combo > 3) {
@@ -1415,12 +1474,34 @@ function onTileClick(ev) {
   } else {
     selectedTileId = null;
     document.querySelectorAll('.tile--selected').forEach(function (e) { e.classList.remove('tile--selected'); });
-    clearHighlights();
   }
 }
 
 function showLevelCompleteThenModal(state) {
   playWin();
+  
+  // Trigger epic win celebration!
+  triggerEpicWin();
+  
+  // Immediate screen flash and lightning
+  setTimeout(function() {
+    triggerScreenFlash();
+    triggerLightningStrike();
+  }, 300);
+  
+  // More fireworks throughout the celebration
+  setTimeout(function() {
+    for (var i = 0; i < 8; i++) {
+      setTimeout(function() {
+        triggerFireworks(
+          Math.random() * window.innerWidth,
+          Math.random() * window.innerHeight,
+          ['#ff0066', '#ff6600', '#ffaa00', '#00ff00', '#0099ff', '#6600ff', '#c4b5fd', '#5eead4', '#fbbf24']
+        );
+      }, i * 300);
+    }
+  }, 1000);
+  
   var overlay = document.createElement('div');
   overlay.className = 'level-complete';
   overlay.setAttribute('aria-live', 'polite');
@@ -2172,6 +2253,186 @@ function init() {
     navigator.serviceWorker.register('/sw.js?v=29').catch(function () {});
   }
 }
+
+// ===================================
+// === NEW CATCHY EFFECT FUNCTIONS ===
+// ===================================
+
+function triggerFireworks(x, y, colors) {
+  colors = colors || ['#ff0066', '#ff6600', '#ffaa00', '#00ff00', '#0099ff', '#6600ff'];
+  
+  for (var i = 0; i < 6; i++) {
+    setTimeout(function(index) {
+      var firework = document.createElement('div');
+      firework.className = 'fireworks';
+      firework.style.left = (x + (Math.random() - 0.5) * 100) + 'px';
+      firework.style.top = (y + (Math.random() - 0.5) * 100) + 'px';
+      firework.style.background = colors[Math.floor(Math.random() * colors.length)];
+      firework.style.boxShadow = '0 0 20px ' + colors[Math.floor(Math.random() * colors.length)];
+      document.body.appendChild(firework);
+      
+      setTimeout(function() {
+        if (firework.parentNode) firework.parentNode.removeChild(firework);
+      }, 1200);
+    }, i * 150);
+  }
+}
+
+function triggerLightningStrike() {
+  var lightning = document.createElement('div');
+  lightning.className = 'lightning-strike';
+  lightning.style.left = (Math.random() * window.innerWidth) + 'px';
+  document.body.appendChild(lightning);
+  
+  setTimeout(function() {
+    if (lightning.parentNode) lightning.parentNode.removeChild(lightning);
+  }, 300);
+}
+
+function triggerScreenFlash() {
+  var flash = document.createElement('div');
+  flash.className = 'screen-flash';
+  document.body.appendChild(flash);
+  
+  setTimeout(function() {
+    if (flash.parentNode) flash.parentNode.removeChild(flash);
+  }, 500);
+}
+
+function spawnPowerUpIcon(x, y, icon, color) {
+  var powerUp = document.createElement('div');
+  powerUp.className = 'power-up-float';
+  powerUp.textContent = icon || '⚡';
+  powerUp.style.left = x + 'px';
+  powerUp.style.top = y + 'px';
+  powerUp.style.color = color || '#fbbf24';
+  document.body.appendChild(powerUp);
+  
+  setTimeout(function() {
+    if (powerUp.parentNode) powerUp.parentNode.removeChild(powerUp);
+  }, 2000);
+}
+
+function spawnScoreMultiplier(x, y, multiplier) {
+  var scoreEl = document.createElement('div');
+  scoreEl.className = 'score-multiplier';
+  scoreEl.textContent = 'x' + multiplier;
+  scoreEl.style.left = x + 'px';
+  scoreEl.style.top = y + 'px';
+  document.body.appendChild(scoreEl);
+  
+  setTimeout(function() {
+    if (scoreEl.parentNode) scoreEl.parentNode.removeChild(scoreEl);
+  }, 1500);
+}
+
+function triggerEpicWin() {
+  var epicWin = document.createElement('div');
+  epicWin.className = 'epic-win';
+  
+  var winText = document.createElement('div');
+  winText.style.fontSize = '4rem';
+  winText.style.fontWeight = '900';
+  winText.style.color = '#ffffff';
+  winText.style.textShadow = '0 0 30px rgba(255,255,255,0.8)';
+  winText.textContent = '🎉 EPIC WIN! 🎉';
+  winText.style.animation = 'rainbowShift 1s ease-in-out infinite';
+  
+  epicWin.appendChild(winText);
+  document.body.appendChild(epicWin);
+  
+  // Add extra fireworks
+  setTimeout(function() {
+    for (var i = 0; i < 10; i++) {
+      setTimeout(function() {
+        triggerFireworks(
+          Math.random() * window.innerWidth,
+          Math.random() * window.innerHeight,
+          ['#ff0066', '#ff6600', '#ffaa00', '#00ff00', '#0099ff', '#6600ff', '#c4b5fd', '#5eead4']
+        );
+      }, i * 200);
+    }
+  }, 500);
+  
+  setTimeout(function() {
+    if (epicWin.parentNode) epicWin.parentNode.removeChild(epicWin);
+  }, 3000);
+}
+
+function addMagneticEffect() {
+  var freeTiles = document.querySelectorAll('.tile--free');
+  var magneticTiles = [];
+  
+  // Add magnetic effect to random free tiles
+  for (var i = 0; i < Math.min(3, freeTiles.length); i++) {
+    var randomIndex = Math.floor(Math.random() * freeTiles.length);
+    var tile = freeTiles[randomIndex];
+    if (tile && !tile.classList.contains('tile--magnetic')) {
+      tile.classList.add('tile--magnetic');
+      magneticTiles.push(tile);
+    }
+  }
+  
+  // Remove magnetic effect after a while
+  setTimeout(function() {
+    magneticTiles.forEach(function(tile) {
+      if (tile) tile.classList.remove('tile--magnetic');
+    });
+  }, 3000);
+}
+
+function addNeonGlow(tile) {
+  if (tile) {
+    tile.classList.add('tile--neon');
+    setTimeout(function() {
+      if (tile) tile.classList.remove('tile--neon');
+    }, 5000);
+  }
+}
+
+function createMatrixRain() {
+  var matrixContainer = document.createElement('div');
+  matrixContainer.className = 'matrix-rain';
+  document.body.appendChild(matrixContainer);
+  
+  var chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
+  
+  for (var i = 0; i < 20; i++) {
+    setTimeout(function() {
+      var char = document.createElement('div');
+      char.className = 'matrix-char';
+      char.textContent = chars[Math.floor(Math.random() * chars.length)];
+      char.style.left = Math.random() * window.innerWidth + 'px';
+      char.style.animationDuration = (Math.random() * 3 + 2) + 's';
+      matrixContainer.appendChild(char);
+      
+      setTimeout(function() {
+        if (char.parentNode) char.parentNode.removeChild(char);
+      }, 5000);
+    }, i * 200);
+  }
+  
+  setTimeout(function() {
+    if (matrixContainer.parentNode) {
+      matrixContainer.parentNode.removeChild(matrixContainer);
+    }
+  }, 10000);
+}
+
+// Add magnetic effect periodically during gameplay
+setInterval(function() {
+  if (game && !matchInProgress) {
+    var state = game.getState();
+    if (state && !state.won && state.validMoves > 0) {
+      if (Math.random() < 0.3) { // 30% chance every 10 seconds
+        addMagneticEffect();
+      }
+      if (Math.random() < 0.1) { // 10% chance for matrix rain
+        createMatrixRain();
+      }
+    }
+  }
+}, 10000);
 
 (function bootstrap() {
   var landing = document.getElementById('landing');
