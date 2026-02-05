@@ -256,19 +256,16 @@ function playWoodClick() {
 }
 
 function playMatch() {
-  // Ultra-peaceful low-frequency pentatonic notes
-  var notes = [261.63, 293.66, 329.63, 392.00, 440.00]; // C4, D4, E4, G4, A4 (one octave lower)
-  var n1 = notes[Math.floor(Math.random() * notes.length)];
+  // Satisfying major chord for matches
+  var roots = [261.63, 329.63, 392.00, 523.25]; // C4, E4, G4, C5
+  var root = roots[Math.floor(Math.random() * roots.length)];
   
-  // Single, long, ethereal note
-  playTone(n1, 2.5, 'sine', 0.06);
-  
-  // Occasional high harmonic
-  if (Math.random() > 0.5) {
-      setTimeout(function() {
-          playTone(n1 * 2, 3.0, 'sine', 0.02);
-      }, 200);
-  }
+  // Play root
+  playTone(root, 0.4, 'sine', 0.08);
+  // Play major third slightly later
+  setTimeout(function() { playTone(root * 1.25, 0.4, 'sine', 0.06); }, 30);
+  // Play fifth slightly later
+  setTimeout(function() { playTone(root * 1.5, 0.5, 'sine', 0.04); }, 60);
 }
 
 function playUndo() {
@@ -854,7 +851,7 @@ function updateUI() {
   var comboContainer = $('comboContainer');
   if (comboEl) {
     if (state.combo > 1) {
-        comboEl.textContent = 'x' + state.combo;
+        comboEl.innerHTML = '<span class="combo-text--pop">x' + state.combo + '</span>';
         comboEl.parentElement.classList.add('combo-container--active');
         if (comboContainer) comboContainer.classList.add('combo-container--active');
     } else {
@@ -1317,6 +1314,24 @@ function escapeHtml(s) {
     .replace(/"/g, '&quot;');
 }
 
+function clearHighlights() {
+  document.querySelectorAll('.tile--likely-match').forEach(function(el) {
+    el.classList.remove('tile--likely-match');
+  });
+}
+
+function highlightMatchingTiles(kind) {
+  if (!game) return;
+  var state = game.getState();
+  var matching = state.tiles.filter(function(t) {
+    return t.kind === kind && t.id !== selectedTileId && t.free;
+  });
+  matching.forEach(function(t) {
+    var el = document.querySelector('[data-id="' + t.id + '"]');
+    if (el) el.classList.add('tile--likely-match');
+  });
+}
+
 function onTileClick(ev) {
   if (!game || matchInProgress) return;
   const el = ev.target.closest('.tile');
@@ -1332,6 +1347,7 @@ function onTileClick(ev) {
     playWoodClick();
     document.querySelectorAll('.tile--selected').forEach(function (e) { e.classList.remove('tile--selected'); });
     el.classList.add('tile--selected');
+    highlightMatchingTiles(tile.kind);
     return;
   }
 
@@ -1339,11 +1355,13 @@ function onTileClick(ev) {
     selectedTileId = null;
     playWoodClick();
     el.classList.remove('tile--selected');
+    clearHighlights();
     return;
   }
 
   var result = game.match(selectedTileId, id);
   if (result.ok) {
+    clearHighlights();
     matchInProgress = true;
     playMatch();
     startAutoHintTimer();
@@ -1356,10 +1374,7 @@ function onTileClick(ev) {
     if (a) a.classList.add('tile--matched');
     if (b) b.classList.add('tile--matched');
     showMatchPopup(a, b, result.score, result.combo);
-    
-    // Get kind from element data or state
-    var kind = a ? a.dataset.kind : (tile ? tile.kind : null);
-    spawnParticles(a, b, kind);
+    spawnParticles(a, b, a ? a.dataset.kind : null);
     
     if (result.comboBroken) {
         showToast('Combo Lost!', 'info');
@@ -1370,7 +1385,7 @@ function onTileClick(ev) {
         playTone(freq, 0.6, 'sine', 0.06);
         setTimeout(function() { playTone(freq * 1.5, 0.8, 'sine', 0.03); }, 100);
         if (result.combo >= 10) unlockAchievement('combo_master');
-        
+
         // Screen shake for high combos
         if (result.combo > 3) {
             var board = $('board');
@@ -1400,6 +1415,7 @@ function onTileClick(ev) {
   } else {
     selectedTileId = null;
     document.querySelectorAll('.tile--selected').forEach(function (e) { e.classList.remove('tile--selected'); });
+    clearHighlights();
   }
 }
 
@@ -1664,34 +1680,12 @@ function getMatchMessage() {
   return MATCH_MESSAGES[Math.floor(Math.random() * MATCH_MESSAGES.length)];
 }
 
-function spawnParticles(elA, elB, kind) {
+function spawnParticles(elA, elB) {
   if (!elA && !elB) return;
   var board = $('board');
   if (!board) return;
   
   var rect = board.getBoundingClientRect();
-  
-  // Suit-specific colors
-  var colors = ['#fcd34d', '#fbbf24', '#f59e0b', '#d97706', '#ffffff', '#60a5fa', '#34d399']; // Default (Gold/Blue/Green mix)
-  
-  if (kind) {
-      var suit = kind[0];
-      if (suit === 'D') { // Dots (Blue/Red/Green)
-          colors = ['#3b82f6', '#2563eb', '#1d4ed8', '#ef4444', '#10b981']; 
-      } else if (suit === 'B') { // Bamboos (Green/Red)
-          colors = ['#10b981', '#059669', '#047857', '#ef4444', '#d1fae5'];
-      } else if (suit === 'C') { // Characters (Red/Black/Gold)
-          colors = ['#ef4444', '#dc2626', '#b91c1c', '#1f2937', '#fbbf24'];
-      } else if (suit === 'W' || suit === 'N' || suit === 'E' || suit === 'S') { // Winds (Orange/Blue/Grey)
-          colors = ['#f97316', '#ea580c', '#94a3b8', '#cbd5e1', '#ffffff'];
-      } else if (kind === 'RD' || kind === 'GD' || kind === 'WD') { // Dragons
-          if (kind === 'RD') colors = ['#ef4444', '#b91c1c', '#fee2e2', '#ffffff'];
-          if (kind === 'GD') colors = ['#10b981', '#047857', '#d1fae5', '#ffffff'];
-          if (kind === 'WD') colors = ['#3b82f6', '#1d4ed8', '#dbeafe', '#ffffff'];
-      } else if (suit === 'F' || suit === 'S') { // Flowers/Seasons (Pink/Teal/Gold)
-          colors = ['#d946ef', '#c026d3', '#2dd4bf', '#fbbf24', '#ffffff'];
-      }
-  }
   
   function spawnAt(el) {
     if (!el) return;
@@ -1699,7 +1693,9 @@ function spawnParticles(elA, elB, kind) {
     var cx = r.left + r.width / 2 - rect.left;
     var cy = r.top + r.height / 2 - rect.top;
     
-    for (var i = 0; i < 24; i++) {
+    var colors = ['#fcd34d', '#fbbf24', '#f59e0b', '#d97706', '#ffffff', '#60a5fa', '#34d399'];
+    
+    for (var i = 0; i < 20; i++) {
       var p = document.createElement('div');
       p.className = 'particle';
       p.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
@@ -1714,8 +1710,8 @@ function spawnParticles(elA, elB, kind) {
       p.style.top = cy + 'px';
       
       var angle = Math.random() * Math.PI * 2;
-      var velocity = Math.random() * 0.6 + 0.6;
-      var dist = (Math.random() * 90 + 50) * velocity;
+      var velocity = Math.random() * 0.5 + 0.5;
+      var dist = (Math.random() * 80 + 40) * velocity;
       var tx = Math.cos(angle) * dist;
       var ty = Math.sin(angle) * dist;
       var rot = (Math.random() * 360 - 180) + 'deg';
