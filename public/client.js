@@ -483,23 +483,54 @@ function updateLayoutPreview() {
   var previewEl = $('layoutPreview');
   if (!previewEl) return;
   
-  var svg = '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">';
-  if (layout === 'turtle') {
-    svg += '<rect x="30" y="30" width="40" height="40" fill="var(--accent2)" opacity="0.6"/>';
-    svg += '<rect x="20" y="20" width="20" height="20" fill="var(--accent2)" opacity="0.4"/>';
-    svg += '<rect x="60" y="20" width="20" height="20" fill="var(--accent2)" opacity="0.4"/>';
-    svg += '<rect x="20" y="60" width="20" height="20" fill="var(--accent2)" opacity="0.4"/>';
-    svg += '<rect x="60" y="60" width="20" height="20" fill="var(--accent2)" opacity="0.4"/>';
-  } else if (layout === 'pyramid') {
-    svg += '<rect x="40" y="40" width="20" height="20" fill="var(--accent2)" opacity="0.8"/>';
-    svg += '<rect x="30" y="30" width="40" height="40" fill="var(--accent2)" opacity="0.5"/>';
-    svg += '<rect x="20" y="20" width="60" height="60" fill="var(--accent2)" opacity="0.2"/>';
-  } else if (layout === 'hard') {
-    svg += '<rect x="10" y="10" width="80" height="80" fill="var(--accent2)" opacity="0.3"/>';
-    svg += '<rect x="25" y="25" width="50" height="50" fill="var(--accent2)" opacity="0.6"/>';
-  } else {
-    svg += '<circle cx="50" cy="50" r="30" fill="var(--accent2)" opacity="0.5"/>';
+  var svg = '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: 100%; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));">';
+  var color = 'var(--accent2)';
+  
+  function drawRect(x, y, w, h, op) {
+    return '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" rx="2" fill="' + color + '" opacity="' + op + '" stroke="rgba(0,0,0,0.2)" stroke-width="0.5"/>';
   }
+
+  if (layout === 'supereasy') {
+    svg += drawRect(30, 30, 40, 40, 0.3);
+    svg += drawRect(35, 35, 30, 30, 0.6);
+    svg += drawRect(40, 40, 20, 20, 0.9);
+  } else if (layout === 'easy') {
+    svg += drawRect(20, 25, 60, 50, 0.3);
+    svg += drawRect(30, 35, 40, 30, 0.6);
+    svg += drawRect(40, 42, 20, 16, 0.9);
+  } else if (layout === 'turtle') {
+    svg += drawRect(20, 30, 60, 40, 0.2);
+    svg += drawRect(25, 25, 15, 15, 0.4);
+    svg += drawRect(60, 25, 15, 15, 0.4);
+    svg += drawRect(25, 60, 15, 15, 0.4);
+    svg += drawRect(60, 60, 15, 15, 0.4);
+    svg += drawRect(35, 35, 30, 30, 0.6);
+    svg += drawRect(42, 42, 16, 16, 0.9);
+  } else if (layout === 'pyramid') {
+    svg += drawRect(15, 15, 70, 70, 0.2);
+    svg += drawRect(25, 25, 50, 50, 0.4);
+    svg += drawRect(35, 35, 30, 30, 0.7);
+    svg += drawRect(45, 45, 10, 10, 1.0);
+  } else if (layout === 'hard') {
+    svg += drawRect(10, 10, 80, 80, 0.2);
+    svg += drawRect(20, 20, 60, 60, 0.4);
+    svg += drawRect(30, 30, 40, 40, 0.6);
+    svg += drawRect(40, 40, 20, 20, 0.9);
+  } else if (layout === 'fort') {
+    svg += drawRect(15, 15, 25, 25, 0.5);
+    svg += drawRect(60, 15, 25, 25, 0.5);
+    svg += drawRect(15, 60, 25, 25, 0.5);
+    svg += drawRect(60, 60, 25, 25, 0.5);
+    svg += drawRect(30, 30, 40, 40, 0.3);
+  } else if (layout === 'caterpillar') {
+    svg += drawRect(10, 40, 80, 20, 0.3);
+    svg += drawRect(20, 35, 15, 30, 0.6);
+    svg += drawRect(45, 35, 15, 30, 0.6);
+    svg += drawRect(70, 35, 15, 30, 0.6);
+  } else {
+    svg += drawRect(20, 20, 60, 60, 0.5);
+  }
+  
   svg += '</svg>';
   previewEl.innerHTML = svg;
 }
@@ -556,6 +587,9 @@ var ACHIEVEMENTS = [
   { id: 'speed_demon', name: 'Speed Demon', desc: 'Win in under 3 minutes', icon: '⚡' },
   { id: 'combo_master', name: 'Combo Master', desc: 'Reach a 10x combo', icon: '🔥' },
   { id: 'layout_explorer', name: 'Layout Explorer', desc: 'Win on 5 different layouts', icon: '🗺️' },
+  { id: 'zen_master', name: 'Zen Master', desc: 'Win without using any hints', icon: '🧘' },
+  { id: 'hard_core', name: 'Hard Core', desc: 'Win a game in Hard Mode', icon: '💀' },
+  { id: 'night_owl', name: 'Night Owl', desc: 'Win a game after midnight', icon: '🦉' },
 ];
 
 function loadAchievements() {
@@ -600,6 +634,8 @@ function recordGameStart(layout) {
   saveStats(stats);
 }
 
+var hintUsedInGame = false;
+
 function recordGameWin(layout, score, elapsed) {
   var stats = loadStats();
   stats.gamesWon = (stats.gamesWon || 0) + 1;
@@ -640,6 +676,14 @@ function recordGameWin(layout, score, elapsed) {
   
   var wonLayouts = Object.keys(stats.bestScore || {}).length;
   if (wonLayouts >= 5) unlockAchievement('layout_explorer');
+
+  if (!hintUsedInGame) unlockAchievement('zen_master');
+  
+  var hardMode = $('hardModeToggle') && $('hardModeToggle').checked;
+  if (hardMode) unlockAchievement('hard_core');
+
+  var hour = new Date().getHours();
+  if (hour >= 0 && hour < 5) unlockAchievement('night_owl');
   
   saveStats(stats);
 }
@@ -695,6 +739,7 @@ function getDailyChallengeLayout() {
 }
 
 function newGame(forceRandom) {
+  hintUsedInGame = false;
   if (pendingMatchTimeoutId != null) {
     clearTimeout(pendingMatchTimeoutId);
     pendingMatchTimeoutId = null;
@@ -713,11 +758,8 @@ function newGame(forceRandom) {
     currentLayout = getDailyChallengeLayout();
     seed = getDailyChallengeSeed();
   } else if (currentLayout === 'daily' && forceRandom) {
-    // If they click "New deal" in daily mode, give them a random version of today's layout
     currentLayout = getDailyChallengeLayout();
     seed = null; // Random
-    
-    // Optional: update selector to show they are no longer in the "official" daily challenge
     if (layoutSelector) {
       layoutSelector.value = currentLayout;
       updateLayoutPreview();
@@ -727,11 +769,56 @@ function newGame(forceRandom) {
   game = MahjongSolitaire.createGame(currentLayout, seed);
   selectedTileId = null;
   lastScore = 0;
+  
+  // Clear board to ensure 'enter' animation plays for new game
+  var board = $('board');
+  if (board) board.innerHTML = '';
+  
   startTimer();
   startAutoHintTimer();
+  startComboLoop();
   renderBoard();
   updateUI();
   requestAnimationFrame(centerStageView);
+}
+
+var comboLoopId = null;
+function startComboLoop() {
+  if (comboLoopId) cancelAnimationFrame(comboLoopId);
+  
+  function loop() {
+    if (!game) return;
+    var state = game.getState();
+    var comboBar = $('comboBar');
+    
+    if (comboBar) {
+      if (state.combo > 0) {
+        var now = Date.now();
+        // Calculate exact progress based on state (which is snapshot)?? 
+        // No, game.getState() returns snapshot. We need live time.
+        // We can't access internal lastMatchTime. 
+        // But state.comboTimeLeft is calculated at the moment of getState call.
+        // This loop runs 60fps. Calling getState() 60fps is cheap (it just filters array).
+        // Let's rely on updateUI for the "state" part, but here we can't easily animate smoothly 
+        // without knowing the "start time" of the combo.
+        // Solitaire engine doesn't expose match time directly.
+        // BUT, we can just use the state.comboTimeLeft from the frequent getState() call.
+        // It should be smooth enough if getState() uses Date.now().
+        
+        var pct = (state.comboTimeLeft / state.comboTotalTime) * 100;
+        comboBar.style.width = pct + '%';
+        
+        if (!comboBar.classList.contains('combo-bar--active')) {
+             comboBar.classList.add('combo-bar--active');
+        }
+      } else {
+        comboBar.style.width = '0%';
+        comboBar.classList.remove('combo-bar--active');
+      }
+    }
+    comboLoopId = requestAnimationFrame(loop);
+  }
+  loop();
 }
 
 function updateUI() {
@@ -762,9 +849,8 @@ function updateUI() {
     }
   }
   
-  // Update Combo UI
+  // Update Combo Text (Bar handled in loop)
   var comboEl = $('comboCount');
-  var comboBar = $('comboBar');
   var comboContainer = $('comboContainer');
   if (comboEl) {
     if (state.combo > 1) {
@@ -776,10 +862,6 @@ function updateUI() {
         comboEl.parentElement.classList.remove('combo-container--active');
         if (comboContainer) comboContainer.classList.remove('combo-container--active');
     }
-  }
-  if (comboBar) {
-    var pct = state.combo > 0 ? (state.comboTimeLeft / state.comboTotalTime) * 100 : 0;
-    comboBar.style.width = pct + '%';
   }
 
   if (state.won) lastScore = 0;
@@ -808,6 +890,7 @@ function updateUI() {
   if (state.won) {
     stopTimer();
     clearAutoHint();
+    if (comboLoopId) cancelAnimationFrame(comboLoopId);
     if (!winHandledForGame) {
       winHandledForGame = true;
       recordGameWin(currentLayout, state.score, state.elapsed);
@@ -844,28 +927,26 @@ function applyHintToDom(tileA, tileB, durationMs) {
   durationMs = durationMs || 1200;
   var boardEl = $('board');
   if (!boardEl) return;
-  requestAnimationFrame(function () {
-    requestAnimationFrame(function () {
-      if (!game) return;
-      var state = game.getState();
-      var tileAState = state.tiles.filter(function (t) { return t.id === tileA; })[0];
-      var tileBState = state.tiles.filter(function (t) { return t.id === tileB; })[0];
-      if (!tileAState || !tileBState || tileAState.kind !== tileBState.kind || !tileAState.free || !tileBState.free) {
-        return;
-      }
-      var a = boardEl.querySelector('[data-id="' + tileA + '"]');
-      var b = boardEl.querySelector('[data-id="' + tileB + '"]');
-      if (a && b) {
-        a.classList.add('tile--hint');
-        b.classList.add('tile--hint');
-        setTimeout(function () {
-          a.classList.remove('tile--hint');
-          b.classList.remove('tile--hint');
-        }, durationMs);
-      }
-    });
-  });
+  // Use a slight delay to ensure renderBoard has finished if called just before
+  setTimeout(function () {
+    if (!game) return;
+    var state = game.getState();
+    var tileAState = state.tiles.find(function (t) { return t.id === tileA; });
+    var tileBState = state.tiles.find(function (t) { return t.id === tileB; });
+    if (!tileAState || !tileBState) return;
+    
+    var a = boardEl.querySelector('[data-id="' + tileA + '"]');
+    var b = boardEl.querySelector('[data-id="' + tileB + '"]');
+    if (a) a.classList.add('tile--hint');
+    if (b) b.classList.add('tile--hint');
+    
+    setTimeout(function () {
+      if (a) a.classList.remove('tile--hint');
+      if (b) b.classList.remove('tile--hint');
+    }, durationMs);
+  }, 50);
 }
+
 function getTileDimensions(isLevel1) {
   var w = window.innerWidth;
   if (w <= 400) return { w: isLevel1 ? 64 : 54, h: isLevel1 ? 78 : 64 };
@@ -878,16 +959,17 @@ function renderBoardImpl(board) {
   if (!game) return;
   var state = game.getState();
   var tiles = state.tiles;
-  if (!tiles || tiles.length === 0) return;
+  if (!tiles) return;
+
   var highlightCb = $('highlightPlayableTop') || $('highlightPlayable');
-  if (highlightCb && highlightCb.checked) {
+  var isHighlight = highlightCb && highlightCb.checked;
+  if (isHighlight) {
     board.classList.add('board--highlight-playable');
   } else {
     board.classList.remove('board--highlight-playable');
   }
 
   const maxLayer = Math.max.apply(null, tiles.map(function (t) { return t.layer; })) || 0;
-
   var isLevel1 = currentLayout === 'supereasy';
   var dims = getTileDimensions(isLevel1);
   var tileW = dims.w;
@@ -895,70 +977,155 @@ function renderBoardImpl(board) {
   var layerOffsetX = 0;
   var layerOffsetY = Math.round(-tileH * 0.04);
 
-  var fullBoardCount = (LAYOUT_PAIRS[currentLayout] || 36) * 2;
-  var isNewGame = tiles.length === fullBoardCount;
-  var minTop = Math.min.apply(null, tiles.map(function (t) { return t.row * tileH + t.layer * layerOffsetY; }));
-  var minLeft = Math.min.apply(null, tiles.map(function (t) { return t.col * tileW + t.layer * layerOffsetX; }));
+  // Calculate board bounds based on the FULL layout to prevent zooming/jitter as tiles are removed
+  var fullLayout = MahjongSolitaire.getLayout(currentLayout);
+  var minTop = 9999, minLeft = 9999, maxRight = -9999, maxBottom = -9999;
+  
+  if (fullLayout && fullLayout.length > 0) {
+      fullLayout.forEach(function(p) {
+          // p is [layer, row, col]
+          var top = p[1] * tileH + p[0] * layerOffsetY;
+          var left = p[2] * tileW + p[0] * layerOffsetX;
+          if (top < minTop) minTop = top;
+          if (left < minLeft) minLeft = left;
+          if (left + tileW > maxRight) maxRight = left + tileW;
+          if (top + tileH > maxBottom) maxBottom = top + tileH;
+      });
+  } else {
+      // Fallback to current tiles if layout fetch fails
+      if (tiles.length > 0) {
+        tiles.forEach(function (t) {
+            var top = t.row * tileH + t.layer * layerOffsetY;
+            var left = t.col * tileW + t.layer * layerOffsetX;
+            if (top < minTop) minTop = top;
+            if (left < minLeft) minLeft = left;
+            if (left + tileW > maxRight) maxRight = left + tileW;
+            if (top + tileH > maxBottom) maxBottom = top + tileH;
+        });
+      } else {
+          minTop = 0; minLeft = 0; maxRight = 0; maxBottom = 0;
+      }
+  }
+  
   var offsetY = minTop < 0 ? -minTop : 0;
   var offsetX = minLeft < 0 ? -minLeft : 0;
 
-  var fragment = document.createDocumentFragment();
+  // DOM Diffing to prevent blinking
+  var existingTiles = {};
+  var children = Array.from(board.children);
+  children.forEach(function(el) {
+      if (el.classList.contains('tile') && el.dataset.id) {
+          existingTiles[el.dataset.id] = el;
+      }
+  });
+
+  var activeIds = new Set();
+  var fullBoardCount = (LAYOUT_PAIRS[currentLayout] || 36) * 2;
+  var isNewGame = tiles.length === fullBoardCount && children.length === 0;
+
   tiles.forEach(function (t, i) {
-    var el = document.createElement('div');
+    activeIds.add(t.id);
+    var el = existingTiles[t.id];
+    var isNew = false;
+    
+    if (!el) {
+        el = document.createElement('div');
+        el.dataset.id = t.id;
+        el.addEventListener('click', onTileClick);
+        board.appendChild(el);
+        isNew = true;
+    }
+
     var suitCls = tileSuitClass(t.kind);
     var isTopLayer = t.layer === maxLayer;
     var layerClass = ' tile--layer-' + t.layer;
-    el.className = 'tile ' + (t.free ? 'tile--free' : 'tile--blocked') + (isNewGame ? ' tile--enter' : '') + (suitCls ? ' ' + suitCls + '-tile' : '') + (isLevel1 ? ' tile--level1' : '') + (isTopLayer ? ' tile--top-layer' : '') + layerClass;
-    el.dataset.id = t.id;
+    
+    // Efficient class updates
+    var cls = 'tile';
+    if (t.free) cls += ' tile--free';
+    else cls += ' tile--blocked';
+    
+    if (isNewGame) cls += ' tile--enter';
+    if (suitCls) cls += ' ' + suitCls + '-tile';
+    if (isLevel1) cls += ' tile--level1';
+    if (isTopLayer) cls += ' tile--top-layer';
+    cls += layerClass;
+    
+    if (selectedTileId === t.id) cls += ' tile--selected';
+    
+    // Preserve hint class if it exists (transient UI state)
+    if (el.classList.contains('tile--hint')) cls += ' tile--hint';
+    
+    if (el.className !== cls) el.className = cls;
+
     el.dataset.layer = t.layer;
-    el.style.width = tileW + 'px';
-    el.style.height = tileH + 'px';
+    
+    var left = (t.col * tileW + t.layer * layerOffsetX + offsetX) + 'px';
+    var top = (t.row * tileH + t.layer * layerOffsetY + offsetY) + 'px';
+    
+    if (el.style.left !== left) el.style.left = left;
+    if (el.style.top !== top) el.style.top = top;
+    
+    if (el.style.width !== tileW + 'px') el.style.width = tileW + 'px';
+    if (el.style.height !== tileH + 'px') el.style.height = tileH + 'px';
+    
     if (isNewGame) el.style.animationDelay = Math.min(i * 4, 280) + 'ms';
-    el.style.left = (t.col * tileW + t.layer * layerOffsetX + offsetX) + 'px';
-    el.style.top = (t.row * tileH + t.layer * layerOffsetY + offsetY) + 'px';
+    else el.style.animationDelay = '';
+
     var layerStep = 10000;
     var rowStep = 100;
     var colStep = 1;
     var freeBoost = 50;
     var baseZ = (t.layer * layerStep) + (t.row * rowStep) + (t.col * colStep);
-    el.style.zIndex = baseZ + (t.free ? freeBoost : 0);
-    var sym = tileSymbol(t.kind);
-    var cls = sym !== t.kind ? 'tile__kind' : 'tile__kind tile__kind--fallback';
-    var suitCls = tileSuitClass(t.kind);
-    if (suitCls) cls += ' ' + suitCls;
-    
-    // Use SVG for tile faces
-    var svgContent = getTileSvg(t.kind);
-    if (svgContent) {
-      el.innerHTML = '<div class="tile__svg-wrap">' + svgContent + '</div>';
-    } else {
-      el.innerHTML = '<span class="' + cls + '" title="' + escapeHtml(t.kind) + '">' + escapeHtml(sym) + '</span>';
+    var z = baseZ + (t.free ? freeBoost : 0);
+    if (el.style.zIndex != z) el.style.zIndex = z;
+
+    // Only update content if kind changed (e.g. shuffle)
+    if (el.dataset.kind !== t.kind) {
+        el.dataset.kind = t.kind;
+        var sym = tileSymbol(t.kind);
+        var innerCls = sym !== t.kind ? 'tile__kind' : 'tile__kind tile__kind--fallback';
+        if (suitCls) innerCls += ' ' + suitCls;
+        
+        var svgContent = getTileSvg(t.kind);
+        if (svgContent) {
+          el.innerHTML = '<div class="tile__svg-wrap">' + svgContent + '</div>';
+        } else {
+          el.innerHTML = '<span class="' + innerCls + '" title="' + escapeHtml(t.kind) + '">' + escapeHtml(sym) + '</span>';
+        }
     }
-    
-    el.addEventListener('click', onTileClick);
-    fragment.appendChild(el);
   });
 
-  var maxRight = Math.max.apply(null, tiles.map(function (t) {
-    return t.col * tileW + t.layer * layerOffsetX + tileW;
-  }));
-  var maxBottom = Math.max.apply(null, tiles.map(function (t) {
-    return t.row * tileH + t.layer * layerOffsetY + tileH;
-  }));
+  // Remove tiles that are no longer in state
+  // But wait! If we just matched them, we want them to animate out.
+  // The 'tile--matched' class is added in 'onTileClick' -> 'game.match'.
+  // Those elements are still in DOM but not in state.tiles.
+  // We should only remove them if they don't have 'tile--matched' or if they've been there too long?
+  // Actually, 'tile--matched' animation takes 0.22s.
+  // If we remove them immediately here, the animation is cut short.
+  // BUT: renderBoard is called 260ms AFTER match (pendingMatchTimeoutId).
+  // So by the time renderBoard runs, the animation should be done.
+  // HOWEVER, for 'shuffle' or 'undo', tiles might disappear/reappear differently.
+  // Let's safe-remove.
+  
+  Object.keys(existingTiles).forEach(function(id) {
+      if (!activeIds.has(id)) {
+          var el = existingTiles[id];
+          // If it's currently animating out, let it finish?
+          // The match logic handles its own removal visual? No, it just adds class.
+          // In the old code, board.innerHTML = '' nuked everything.
+          // So the 'tile--matched' elements were removed by renderBoard.
+          // If we want to keep that behavior:
+          el.remove();
+      }
+  });
+
   var w = Math.ceil(maxRight - minLeft + 16);
   var h = Math.ceil(maxBottom - minTop + 32);
   board.style.width = w + 'px';
   board.style.height = h + 'px';
 
-  if (board.replaceChildren) {
-    board.replaceChildren(fragment);
-  } else {
-    board.innerHTML = '';
-    while (fragment.firstChild) {
-      board.appendChild(fragment.firstChild);
-    }
-  }
-
+  // Only scale if dimensions changed significantly to avoid jitter
   requestAnimationFrame(function () {
     scaleToFit();
   });
@@ -1233,11 +1400,37 @@ function showLevelCompleteThenModal(state) {
   }, 1500);
 }
 
+function getRank(score, elapsed, layout) {
+  var baseTime = 300; // 5 mins
+  if (layout === 'supereasy') baseTime = 60;
+  if (layout === 'easy') baseTime = 120;
+  
+  if (elapsed < baseTime * 0.5) return { label: 'S', color: '#fbbf24', desc: 'Divine Master' };
+  if (elapsed < baseTime * 0.8) return { label: 'A', color: '#f87171', desc: 'Grandmaster' };
+  if (elapsed < baseTime * 1.2) return { label: 'B', color: '#a78bfa', desc: 'Expert' };
+  if (elapsed < baseTime * 2.0) return { label: 'C', color: '#60a5fa', desc: 'Skilled' };
+  return { label: 'D', color: '#94a3b8', desc: 'Apprentice' };
+}
+
 function showWinModal(state) {
   announce('You won! Score: ' + state.score + '. Time: ' + formatTime(state.elapsed));
   trackEvent('game_won', { score: state.score, time: state.elapsed, layout: currentLayout });
+  
+  var hardMode = $('hardModeToggle') && $('hardModeToggle').checked;
+  var finalScore = state.score;
+  if (hardMode) finalScore = Math.floor(finalScore * 1.5);
+
+  var rank = getRank(finalScore, state.elapsed, currentLayout);
+  recordGameWin(currentLayout, finalScore, state.elapsed);
+
   var bodyHtml = '<div class="win-summary">';
-  bodyHtml += '<p class="win-summary__score">🌟 Score: <strong>' + state.score + '</strong></p>';
+  
+  bodyHtml += '<div class="win-rank" style="text-align: center; margin-bottom: 20px;">';
+  bodyHtml += '<div style="font-size: 4rem; font-weight: 900; color: ' + rank.color + '; text-shadow: 0 0 20px ' + rank.color + '44;">' + rank.label + '</div>';
+  bodyHtml += '<div style="font-size: 1.2rem; font-weight: bold; color: ' + rank.color + '; margin-top: -5px;">' + rank.desc + '</div>';
+  bodyHtml += '</div>';
+
+  bodyHtml += '<p class="win-summary__score">🌟 Score: <strong>' + finalScore + '</strong>' + (hardMode ? ' <small style="color:var(--accent2)">(+50% Hard Mode Bonus!)</small>' : '') + '</p>';
   bodyHtml += '<p class="win-summary__time">⏱ Time: <strong>' + formatTime(state.elapsed) + '</strong></p>';
   var t = typeof window.t === 'function' ? window.t : function (k) { return k; };
   bodyHtml += '<p class="win-summary__cheer">' + (t('win.cheer') || 'You cleared all the tiles! You\'re a star!') + ' ⭐</p>';
@@ -1263,23 +1456,23 @@ function showWinModal(state) {
   $('modalTitle').innerHTML = '<span class="modal__title-icon">🏆</span> Amazing! You did it! 🎉';
   $('modalBody').innerHTML = bodyHtml;
   var modalEl = $('modalBackdrop').querySelector('.modal');
-  var confetti = $('confetti');
   if (modalEl) modalEl.classList.add('modal--win');
   trapFocusInModal();
-  if (confetti) {
-    confetti.innerHTML = '';
-    var colors = ['#22d3ee', '#a78bfa', '#4ade80', '#fde047', '#fb7185'];
-    for (var i = 0; i < 40; i++) {
-      var p = document.createElement('div');
-      p.className = 'confetti__particle';
-      p.style.left = Math.random() * 100 + '%';
-      p.style.animationDelay = (Math.random() * 0.5) + 's';
-      p.style.background = colors[Math.floor(Math.random() * colors.length)];
-      p.style.transform = 'rotate(' + (Math.random() * 360) + 'deg)';
-      confetti.appendChild(p);
+  
+  // Denser confetti using the library
+  if (typeof confetti === 'function') {
+    for (var i = 0; i < 5; i++) {
+      setTimeout(function() {
+        confetti({
+          particleCount: 100,
+          spread: 80,
+          origin: { y: 0.6 },
+          colors: [rank.color, '#ffffff', '#ff0000', '#00ff00', '#0000ff']
+        });
+      }, i * 300);
     }
-    confetti.classList.add('confetti--active');
   }
+  
   $('modalBackdrop').classList.remove('hidden');
 
   // Pre-fill name from localStorage if available
@@ -1629,8 +1822,53 @@ function applyTheme(theme) {
   }
 }
 
+function updateZenMode() {
+  var isZen = localStorage.getItem('zenMode') === 'true';
+  var stats = document.querySelectorAll('.stat--timer, .stat--score, .stat--combo');
+  var comboContainer = document.getElementById('comboContainer');
+  
+  stats.forEach(function(el) {
+    if (isZen) {
+      el.style.display = 'none';
+    } else {
+      el.style.display = '';
+    }
+  });
+  
+  if (comboContainer) {
+      comboContainer.style.display = isZen ? 'none' : '';
+  }
+}
+
+function applyTheme() {
+  var theme = localStorage.getItem('mahjongTheme') || 'dark';
+  document.documentElement.setAttribute('data-theme', theme);
+  var sel = $('themeSelect');
+  if (sel) sel.value = theme;
+}
+
 function init() {
   applyTheme();
+
+  var zenModeToggle = $('zenModeToggle');
+  if (zenModeToggle) {
+    zenModeToggle.checked = localStorage.getItem('zenMode') === 'true';
+    zenModeToggle.addEventListener('change', function() {
+      localStorage.setItem('zenMode', this.checked);
+      updateZenMode();
+    });
+    updateZenMode();
+  }
+
+  var themeSelect = $('themeSelect');
+  if (themeSelect) {
+    themeSelect.addEventListener('change', function() {
+      var newTheme = this.value;
+      localStorage.setItem('mahjongTheme', newTheme);
+      document.documentElement.setAttribute('data-theme', newTheme);
+      showToast('Theme updated to ' + this.options[this.selectedIndex].text, 'info');
+    });
+  }
 
   var landing = $('landing');
   var gameWrap = $('gameWrap');
@@ -1766,6 +2004,7 @@ function init() {
     }
 
     startAutoHintTimer();
+    hintUsedInGame = true;
     var r = game.hint();
     if (r.ok) {
       playHint();

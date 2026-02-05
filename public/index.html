@@ -362,6 +362,30 @@
       <button class="sidebar__close" id="sidebarClose" type="button" aria-label="Close sidebar">✕ Close</button>
       <section class="panel">
         <div class="panel__header">
+          <h2><span class="panel__icon">🎨</span> Appearance</h2>
+        </div>
+        <div class="field">
+          <label class="field__label" for="themeSelect">Background Theme</label>
+          <select class="field__input field__select" id="themeSelect">
+            <option value="dark">Midnight Zen (Dark)</option>
+            <option value="wood">Classic Dojo (Wood)</option>
+            <option value="garden">Imperial Garden (Green)</option>
+            <option value="temple">Ancient Temple (Red)</option>
+          </select>
+        </div>
+      </section>
+
+        <div class="field">
+          <label class="top-nav__toggle" aria-label="Zen Mode (Hide timer & score)">
+            <input type="checkbox" id="zenModeToggle">
+            <span class="toggle-track"></span>
+            <span class="toggle-label">Zen Mode</span>
+          </label>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel__header">
           <h2><span class="panel__icon">❓</span> Help</h2>
         </div>
         <div class="menu-item">
@@ -460,6 +484,7 @@
 
   <script src="/i18n/strings.js" defer></script>
   <script src="/solitaire-engine.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <script src="/client.js" defer></script>
 </body>
 </html>
