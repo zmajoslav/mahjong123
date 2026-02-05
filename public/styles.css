@@ -2488,11 +2488,12 @@ select:focus-visible {
   transition: transform 0.2s ease, filter 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* PROTECTION: Ensure selected tiles are always visible */
+/* PROTECTION: Ensure selected tiles are always visible and override animations */
 .tile--selected {
   opacity: 1 !important;
   display: block !important;
   visibility: visible !important;
+  animation: none !important; /* Stop all animations that might interfere */
 }
 
 /* === TOAST IMPROVEMENTS === */

@@ -1368,7 +1368,14 @@ function onTileClick(ev) {
     playWoodClick();
     document.querySelectorAll('.tile--selected').forEach(function (e) { e.classList.remove('tile--selected'); });
     el.classList.add('tile--selected');
-    // Debug logging removed - bug fixed!
+    
+    // CRITICAL FIX: Remove animation classes that interfere with selection visibility
+    el.classList.remove('tile--enter');
+    
+    // Ensure tile is definitely visible
+    el.style.opacity = '1';
+    el.style.visibility = 'visible';
+    el.style.display = 'block';
     
     return;
   }
@@ -1377,6 +1384,12 @@ function onTileClick(ev) {
     selectedTileId = null;
     playWoodClick();
     el.classList.remove('tile--selected');
+    
+    // Reset any forced styles when deselecting
+    el.style.opacity = '';
+    el.style.visibility = '';
+    el.style.display = '';
+    
     return;
   }
 
