@@ -1138,9 +1138,15 @@ function renderBoardImpl(board) {
       if (!activeIds.has(id)) {
           var el = existingTiles[id];
           
-          // PROTECTION: Don't remove selected tiles unless they're matched
+          // STRONG PROTECTION: Don't remove selected tiles unless they're matched
           if (selectedTileId === id && !el.classList.contains('tile--matched')) {
               console.warn('[DEBUG] PREVENTED removal of selected tile:', id);
+              return; // Skip removal
+          }
+          
+          // EXTRA PROTECTION: Don't remove tiles that have the selected class
+          if (el.classList.contains('tile--selected') && !el.classList.contains('tile--matched')) {
+              console.warn('[DEBUG] PREVENTED removal of visually selected tile:', id);
               return; // Skip removal
           }
           
@@ -1356,6 +1362,8 @@ function onTileClick(ev) {
   if (!tile || !tile.free) return;
 
   console.log('[DEBUG] Tile clicked - ID:', id, 'Selected:', selectedTileId, 'MatchInProgress:', matchInProgress);
+  console.log('[DEBUG] Tile element classes before:', el.className);
+  console.log('[DEBUG] Tile element style before:', el.style.cssText);
 
   if (selectedTileId === null) {
     selectedTileId = id;
@@ -1363,6 +1371,22 @@ function onTileClick(ev) {
     document.querySelectorAll('.tile--selected').forEach(function (e) { e.classList.remove('tile--selected'); });
     el.classList.add('tile--selected');
     console.log('[DEBUG] First tile selected, state before:', game.getState().tiles.length, 'tiles');
+    console.log('[DEBUG] Tile element classes after selection:', el.className);
+    console.log('[DEBUG] Tile element style after selection:', el.style.cssText);
+    
+    // Check if tile is visible after selection
+    setTimeout(function() {
+      var checkEl = document.querySelector('[data-id="' + id + '"]');
+      if (!checkEl) {
+        console.error('[DEBUG] TILE DISAPPEARED! ID:', id);
+      } else {
+        console.log('[DEBUG] Tile still exists after 100ms. Classes:', checkEl.className);
+        console.log('[DEBUG] Computed style display:', window.getComputedStyle(checkEl).display);
+        console.log('[DEBUG] Computed style opacity:', window.getComputedStyle(checkEl).opacity);
+        console.log('[DEBUG] Computed style visibility:', window.getComputedStyle(checkEl).visibility);
+      }
+    }, 100);
+    
     return;
   }
 
