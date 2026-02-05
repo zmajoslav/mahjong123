@@ -2363,11 +2363,15 @@ function addMagneticEffect() {
   var freeTiles = document.querySelectorAll('.tile--free');
   var magneticTiles = [];
   
-  // Add magnetic effect to random free tiles
+  // Add magnetic effect to random free tiles (avoid selected or hinted tiles)
   for (var i = 0; i < Math.min(3, freeTiles.length); i++) {
     var randomIndex = Math.floor(Math.random() * freeTiles.length);
     var tile = freeTiles[randomIndex];
-    if (tile && !tile.classList.contains('tile--magnetic')) {
+    if (tile && 
+        !tile.classList.contains('tile--magnetic') && 
+        !tile.classList.contains('tile--selected') &&
+        !tile.classList.contains('tile--hint') &&
+        !tile.matches(':hover')) {
       tile.classList.add('tile--magnetic');
       magneticTiles.push(tile);
     }
@@ -2376,7 +2380,9 @@ function addMagneticEffect() {
   // Remove magnetic effect after a while
   setTimeout(function() {
     magneticTiles.forEach(function(tile) {
-      if (tile) tile.classList.remove('tile--magnetic');
+      if (tile && !tile.matches(':hover')) {
+        tile.classList.remove('tile--magnetic');
+      }
     });
   }, 3000);
 }
@@ -2419,20 +2425,20 @@ function createMatrixRain() {
   }, 10000);
 }
 
-// Add magnetic effect periodically during gameplay
+// Add magnetic effect periodically during gameplay (less frequent to avoid interference)
 setInterval(function() {
-  if (game && !matchInProgress) {
+  if (game && !matchInProgress && !selectedTileId) { // Don't interfere when player is active
     var state = game.getState();
     if (state && !state.won && state.validMoves > 0) {
-      if (Math.random() < 0.3) { // 30% chance every 10 seconds
+      if (Math.random() < 0.15) { // 15% chance every 15 seconds (reduced frequency)
         addMagneticEffect();
       }
-      if (Math.random() < 0.1) { // 10% chance for matrix rain
+      if (Math.random() < 0.05) { // 5% chance for matrix rain (reduced frequency)
         createMatrixRain();
       }
     }
   }
-}, 10000);
+}, 15000); // Increased interval to 15 seconds
 
 (function bootstrap() {
   var landing = document.getElementById('landing');
