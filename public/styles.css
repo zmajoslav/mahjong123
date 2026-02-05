@@ -1209,12 +1209,12 @@ kbd {
     0 17px 0 1px var(--accent2Dark),
     0 20px 20px rgba(0, 0, 0, 0.5),
     0 0 20px var(--accent2Glow);
-  z-index: 1001 !important;
+  z-index: 100000 !important;
 }
 
 .tile--hint {
   animation: tile-hint-pulse 1s infinite alternate;
-  z-index: 1002 !important;
+  z-index: 100001 !important;
 }
 
 @keyframes tile-hint-pulse {
@@ -1426,7 +1426,7 @@ kbd {
 .tile--selected {
   outline: 4px solid #fde047;
   outline-offset: 5px;
-  z-index: 999;
+  z-index: 100000;
   transform: translateY(-7px);
   box-shadow:
     0 4px 0 #c9b89a,
@@ -2476,7 +2476,7 @@ select:focus-visible {
     inset -1px -1px 0 rgba(0, 0, 0, 0.06),
     inset 0 0 0 1px rgba(255, 255, 255, 0.2);
   filter: brightness(1.08);
-  z-index: 1000; /* Ensure hovered tile is always on top */
+  z-index: 100002 !important; /* Ensure hovered tile is always on top */
 }
 .tile--free:active {
   transform: translateY(0) scale(0.98);
@@ -2494,19 +2494,6 @@ select:focus-visible {
   display: block !important;
   visibility: visible !important;
   animation: none !important; /* Stop all animations that might interfere */
-}
-
-/* CLICK FIX: Ensure tiles are always clickable and child elements don't interfere */
-.tile {
-  pointer-events: auto;
-  position: relative;
-}
-
-.tile__kind,
-.tile__svg-wrap,
-.tile__svg-wrap svg,
-.tile__svg-wrap * {
-  pointer-events: none !important;
 }
 
 /* === TOAST IMPROVEMENTS === */
