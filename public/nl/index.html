@@ -108,6 +108,14 @@
     "url": "https://mahjongboss.com/nl/",
     "description": "Gratis Mahjong Solitaire online (Shanghai Solitaire). 8 lay-outs, Dagelijkse Uitdaging, hints en leaderboard.",
     "applicationCategory": "GameApplication",
+
+    "audience": {
+      "@type": "PeopleAudience",
+      "suggestedMinAge": "5",
+      "audienceType": "Senior"
+    },
+    "accessibilityHazard": "none",
+    "featureList": "Large Print Tiles, No Forced Video Ads, Offline Mode, Zen Gameplay",
     "operatingSystem": "Any",
     "browserRequirements": "Requires JavaScript",
     "publisher": {
@@ -120,25 +128,8 @@
       "price": "0",
       "priceCurrency": "USD"
     },
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.8",
-      "ratingCount": "1250"
-    }
-  }
-  </script>
-  
-  <!-- HowTo Schema (how to play – can surface as rich result) -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "HowTo",
-    "name": "How to Play Mahjong Solitaire",
-    "description": "Match paren of identical tegels that are free on the left or right with nothing on top. Clear all tegels to win.",
-    "step": [
-      { "@type": "HowToStep", "name": "Choose a layout", "text": "Pick Dagelijkse Uitdaging or a level (24 to 104 tegels)." },
-      { "@type": "HowToStep", "name": "Find matching tegels", "text": "Click two tegels with the same design. They must not be blocked by other tegels and must be free on the left or right with nothing on top." },
-      { "@type": "HowToStep", "name": "Clear the board", "text": "Keep matching paren until all tegels are removed to win." }
+    { "@type": "HowToStep", "name": "Find matching tegels", "text": "Click two tegels with the same design. They must not be blocked by other tegels and must be free on the left or right with nothing on top." },
+      { "@type": "HowToStep", "name": "Clear the board", "text": "Blijf paren combineren totdat alle tegels zijn verwijderd om te winnen." }
     ]
   }
   </script>
@@ -154,7 +145,16 @@
         "acceptedAnswer": {
           "@type": "Answer",
           "text": "Mahjong Solitaire is een puzzel voor één speler. Vind paren identieke tegels om het bord leeg te maken."
-        }
+        },
+    "video": {
+      "@type": "VideoObject",
+      "name": "Mahjong Boss Gameplay Trailer",
+      "description": "Relaxing Mahjong Solitaire gameplay showing large tiles and zen mode.",
+      "thumbnailUrl": "https://mahjongboss.com/og-image.png",
+      "uploadDate": "2026-01-01",
+      "duration": "PT1M",
+      "contentUrl": "https://mahjongboss.com/gameplay.mp4" 
+    }
       },
       {
         "@type": "Question",
@@ -219,19 +219,35 @@
         <section class="landing__howto" aria-labelledby="howto-heading">
           <h2 id="howto-heading" class="landing__howto-title">Hoe speel je Mahjong Solitaire</h2>
           <ol class="landing__howto-steps">
-            <li><h3>Kies een lay-out</h3><p>Pick Dagelijkse Uitdaging or a level from 24 to 104 tegels.</p></li>
-            <li><h3>Combineer vrije tegels</h3><p>Click two identical tegels that are free on the left or right with nothing on top.</p></li>
-            <li><h3>Ruim het bord op</h3><p>Keep matching paren until all tegels are removed to win.</p></li>
+            <li><h3>Kies een lay-out</h3><p>Kies Dagelijkse Uitdaging of een niveau van 24 tot 104 tegels.</p></li>
+            <li><h3>Combineer vrije tegels</h3><p>Klik op twee identieke tegels die links of rechts vrij liggen en waar niets bovenop ligt.</p></li>
+            <li><h3>Ruim het bord op</h3><p>Blijf paren combineren totdat alle tegels zijn verwijderd om te winnen.</p></li>
           </ol>
         </section>
         <p><strong>Hoe te spelen:</strong> Klik op twee <strong>identieke</strong> tegels (zelfde ontwerp) die niet geblokkeerd zijn. Tegels moeten links of rechts vrij zijn. Ruim alle tegels op om te winnen!</p>
         <p><strong>Functies:</strong> Geen download—speel in de browser. Hints wanneer je vast zit. Ongedaan, schudden of meedoen aan de <strong>leaderboard</strong>.</p>
-        <div class="landing__faq">
-          <h3 class="landing__faq-title">FAQ</h3>
-          <p><strong>Wat is Mahjong Solitaire?</strong> Een puzzel voor één speler. Vind paren identieke tegels om het bord leeg te maken. Ook Shanghai Solitaire genoemd.</p>
-          <p><strong>Is het gratis?</strong> Ja. Speel zonder download of registratie.</p>
-          <p><strong>Hoe sla ik mijn score op?</strong> Na winnen, voer je naam in en klik op "Opslaan naar leaderboard".</p>
-          <p><strong>Wat is de Dagelijkse Uitdaging?</strong> Dezelfde lay-out voor iedereen elke dag.</p>
+        <div class="landing__seo-knowledge-base">
+          <h2 class="landing__seo-title">Mahjong Kennisbank</h2>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">Wat is Mahjong Solitaire?</summary>
+            <div class="landing__seo-faq-answer">Mahjong Solitaire is een puzzel voor één speler. Vind paren identieke tegels om het bord leeg te maken.</div>
+          </details>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">Is Mahjong Boss gratis?</summary>
+            <div class="landing__seo-faq-answer">Ja! Mahjong Boss is volledig gratis, geen download of registratie. Voer je naam in na winnen om op de leaderboard te komen.</div>
+          </details>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">Heeft Mahjong Boss een Dagelijkse Uitdaging?</summary>
+            <div class="landing__seo-faq-answer">Ja! Speel de Dagelijkse Uitdaging—dezelfde lay-out voor iedereen elke dag.</div>
+          </details>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">Hoe speel ik Mahjong Solitaire?</summary>
+            <div class="landing__seo-faq-answer">Klik op twee identieke tegels (zelfde ontwerp) die niet geblokkeerd zijn. Tegels moeten links of rechts vrij zijn. Ruim alles op om te winnen!</div>
+          </details>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">Kan ik op mobiel spelen?</summary>
+            <div class="landing__seo-faq-answer">Ja! Mahjong Boss werkt op alle apparaten. Geen app nodig—speel in de browser.</div>
+          </details>
         </div>
         <footer class="landing__footer">
           <span class="landing__langs" aria-label="Language">

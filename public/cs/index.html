@@ -108,6 +108,14 @@
     "url": "https://mahjongboss.com/cs/",
     "description": "Mahjong Solitaire zdarma (Šanghaj) online. 8 rozložení, denní výzva, nápověda.",
     "applicationCategory": "GameApplication",
+
+    "audience": {
+      "@type": "PeopleAudience",
+      "suggestedMinAge": "5",
+      "audienceType": "Senior"
+    },
+    "accessibilityHazard": "none",
+    "featureList": "Large Print Tiles, No Forced Video Ads, Offline Mode, Zen Gameplay",
     "operatingSystem": "Any",
     "browserRequirements": "Requires JavaScript",
     "publisher": {
@@ -120,24 +128,7 @@
       "price": "0",
       "priceCurrency": "USD"
     },
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.8",
-      "ratingCount": "1250"
-    }
-  }
-  </script>
-  
-  <!-- HowTo Schema (how to play – can surface as rich result) -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "HowTo",
-    "name": "How to Play Mahjong Solitaire",
-    "description": "Match párů of identical kamenů that are free on the left or right with nothing on top. Clear all kamenů to win.",
-    "step": [
-      { "@type": "HowToStep", "name": "Choose a layout", "text": "Pick Denní výzva or a level (24 to 104 kamenů)." },
-      { "@type": "HowToStep", "name": "Find matching kamenů", "text": "Click two kamenů with the same design. They must not be blocked by other kamenů and must be free on the left or right with nothing on top." },
+    { "@type": "HowToStep", "name": "Find matching kamenů", "text": "Click two kamenů with the same design. They must not be blocked by other kamenů and must be free on the left or right with nothing on top." },
       { "@type": "HowToStep", "name": "Clear the board", "text": "Keep matching párů until all kamenů are removed to win." }
     ]
   }
@@ -154,7 +145,16 @@
         "acceptedAnswer": {
           "@type": "Answer",
           "text": "Mahjong Solitaire je puzzle pro jednoho hráče. Spojujte stejné kameny."
-        }
+        },
+    "video": {
+      "@type": "VideoObject",
+      "name": "Mahjong Boss Gameplay Trailer",
+      "description": "Relaxing Mahjong Solitaire gameplay showing large tiles and zen mode.",
+      "thumbnailUrl": "https://mahjongboss.com/og-image.png",
+      "uploadDate": "2026-01-01",
+      "duration": "PT1M",
+      "contentUrl": "https://mahjongboss.com/gameplay.mp4" 
+    }
       },
       {
         "@type": "Question",
@@ -226,12 +226,28 @@
         </section>
         <p><strong>Jak hrát:</strong> Klikněte na dva <strong>stejné</strong> kameny (stejný vzor), ne zablokované. Volné vlevo nebo vpravo. Vyčistěte všechny!</p>
         <p><strong>Funkce:</strong> Bez stahování—hrajte v prohlížeči. Nápověda, zpět, zamíchat, <strong>žebříček</strong>.</p>
-        <div class="landing__faq">
-          <h3 class="landing__faq-title">Časté dotazy</h3>
-          <p><strong>Co je Mahjong Solitaire?</strong> Puzzle pro jednoho hráče. Spojujte stejné kameny a vyčistěte desku. Také Šanghajské solitaire.</p>
-          <p><strong>Zdarma?</strong> Ano.</p>
-          <p><strong>Jak uložit skóre?</strong> Po výhře zadejte jméno a klikněte "Uložit do žebříčku".</p>
-          <p><strong>Co je Denní výzva?</strong> Stejné rozložení pro všechny každý den.</p>
+        <div class="landing__seo-knowledge-base">
+          <h2 class="landing__seo-title">Mahjong Knowledge Base</h2>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">Co je Mahjong Solitaire?</summary>
+            <div class="landing__seo-faq-answer">Mahjong Solitaire je puzzle pro jednoho hráče. Spojujte stejné kameny.</div>
+          </details>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">Je Mahjong Boss zdarma?</summary>
+            <div class="landing__seo-faq-answer">Ano! Zcela zdarma, bez stahování nebo registrace.</div>
+          </details>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">Je Denní výzva?</summary>
+            <div class="landing__seo-faq-answer">Ano! Stejné rozložení pro všechny každý den.</div>
+          </details>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">Jak hrát?</summary>
+            <div class="landing__seo-faq-answer">Klikněte na dva stejné kameny (stejný vzor), které nejsou zablokované. Kameny musí být volné vlevo nebo vpravo. Vyčistěte všechny!</div>
+          </details>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">Hrát na mobilu?</summary>
+            <div class="landing__seo-faq-answer">Ano! Funguje na PC, tabletu a mobilu v prohlížeči.</div>
+          </details>
         </div>
         <footer class="landing__footer">
           <span class="landing__langs" aria-label="Language">

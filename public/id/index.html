@@ -108,6 +108,14 @@
     "url": "https://mahjongboss.com/id/",
     "description": "Mahjong Solitaire gratis (Shanghai) online. 8 tata letak, tantangan harian, petunjuk.",
     "applicationCategory": "GameApplication",
+
+    "audience": {
+      "@type": "PeopleAudience",
+      "suggestedMinAge": "5",
+      "audienceType": "Senior"
+    },
+    "accessibilityHazard": "none",
+    "featureList": "Large Print Tiles, No Forced Video Ads, Offline Mode, Zen Gameplay",
     "operatingSystem": "Any",
     "browserRequirements": "Requires JavaScript",
     "publisher": {
@@ -120,24 +128,7 @@
       "price": "0",
       "priceCurrency": "USD"
     },
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.8",
-      "ratingCount": "1250"
-    }
-  }
-  </script>
-  
-  <!-- HowTo Schema (how to play – can surface as rich result) -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "HowTo",
-    "name": "How to Play Mahjong Solitaire",
-    "description": "Match pasang of identical ubin that are free on the left or right with nothing on top. Clear all ubin to win.",
-    "step": [
-      { "@type": "HowToStep", "name": "Choose a layout", "text": "Pick Tantangan Harian or a level (24 to 104 ubin)." },
-      { "@type": "HowToStep", "name": "Find matching ubin", "text": "Click two ubin with the same design. They must not be blocked by other ubin and must be free on the left or right with nothing on top." },
+    { "@type": "HowToStep", "name": "Find matching ubin", "text": "Click two ubin with the same design. They must not be blocked by other ubin and must be free on the left or right with nothing on top." },
       { "@type": "HowToStep", "name": "Clear the board", "text": "Keep matching pasang until all ubin are removed to win." }
     ]
   }
@@ -154,7 +145,16 @@
         "acceptedAnswer": {
           "@type": "Answer",
           "text": "Mahjong Solitaire adalah teka-teki ubin satu pemain. Cocokkan pasangan ubin identik."
-        }
+        },
+    "video": {
+      "@type": "VideoObject",
+      "name": "Mahjong Boss Gameplay Trailer",
+      "description": "Relaxing Mahjong Solitaire gameplay showing large tiles and zen mode.",
+      "thumbnailUrl": "https://mahjongboss.com/og-image.png",
+      "uploadDate": "2026-01-01",
+      "duration": "PT1M",
+      "contentUrl": "https://mahjongboss.com/gameplay.mp4" 
+    }
       },
       {
         "@type": "Question",
@@ -226,12 +226,28 @@
         </section>
         <p><strong>Cara main:</strong> Klik dua ubin <strong>identik</strong> (desain sama) yang tidak terhalang. Harus bebas kiri atau kanan. Bersihkan semua!</p>
         <p><strong>Fitur:</strong> Tanpa unduh—main di browser. Petunjuk, urungkan, acak, <strong>papan peringkat</strong>.</p>
-        <div class="landing__faq">
-          <h3 class="landing__faq-title">Tanya Jawab</h3>
-          <p><strong>Apa itu Mahjong Solitaire?</strong> Teka-teki ubin satu pemain. Cocokkan pasangan ubin identik. Juga disebut Shanghai Solitaire.</p>
-          <p><strong>Gratis?</strong> Ya.</p>
-          <p><strong>Bagaimana menyimpan skor?</strong> Setelah menang masukkan nama dan klik "Simpan ke papan peringkat".</p>
-          <p><strong>Apa Tantangan Harian?</strong> Tata letak sama untuk semua setiap hari.</p>
+        <div class="landing__seo-knowledge-base">
+          <h2 class="landing__seo-title">Mahjong Knowledge Base</h2>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">Apa itu Mahjong Solitaire?</summary>
+            <div class="landing__seo-faq-answer">Mahjong Solitaire adalah teka-teki ubin satu pemain. Cocokkan pasangan ubin identik.</div>
+          </details>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">Apakah Mahjong Boss gratis?</summary>
+            <div class="landing__seo-faq-answer">Ya! Sepenuhnya gratis, tanpa unduh atau daftar.</div>
+          </details>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">Ada Tantangan Harian?</summary>
+            <div class="landing__seo-faq-answer">Ya! Tantangan Harian—tata letak sama untuk semua setiap hari.</div>
+          </details>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">Cara main?</summary>
+            <div class="landing__seo-faq-answer">Klik dua ubin identik (desain sama) yang tidak terhalang. Ubin harus bebas kiri atau kanan. Bersihkan semua untuk menang!</div>
+          </details>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">Bisa main di ponsel?</summary>
+            <div class="landing__seo-faq-answer">Ya! Berjalan di PC, tablet, dan ponsel di browser.</div>
+          </details>
         </div>
         <footer class="landing__footer">
           <span class="landing__langs" aria-label="Language">

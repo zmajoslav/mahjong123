@@ -108,6 +108,14 @@
     "url": "https://mahjongboss.com/pt/",
     "description": "Mahjong Solitaire grátis online (Solitaire Xangai). 8 layouts, Desafio Diário, dicas e classificação. Sem download—jogue no navegador.",
     "applicationCategory": "GameApplication",
+
+    "audience": {
+      "@type": "PeopleAudience",
+      "suggestedMinAge": "5",
+      "audienceType": "Senior"
+    },
+    "accessibilityHazard": "none",
+    "featureList": "Large Print Tiles, No Forced Video Ads, Offline Mode, Zen Gameplay",
     "operatingSystem": "Any",
     "browserRequirements": "Requires JavaScript",
     "publisher": {
@@ -120,25 +128,8 @@
       "price": "0",
       "priceCurrency": "USD"
     },
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.8",
-      "ratingCount": "1250"
-    }
-  }
-  </script>
-  
-  <!-- HowTo Schema (how to play – can surface as rich result) -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "HowTo",
-    "name": "How to Play Mahjong Solitaire",
-    "description": "Match pares of identical peças that are free on the left or right with nothing on top. Clear all peças to win.",
-    "step": [
-      { "@type": "HowToStep", "name": "Choose a layout", "text": "Pick Desafio Diário or a level (24 to 104 peças)." },
-      { "@type": "HowToStep", "name": "Find matching peças", "text": "Click two peças with the same design. They must not be blocked by other peças and must be free on the left or right with nothing on top." },
-      { "@type": "HowToStep", "name": "Clear the board", "text": "Keep matching pares until all peças are removed to win." }
+    { "@type": "HowToStep", "name": "Find matching peças", "text": "Click two peças with the same design. They must not be blocked by other peças and must be free on the left or right with nothing on top." },
+      { "@type": "HowToStep", "name": "Clear the board", "text": "Continue combinando pares até que todas as peças sejam removidas para vencer." }
     ]
   }
   </script>
@@ -154,7 +145,16 @@
         "acceptedAnswer": {
           "@type": "Answer",
           "text": "Mahjong Solitaire é um puzzle de peças para um jogador. Encontre pares de peças idênticas para limpar o tabuleiro. Também chamado Solitaire Xangai."
-        }
+        },
+    "video": {
+      "@type": "VideoObject",
+      "name": "Mahjong Boss Gameplay Trailer",
+      "description": "Relaxing Mahjong Solitaire gameplay showing large tiles and zen mode.",
+      "thumbnailUrl": "https://mahjongboss.com/og-image.png",
+      "uploadDate": "2026-01-01",
+      "duration": "PT1M",
+      "contentUrl": "https://mahjongboss.com/gameplay.mp4" 
+    }
       },
       {
         "@type": "Question",
@@ -219,19 +219,35 @@
         <section class="landing__howto" aria-labelledby="howto-heading">
           <h2 id="howto-heading" class="landing__howto-title">Como jogar Mahjong Solitaire</h2>
           <ol class="landing__howto-steps">
-            <li><h3>Escolha um layout</h3><p>Pick Desafio Diário or a level from 24 to 104 peças.</p></li>
-            <li><h3>Combine peças livres</h3><p>Click two identical peças that are free on the left or right with nothing on top.</p></li>
-            <li><h3>Limpe o tabuleiro</h3><p>Keep matching pares until all peças are removed to win.</p></li>
+            <li><h3>Escolha um layout</h3><p>Escolha Desafio Diário ou um nível de 24 a 104 peças.</p></li>
+            <li><h3>Combine peças livres</h3><p>Clique em duas peças idênticas que estejam livres à esquerda ou à direita e sem nada em cima.</p></li>
+            <li><h3>Limpe o tabuleiro</h3><p>Continue combinando pares até que todas as peças sejam removidas para vencer.</p></li>
           </ol>
         </section>
         <p><strong>Como jogar:</strong> Clique em duas peças <strong>idênticas</strong> (mesmo desenho) que não estejam bloqueadas. Devem estar livres à esquerda ou direita e sem nada em cima. Cada flor só com a mesma flor; cada estação com a mesma. Limpe todas para ganhar!</p>
         <p><strong>Recursos:</strong> Sem download—jogue no navegador em PC, tablet ou celular. <strong>Mahjong com dicas</strong> quando travar. Desfazer, embaralhar ou competir na <strong>classificação</strong>. Peças grandes e legíveis.</p>
-        <div class="landing__faq">
-          <h3 class="landing__faq-title">Perguntas frequentes</h3>
-          <p><strong>O que é Mahjong Solitaire?</strong> É um puzzle de peças para um jogador. Encontre pares de peças idênticas para limpar o tabuleiro. Também chamado Solitaire Xangai.</p>
-          <p><strong>É grátis?</strong> Sim. Jogue sem download ou cadastro. Digite seu nome ao ganhar para a classificação.</p>
-          <p><strong>Como salvo minha pontuação?</strong> Após ganhar, digite seu nome e clique em "Salvar na classificação". Sem cadastro.</p>
-          <p><strong>O que é o Desafio Diário?</strong> O mesmo layout e peças para todos cada dia. Todos jogam o mesmo puzzle—compita na classificação!</p>
+        <div class="landing__seo-knowledge-base">
+          <h2 class="landing__seo-title">Base de Conhecimento Mahjong</h2>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">O que é Mahjong Solitaire?</summary>
+            <div class="landing__seo-faq-answer">Mahjong Solitaire é um puzzle de peças para um jogador. Encontre pares de peças idênticas para limpar o tabuleiro. Também chamado Solitaire Xangai.</div>
+          </details>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">O Mahjong Boss é grátis?</summary>
+            <div class="landing__seo-faq-answer">Sim! O Mahjong Boss é totalmente grátis, sem download ou cadastro. Digite seu nome ao ganhar para salvar na classificação.</div>
+          </details>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">O Mahjong Boss tem Desafio Diário?</summary>
+            <div class="landing__seo-faq-answer">Sim! Jogue o Desafio Diário: o mesmo layout e peças para todos cada dia. Compita na classificação com o mesmo puzzle.</div>
+          </details>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">Como jogar Mahjong Solitaire?</summary>
+            <div class="landing__seo-faq-answer">Clique em duas peças idênticas (mesmo desenho) que não estejam bloqueadas. As peças devem estar livres à esquerda ou direita e sem nada em cima. Limpe todas para ganhar!</div>
+          </details>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">Posso jogar no celular?</summary>
+            <div class="landing__seo-faq-answer">Sim! O Mahjong Boss funciona em todos os dispositivos: PC, tablet e celular. Sem baixar app—jogue no navegador.</div>
+          </details>
         </div>
         <footer class="landing__footer">
           <span class="landing__langs" aria-label="Language">

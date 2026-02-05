@@ -108,6 +108,14 @@
     "url": "https://mahjongboss.com/th/",
     "description": "Mahjong Solitaire ฟรี (Shanghai) ออนไลน์ 8 เลย์เอาต์ แชลเลนจ์รายวัน คำใบ้",
     "applicationCategory": "GameApplication",
+
+    "audience": {
+      "@type": "PeopleAudience",
+      "suggestedMinAge": "5",
+      "audienceType": "Senior"
+    },
+    "accessibilityHazard": "none",
+    "featureList": "Large Print Tiles, No Forced Video Ads, Offline Mode, Zen Gameplay",
     "operatingSystem": "Any",
     "browserRequirements": "Requires JavaScript",
     "publisher": {
@@ -120,24 +128,7 @@
       "price": "0",
       "priceCurrency": "USD"
     },
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.8",
-      "ratingCount": "1250"
-    }
-  }
-  </script>
-  
-  <!-- HowTo Schema (how to play – can surface as rich result) -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "HowTo",
-    "name": "How to Play Mahjong Solitaire",
-    "description": "Match คู่ of identical แผ่น that are free on the left or right with nothing on top. Clear all แผ่น to win.",
-    "step": [
-      { "@type": "HowToStep", "name": "Choose a layout", "text": "Pick แชลเลนจ์รายวัน or a level (24 to 104 แผ่น)." },
-      { "@type": "HowToStep", "name": "Find matching แผ่น", "text": "Click two แผ่น with the same design. They must not be blocked by other แผ่น and must be free on the left or right with nothing on top." },
+    { "@type": "HowToStep", "name": "Find matching แผ่น", "text": "Click two แผ่น with the same design. They must not be blocked by other แผ่น and must be free on the left or right with nothing on top." },
       { "@type": "HowToStep", "name": "Clear the board", "text": "Keep matching คู่ until all แผ่น are removed to win." }
     ]
   }
@@ -154,7 +145,16 @@
         "acceptedAnswer": {
           "@type": "Answer",
           "text": "Mahjong Solitaire เป็นปริศนาแผ่นสำหรับผู้เล่นคนเดียว จับคู่แผ่นเดียวกัน"
-        }
+        },
+    "video": {
+      "@type": "VideoObject",
+      "name": "Mahjong Boss Gameplay Trailer",
+      "description": "Relaxing Mahjong Solitaire gameplay showing large tiles and zen mode.",
+      "thumbnailUrl": "https://mahjongboss.com/og-image.png",
+      "uploadDate": "2026-01-01",
+      "duration": "PT1M",
+      "contentUrl": "https://mahjongboss.com/gameplay.mp4" 
+    }
       },
       {
         "@type": "Question",
@@ -226,12 +226,28 @@
         </section>
         <p><strong>วิธีเล่น:</strong> คลิกสองแผ่น<strong>เหมือนกัน</strong> (ลายเดียวกัน) ที่ไม่ถูกบัง ต้องว่างซ้ายหรือขวา เก็บหมด!</p>
         <p><strong>ฟีเจอร์:</strong> ไม่ต้องดาวน์โหลด—เล่นในเบราว์เซอร์ คำใบ้ ย้อนกลับ สับ <strong>ลีดเดอร์บอร์ด</strong></p>
-        <div class="landing__faq">
-          <h3 class="landing__faq-title">คำถามที่พบบ่อย</h3>
-          <p><strong>Mahjong Solitaire คืออะไร?</strong> ปริศนาแผ่นสำหรับผู้เล่นคนเดียว จับคู่แผ่นเดียวกัน เรียก Shanghai Solitaire ด้วย</p>
-          <p><strong>ฟรีไหม?</strong> ใช่</p>
-          <p><strong>บันทึกคะแนนยังไง?</strong> หลังชนะใส่ชื่อแล้วกด "บันทึกลีดเดอร์บอร์ด"</p>
-          <p><strong>แชลเลนจ์รายวันคืออะไร?</strong> เลย์เอาต์เดียวกันทุกคนทุกวัน</p>
+        <div class="landing__seo-knowledge-base">
+          <h2 class="landing__seo-title">Mahjong Knowledge Base</h2>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">Mahjong Solitaire คืออะไร?</summary>
+            <div class="landing__seo-faq-answer">Mahjong Solitaire เป็นปริศนาแผ่นสำหรับผู้เล่นคนเดียว จับคู่แผ่นเดียวกัน</div>
+          </details>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">Mahjong Boss ฟรีไหม?</summary>
+            <div class="landing__seo-faq-answer">ใช่! ฟรีทั้งหมด ไม่ต้องดาวน์โหลดหรือสมัคร</div>
+          </details>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">มีแชลเลนจ์รายวันไหม?</summary>
+            <div class="landing__seo-faq-answer">มี! เลย์เอาต์เดียวกันสำหรับทุกคนทุกวัน</div>
+          </details>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">เล่นยังไง?</summary>
+            <div class="landing__seo-faq-answer">คลิกสองแผ่นที่เหมือนกัน (ลายเดียวกัน) ที่ไม่ถูกบัง แผ่นต้องว่างซ้ายหรือขวา เก็บหมดเพื่อชนะ!</div>
+          </details>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">เล่นบนมือถือได้ไหม?</summary>
+            <div class="landing__seo-faq-answer">ได้! ใช้ได้บน PC แท็บเล็ตและมือถือในเบราว์เซอร์</div>
+          </details>
         </div>
         <footer class="landing__footer">
           <span class="landing__langs" aria-label="Language">

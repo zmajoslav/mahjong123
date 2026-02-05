@@ -108,6 +108,14 @@
     "url": "https://mahjongboss.com/ja/",
     "description": "無料マージャンソリティア（上海）オンライン。8レイアウト、デイリーチャレンジ、ヒント。",
     "applicationCategory": "GameApplication",
+
+    "audience": {
+      "@type": "PeopleAudience",
+      "suggestedMinAge": "5",
+      "audienceType": "Senior"
+    },
+    "accessibilityHazard": "none",
+    "featureList": "Large Print Tiles, No Forced Video Ads, Offline Mode, Zen Gameplay",
     "operatingSystem": "Any",
     "browserRequirements": "Requires JavaScript",
     "publisher": {
@@ -120,24 +128,7 @@
       "price": "0",
       "priceCurrency": "USD"
     },
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.8",
-      "ratingCount": "1250"
-    }
-  }
-  </script>
-  
-  <!-- HowTo Schema (how to play – can surface as rich result) -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "HowTo",
-    "name": "How to Play Mahjong Solitaire",
-    "description": "Match ペア of identical 枚 that are free on the left or right with nothing on top. Clear all 枚 to win.",
-    "step": [
-      { "@type": "HowToStep", "name": "Choose a layout", "text": "Pick デイリーチャレンジ or a level (24 to 104 枚)." },
-      { "@type": "HowToStep", "name": "Find matching 枚", "text": "Click two 枚 with the same design. They must not be blocked by other 枚 and must be free on the left or right with nothing on top." },
+    { "@type": "HowToStep", "name": "Find matching 枚", "text": "Click two 枚 with the same design. They must not be blocked by other 枚 and must be free on the left or right with nothing on top." },
       { "@type": "HowToStep", "name": "Clear the board", "text": "Keep matching ペア until all 枚 are removed to win." }
     ]
   }
@@ -154,7 +145,16 @@
         "acceptedAnswer": {
           "@type": "Answer",
           "text": "1人用の牌合わせパズル。同じ牌のペアを揃えて盤面をクリア。"
-        }
+        },
+    "video": {
+      "@type": "VideoObject",
+      "name": "Mahjong Boss Gameplay Trailer",
+      "description": "Relaxing Mahjong Solitaire gameplay showing large tiles and zen mode.",
+      "thumbnailUrl": "https://mahjongboss.com/og-image.png",
+      "uploadDate": "2026-01-01",
+      "duration": "PT1M",
+      "contentUrl": "https://mahjongboss.com/gameplay.mp4" 
+    }
       },
       {
         "@type": "Question",
@@ -226,12 +226,28 @@
         </section>
         <p><strong>遊び方:</strong> 同じ柄の<strong>同じ</strong>牌を2枚クリック（他に塞がれていないもの）。左右が空いていて上に何もない牌だけ。全部揃えてクリア！</p>
         <p><strong>機能:</strong> ダウンロード不要—ブラウザでプレイ。詰んだらヒント、元に戻す、シャッフル、<strong>リーダーボード</strong>。</p>
-        <div class="landing__faq">
-          <h3 class="landing__faq-title">よくある質問</h3>
-          <p><strong>マージャンソリティアとは？</strong> 1人用パズル。同じ牌のペアを揃えて盤面をクリア。上海ソリティアとも。</p>
-          <p><strong>無料？</strong> はい。</p>
-          <p><strong>スコアの保存は？</strong> クリア後に名前を入力し「リーダーボードに保存」をクリック。</p>
-          <p><strong>デイリーチャレンジとは？</strong> 毎日同じレイアウトで全員が同じパズル。</p>
+        <div class="landing__seo-knowledge-base">
+          <h2 class="landing__seo-title">Mahjong Knowledge Base</h2>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">マージャンソリティアとは？</summary>
+            <div class="landing__seo-faq-answer">1人用の牌合わせパズル。同じ牌のペアを揃えて盤面をクリア。</div>
+          </details>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">Mahjong Bossは無料？</summary>
+            <div class="landing__seo-faq-answer">はい！完全無料、ダウンロード・登録不要。クリア後に名前を入力してリーダーボードに保存。</div>
+          </details>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">デイリーチャレンジは？</summary>
+            <div class="landing__seo-faq-answer">はい！毎日同じレイアウトで全員が同じパズルに挑戦。</div>
+          </details>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">遊び方は？</summary>
+            <div class="landing__seo-faq-answer">同じ柄の牌を2枚クリック（左右が空いていて上に何もないもの）。全部揃えたらクリア！</div>
+          </details>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">スマホでプレイできる？</summary>
+            <div class="landing__seo-faq-answer">はい！PC・タブレット・スマホでブラウザだけでプレイ可能。</div>
+          </details>
         </div>
         <footer class="landing__footer">
           <span class="landing__langs" aria-label="Language">

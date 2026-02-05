@@ -108,6 +108,14 @@
     "url": "https://mahjongboss.com/pl/",
     "description": "Darmowy Mahjong Solitaire online (Solitaire Shanghai). 8 układów, Wyzwanie Dziennie, podpowiedzi i tabela wyników. Bez pobierania—graj w przeglądarce.",
     "applicationCategory": "GameApplication",
+
+    "audience": {
+      "@type": "PeopleAudience",
+      "suggestedMinAge": "5",
+      "audienceType": "Senior"
+    },
+    "accessibilityHazard": "none",
+    "featureList": "Large Print Tiles, No Forced Video Ads, Offline Mode, Zen Gameplay",
     "operatingSystem": "Any",
     "browserRequirements": "Requires JavaScript",
     "publisher": {
@@ -120,25 +128,8 @@
       "price": "0",
       "priceCurrency": "USD"
     },
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.8",
-      "ratingCount": "1250"
-    }
-  }
-  </script>
-  
-  <!-- HowTo Schema (how to play – can surface as rich result) -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "HowTo",
-    "name": "How to Play Mahjong Solitaire",
-    "description": "Match par of identical płytek that are free on the left or right with nothing on top. Clear all płytek to win.",
-    "step": [
-      { "@type": "HowToStep", "name": "Choose a layout", "text": "Pick Wyzwanie Dziennie or a level (24 to 104 płytek)." },
-      { "@type": "HowToStep", "name": "Find matching płytek", "text": "Click two płytek with the same design. They must not be blocked by other płytek and must be free on the left or right with nothing on top." },
-      { "@type": "HowToStep", "name": "Clear the board", "text": "Keep matching par until all płytek are removed to win." }
+    { "@type": "HowToStep", "name": "Find matching płytek", "text": "Click two płytek with the same design. They must not be blocked by other płytek and must be free on the left or right with nothing on top." },
+      { "@type": "HowToStep", "name": "Clear the board", "text": "Dopasowuj par, aż wszystkie płytek zostaną usunięte, aby wygrać." }
     ]
   }
   </script>
@@ -154,7 +145,16 @@
         "acceptedAnswer": {
           "@type": "Answer",
           "text": "Mahjong Solitaire to puzzle dla jednego gracza. Dopasuj identyczne płytki, aby wyczyścić planszę. Nazywane też Solitaire Shanghai."
-        }
+        },
+    "video": {
+      "@type": "VideoObject",
+      "name": "Mahjong Boss Gameplay Trailer",
+      "description": "Relaxing Mahjong Solitaire gameplay showing large tiles and zen mode.",
+      "thumbnailUrl": "https://mahjongboss.com/og-image.png",
+      "uploadDate": "2026-01-01",
+      "duration": "PT1M",
+      "contentUrl": "https://mahjongboss.com/gameplay.mp4" 
+    }
       },
       {
         "@type": "Question",
@@ -219,19 +219,35 @@
         <section class="landing__howto" aria-labelledby="howto-heading">
           <h2 id="howto-heading" class="landing__howto-title">Jak grać w Mahjong Solitaire</h2>
           <ol class="landing__howto-steps">
-            <li><h3>Wybierz układ</h3><p>Pick Wyzwanie Dziennie or a level from 24 to 104 płytek.</p></li>
-            <li><h3>Dopasuj wolne płytki</h3><p>Click two identical płytek that are free on the left or right with nothing on top.</p></li>
-            <li><h3>Wyczyść planszę</h3><p>Keep matching par until all płytek are removed to win.</p></li>
+            <li><h3>Wybierz układ</h3><p>Wybierz Wyzwanie Dziennie lub poziom od 24 do 104 płytek.</p></li>
+            <li><h3>Dopasuj wolne płytki</h3><p>Kliknij dwie identyczne płytek, które są wolne z lewej lub prawej strony i nie są przykryte.</p></li>
+            <li><h3>Wyczyść planszę</h3><p>Dopasowuj par, aż wszystkie płytek zostaną usunięte, aby wygrać.</p></li>
           </ol>
         </section>
         <p><strong>Jak grać:</strong> Kliknij dwie <strong>identyczne</strong> płytki (ten sam wzór), które nie są zablokowane. Muszą być wolne z lewej lub prawej i nic na wierzchu. Każdy kwiat tylko z tym samym; każda pora roku z tą samą. Wyczyść wszystkie, aby wygrać!</p>
         <p><strong>Funkcje:</strong> Bez pobierania—graj w przeglądarce na PC, tablecie lub telefonie. <strong>Mahjong z podpowiedziami</strong>, gdy utkniesz. Cofnij, potasuj lub rywalizuj w <strong>tabeli wyników</strong>. Duże, czytelne płytki.</p>
-        <div class="landing__faq">
-          <h3 class="landing__faq-title">FAQ</h3>
-          <p><strong>Co to jest Mahjong Solitaire?</strong> To puzzle dopasowywania płytek dla jednego gracza. Dopasuj identyczne płytki, aby wyczyścić planszę. Nazywane też Solitaire Shanghai.</p>
-          <p><strong>Czy jest darmowy?</strong> Tak. Graj bez pobierania i rejestracji. Wpisz imię po wygraniu, aby zapisać do wyników.</p>
-          <p><strong>Jak zapisać wynik?</strong> Po wygraniu wpisz imię i kliknij „Zapisz do wyników”. Bez rejestracji.</p>
-          <p><strong>Co to jest Wyzwanie Dziennie?</strong> Ten sam układ i płytki dla wszystkich każdego dnia. Wszyscy grają ten sam puzzle—rywalizuj w tabeli!</p>
+        <div class="landing__seo-knowledge-base">
+          <h2 class="landing__seo-title">Baza Wiedzy Mahjong</h2>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">Co to jest Mahjong Solitaire?</summary>
+            <div class="landing__seo-faq-answer">Mahjong Solitaire to puzzle dla jednego gracza. Dopasuj identyczne płytki, aby wyczyścić planszę. Nazywane też Solitaire Shanghai.</div>
+          </details>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">Czy Mahjong Boss jest darmowy?</summary>
+            <div class="landing__seo-faq-answer">Tak! Mahjong Boss jest całkowicie darmowy, bez pobierania i rejestracji. Wpisz imię po wygraniu, aby zapisać do tabeli wyników.</div>
+          </details>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">Czy Mahjong Boss ma Wyzwanie Dziennie?</summary>
+            <div class="landing__seo-faq-answer">Tak! Graj w Wyzwanie Dziennie—ten sam układ i płytki dla wszystkich każdego dnia. Rywalizuj w tabeli wyników z tym samym puzzle.</div>
+          </details>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">Jak grać w Mahjong Solitaire?</summary>
+            <div class="landing__seo-faq-answer">Kliknij dwie identyczne płytki (ten sam wzór), które nie są zablokowane. Płytki muszą być wolne z lewej lub prawej i nic nie może na nich leżeć. Wyczyść wszystkie, aby wygrać!</div>
+          </details>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">Czy mogę grać na telefonie?</summary>
+            <div class="landing__seo-faq-answer">Tak! Mahjong Boss działa na wszystkich urządzeniach: PC, tablet i telefon. Bez pobierania aplikacji—graj w przeglądarce.</div>
+          </details>
         </div>
         <footer class="landing__footer">
           <span class="landing__langs" aria-label="Language">

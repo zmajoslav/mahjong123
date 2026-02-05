@@ -108,6 +108,14 @@
     "url": "https://mahjongboss.com/es/",
     "description": "Mahjong Solitario gratis online (Solitario Shanghai). 8 diseños, Reto Diario, pistas y clasificación. Sin descargas—juega en el navegador.",
     "applicationCategory": "GameApplication",
+
+    "audience": {
+      "@type": "PeopleAudience",
+      "suggestedMinAge": "5",
+      "audienceType": "Senior"
+    },
+    "accessibilityHazard": "none",
+    "featureList": "Large Print Tiles, No Forced Video Ads, Offline Mode, Zen Gameplay",
     "operatingSystem": "Any",
     "browserRequirements": "Requires JavaScript",
     "publisher": {
@@ -120,25 +128,8 @@
       "price": "0",
       "priceCurrency": "USD"
     },
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.8",
-      "ratingCount": "1250"
-    }
-  }
-  </script>
-  
-  <!-- HowTo Schema (how to play – can surface as rich result) -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "HowTo",
-    "name": "How to Play Mahjong Solitaire",
-    "description": "Match pares of identical fichas that are free on the left or right with nothing on top. Clear all fichas to win.",
-    "step": [
-      { "@type": "HowToStep", "name": "Choose a layout", "text": "Pick Reto Diario or a level (24 to 104 fichas)." },
-      { "@type": "HowToStep", "name": "Find matching fichas", "text": "Click two fichas with the same design. They must not be blocked by other fichas and must be free on the left or right with nothing on top." },
-      { "@type": "HowToStep", "name": "Clear the board", "text": "Keep matching pares until all fichas are removed to win." }
+    { "@type": "HowToStep", "name": "Encuentra fichas iguales", "text": "Haz clic en dos fichas con el mismo diseño. No deben estar bloqueadas por otras fichas y deben estar libres a izquierda o derecha sin nada encima." },
+      { "@type": "HowToStep", "name": "Limpia el tablero", "text": "Sigue emparejando pares hasta que todas las fichas sean eliminadas para ganar." }
     ]
   }
   </script>
@@ -154,7 +145,16 @@
         "acceptedAnswer": {
           "@type": "Answer",
           "text": "El Mahjong Solitario es un puzzle de emparejar fichas para un jugador. Empareja fichas idénticas para limpiar el tablero. También llamado Solitario Shanghai."
-        }
+        },
+    "video": {
+      "@type": "VideoObject",
+      "name": "Mahjong Boss Gameplay Trailer",
+      "description": "Relaxing Mahjong Solitaire gameplay showing large tiles and zen mode.",
+      "thumbnailUrl": "https://mahjongboss.com/og-image.png",
+      "uploadDate": "2026-01-01",
+      "duration": "PT1M",
+      "contentUrl": "https://mahjongboss.com/gameplay.mp4" 
+    }
       },
       {
         "@type": "Question",
@@ -219,21 +219,38 @@
         <section class="landing__howto" aria-labelledby="howto-heading">
           <h2 id="howto-heading" class="landing__howto-title">Cómo jugar al Mahjong Solitario</h2>
           <ol class="landing__howto-steps">
-            <li><h3>Elige un diseño</h3><p>Pick Reto Diario or a level from 24 to 104 fichas.</p></li>
-            <li><h3>Empareja fichas libres</h3><p>Click two identical fichas that are free on the left or right with nothing on top.</p></li>
-            <li><h3>Limpia el tablero</h3><p>Keep matching pares until all fichas are removed to win.</p></li>
+            <li><h3>Elige un diseño</h3><p>Elige el Reto Diario o un nivel de 24 a 104 fichas.</p></li>
+            <li><h3>Empareja fichas libres</h3><p>Haz clic en dos fichas idénticas que estén libres a izquierda o derecha y sin nada encima.</p></li>
+            <li><h3>Limpia el tablero</h3><p>Sigue emparejando hasta eliminar todas las fichas para ganar.</p></li>
           </ol>
         </section>
         <p><strong>Cómo jugar:</strong> Haz clic en dos fichas <strong>idénticas</strong> (mismo diseño) que no estén bloqueadas. Deben estar libres a izquierda o derecha y sin nada encima. Cada flor solo con la misma flor; cada estación con la misma estación. ¡Limpia todas para ganar!</p>
         <p><strong>Características:</strong> Sin descargas—juega en el navegador en ordenador, tablet o móvil. <strong>Mahjong con pistas</strong> cuando te atascas. Deshacer, mezclar o competir en la <strong>clasificación</strong>. Fichas grandes y legibles.</p>
-        <div class="landing__faq">
-          <h3 class="landing__faq-title">Preguntas frecuentes</h3>
-          <p><strong>¿Qué es el Mahjong Solitario?</strong> Es un puzzle de emparejar fichas para un jugador. Empareja fichas idénticas para limpiar el tablero. También llamado Solitario Shanghai.</p>
-          <p><strong>¿Es gratis?</strong> Sí. Juega sin descargas ni registro. Escribe tu nombre al ganar para guardar en la clasificación.</p>
-          <p><strong>¿Cómo guardo mi puntuación?</strong> Tras ganar, escribe tu nombre y haz clic en "Guardar en clasificación". Sin registro.</p>
-          <p><strong>¿Qué es el Reto Diario?</strong> El mismo diseño y fichas para todos cada día. ¡Todos juegan el mismo puzzle—compite en la clasificación!</p>
+        <div class="landing__seo-knowledge-base">
+          <h2 class="landing__seo-title">Base de Conocimientos Mahjong</h2>
+          <div class="faq-container">
+            <details class="faq-item">
+              <summary class="faq-question">¿Cómo ayuda el Mahjong a la salud cerebral de los mayores?</summary>
+              <div class="faq-answer">
+                <p>El Mahjong Solitario es un excelente ejercicio mental. Requiere reconocimiento de patrones, memoria y estrategia, lo que ayuda a mantener la mente aguda y activa, reduciendo el riesgo de deterioro cognitivo.</p>
+              </div>
+            </details>
+            <details class="faq-item">
+              <summary class="faq-question">¿Cuáles son las reglas del Mahjong Solitario vs. Tradicional?</summary>
+              <div class="faq-answer">
+                <p>El Mahjong Solitario es un puzzle para un solo jugador donde emparejas fichas para limpiar el tablero. El Mahjong Tradicional es un juego de apuestas para 4 jugadores similar al Rummy. Mahjong Boss ofrece la experiencia relajante del Solitario.</p>
+              </div>
+            </details>
+            <details class="faq-item">
+              <summary class="faq-question">¿Cómo juego a Mahjong Boss sin conexión?</summary>
+              <div class="faq-answer">
+                <p>Mahjong Boss es una Aplicación Web Progresiva (PWA). Una vez que cargas el juego, puedes jugar sin internet. En móviles, añade la web a tu pantalla de inicio para una experiencia completa sin conexión.</p>
+              </div>
+            </details>
+          </div>
         </div>
         <footer class="landing__footer">
+          <p>&copy; <span class="current-year">2026</span> Mahjong Boss | El Mejor Mahjong Online Gratis</p>
           <span class="landing__langs" aria-label="Language">
             <a href="/" hreflang="en" class="landing__lang">EN</a>
             <a href="/es/" hreflang="es" class="landing__lang">ES</a>

@@ -112,6 +112,14 @@
     "url": "https://mahjongboss.com/hu/",
     "description": "Ingyenes Mahjong Solitaire (Sanghaj) online. 8 elrendezés, napi kihívás, tippek.",
     "applicationCategory": "GameApplication",
+
+    "audience": {
+      "@type": "PeopleAudience",
+      "suggestedMinAge": "5",
+      "audienceType": "Senior"
+    },
+    "accessibilityHazard": "none",
+    "featureList": "Large Print Tiles, No Forced Video Ads, Offline Mode, Zen Gameplay",
     "operatingSystem": "Any",
     "browserRequirements": "Requires JavaScript",
     "publisher": {
@@ -124,24 +132,7 @@
       "price": "0",
       "priceCurrency": "USD"
     },
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.8",
-      "ratingCount": "1250"
-    }
-  }
-  </script>
-  
-  <!-- HowTo Schema (how to play – can surface as rich result) -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "HowTo",
-    "name": "How to Play Mahjong Solitaire",
-    "description": "Match pár of identical lap that are free on the left or right with nothing on top. Clear all lap to win.",
-    "step": [
-      { "@type": "HowToStep", "name": "Choose a layout", "text": "Pick Napi kihívás or a level (24 to 104 lap)." },
-      { "@type": "HowToStep", "name": "Find matching lap", "text": "Click two lap with the same design. They must not be blocked by other lap and must be free on the left or right with nothing on top." },
+    { "@type": "HowToStep", "name": "Find matching lap", "text": "Click two lap with the same design. They must not be blocked by other lap and must be free on the left or right with nothing on top." },
       { "@type": "HowToStep", "name": "Clear the board", "text": "Keep matching pár until all lap are removed to win." }
     ]
   }
@@ -158,7 +149,16 @@
         "acceptedAnswer": {
           "@type": "Answer",
           "text": "A Mahjong Solitaire egyjátékos lap-puzzle. Párosítson azonos lapokat."
-        }
+        },
+    "video": {
+      "@type": "VideoObject",
+      "name": "Mahjong Boss Gameplay Trailer",
+      "description": "Relaxing Mahjong Solitaire gameplay showing large tiles and zen mode.",
+      "thumbnailUrl": "https://mahjongboss.com/og-image.png",
+      "uploadDate": "2026-01-01",
+      "duration": "PT1M",
+      "contentUrl": "https://mahjongboss.com/gameplay.mp4" 
+    }
       },
       {
         "@type": "Question",
@@ -230,12 +230,28 @@
         </section>
         <p><strong>Hogyan játsszunk:</strong> Kattintson két <strong>azonos</strong> lapra (ugyanolyan minta), nem blokkolt. Bal vagy jobb oldalukon szabadnak kell lenniük. Szedje fel mindet!</p>
         <p><strong>Funkciók:</strong> Letöltés nélkül—böngészőben. Tippek, visszavonás, keverés, <strong>rangsor</strong>.</p>
-        <div class="landing__faq">
-          <h3 class="landing__faq-title">GYIK</h3>
-          <p><strong>Mi a Mahjong Solitaire?</strong> Egyjátékos lap-puzzle. Párosítson azonos lapokat. Sanghaji Solitaire néven is ismert.</p>
-          <p><strong>Ingyenes?</strong> Igen.</p>
-          <p><strong>Hogyan mentem a pontot?</strong> Győzelem után adja meg a nevet és kattintson a "Mentés rangsorba".</p>
-          <p><strong>Mi a Napi kihívás?</strong> Ugyanaz az elrendezés mindenkinek minden nap.</p>
+        <div class="landing__seo-knowledge-base">
+          <h2 class="landing__seo-title">Mahjong Knowledge Base</h2>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">Mi a Mahjong Solitaire?</summary>
+            <div class="landing__seo-faq-answer">A Mahjong Solitaire egyjátékos lap-puzzle. Párosítson azonos lapokat.</div>
+          </details>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">A Mahjong Boss ingyenes?</summary>
+            <div class="landing__seo-faq-answer">Igen! Teljesen ingyenes, letöltés és regisztráció nélkül.</div>
+          </details>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">Van Napi kihívás?</summary>
+            <div class="landing__seo-faq-answer">Igen! Ugyanaz az elrendezés mindenkinek minden nap.</div>
+          </details>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">Hogyan kell játszani?</summary>
+            <div class="landing__seo-faq-answer">Kattintson két azonos lapra (ugyanolyan mintával), amelyek nincsenek blokkolva. A lapoknak bal vagy jobb oldalukon szabadnak kell lenniük. Szedje fel mindet a győzelemhez!</div>
+          </details>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">Mobilon játszható?</summary>
+            <div class="landing__seo-faq-answer">Igen! PC-n, táblagépen és mobilon böngészőben.</div>
+          </details>
         </div>
         <footer class="landing__footer">
           <span class="landing__langs" aria-label="Language">

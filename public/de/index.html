@@ -108,6 +108,14 @@
     "url": "https://mahjongboss.com/de/",
     "description": "Kostenloses Mahjong Solitaire online (Shanghai Solitaire). 8 Layouts, Tägliche Herausforderung, Tipps und Bestenliste. Kein Download—im Browser spielen.",
     "applicationCategory": "GameApplication",
+
+    "audience": {
+      "@type": "PeopleAudience",
+      "suggestedMinAge": "5",
+      "audienceType": "Senior"
+    },
+    "accessibilityHazard": "none",
+    "featureList": "Large Print Tiles, No Forced Video Ads, Offline Mode, Zen Gameplay",
     "operatingSystem": "Any",
     "browserRequirements": "Requires JavaScript",
     "publisher": {
@@ -120,25 +128,8 @@
       "price": "0",
       "priceCurrency": "USD"
     },
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.8",
-      "ratingCount": "1250"
-    }
-  }
-  </script>
-  
-  <!-- HowTo Schema (how to play – can surface as rich result) -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "HowTo",
-    "name": "How to Play Mahjong Solitaire",
-    "description": "Match Paare of identical Steine that are free on the left or right with nothing on top. Clear all Steine to win.",
-    "step": [
-      { "@type": "HowToStep", "name": "Choose a layout", "text": "Pick Tägliche Herausforderung or a level (24 to 104 Steine)." },
-      { "@type": "HowToStep", "name": "Find matching Steine", "text": "Click two Steine with the same design. They must not be blocked by other Steine and must be free on the left or right with nothing on top." },
-      { "@type": "HowToStep", "name": "Clear the board", "text": "Keep matching Paare until all Steine are removed to win." }
+    { "@type": "HowToStep", "name": "Find matching Steine", "text": "Click two Steine with the same design. They must not be blocked by other Steine and must be free on the left or right with nothing on top." },
+      { "@type": "HowToStep", "name": "Clear the board", "text": "Bilden Sie weiter Paare, bis alle Steine entfernt sind, um zu gewinnen." }
     ]
   }
   </script>
@@ -154,7 +145,16 @@
         "acceptedAnswer": {
           "@type": "Answer",
           "text": "Mahjong Solitaire ist ein Einzelspieler-Puzzle. Finde Paare identischer Steine, um das Brett zu leeren. Auch Shanghai Solitaire genannt."
-        }
+        },
+    "video": {
+      "@type": "VideoObject",
+      "name": "Mahjong Boss Gameplay Trailer",
+      "description": "Relaxing Mahjong Solitaire gameplay showing large tiles and zen mode.",
+      "thumbnailUrl": "https://mahjongboss.com/og-image.png",
+      "uploadDate": "2026-01-01",
+      "duration": "PT1M",
+      "contentUrl": "https://mahjongboss.com/gameplay.mp4" 
+    }
       },
       {
         "@type": "Question",
@@ -219,19 +219,35 @@
         <section class="landing__howto" aria-labelledby="howto-heading">
           <h2 id="howto-heading" class="landing__howto-title">So spielen Sie Mahjong Solitaire</h2>
           <ol class="landing__howto-steps">
-            <li><h3>Wählen Sie ein Layout</h3><p>Pick Tägliche Herausforderung or a level from 24 to 104 Steine.</p></li>
-            <li><h3>Paaren Sie freie Steine</h3><p>Click two identical Steine that are free on the left or right with nothing on top.</p></li>
-            <li><h3>Räumen Sie das Brett ab</h3><p>Keep matching Paare until all Steine are removed to win.</p></li>
+            <li><h3>Wählen Sie ein Layout</h3><p>Wählen Sie Tägliche Herausforderung oder ein Level von 24 bis 104 Steine.</p></li>
+            <li><h3>Paaren Sie freie Steine</h3><p>Klicken Sie auf zwei identische Steine, die links oder rechts frei liegen und von nichts bedeckt sind.</p></li>
+            <li><h3>Räumen Sie das Brett ab</h3><p>Bilden Sie weiter Paare, bis alle Steine entfernt sind, um zu gewinnen.</p></li>
           </ol>
         </section>
         <p><strong>Spielanleitung:</strong> Klicken Sie auf zwei <strong>identische</strong> Steine (gleiches Design), die nicht blockiert sind. Sie müssen links oder rechts frei sein und nichts oben drauf haben. Jede Blume nur mit derselben Blume; jede Jahreszeit mit derselben. Räumen Sie alle ab, um zu gewinnen!</p>
         <p><strong>Funktionen:</strong> Kein Download—spielen Sie im Browser auf PC, Tablet oder Handy. <strong>Mahjong mit Tipps</strong>, wenn Sie nicht weiterkommen. Züge rückgängig, mischen oder in der <strong>Bestenliste</strong> konkurrieren. Große, gut lesbare Steine.</p>
-        <div class="landing__faq">
-          <h3 class="landing__faq-title">Häufige Fragen</h3>
-          <p><strong>Was ist Mahjong Solitaire?</strong> Es ist ein Einzelspieler-Kachelpuzzle. Finde Paare identischer Steine, um das Brett zu leeren. Auch Shanghai Solitaire genannt.</p>
-          <p><strong>Ist es kostenlos?</strong> Ja. Spielen Sie ohne Download oder Anmeldung. Nach dem Gewinnen Namen eingeben für die Bestenliste.</p>
-          <p><strong>Wie speichere ich meinen Score?</strong> Nach dem Gewinnen Namen eingeben und „In Bestenliste speichern“ klicken. Ohne Anmeldung.</p>
-          <p><strong>Was ist die Tägliche Herausforderung?</strong> Gleiches Layout und Steine für alle jeden Tag. Alle spielen dasselbe Puzzle—konkurrieren Sie in der Bestenliste!</p>
+        <div class="landing__seo-knowledge-base">
+          <h2 class="landing__seo-title">Mahjong Wissensdatenbank</h2>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">Was ist Mahjong Solitaire?</summary>
+            <div class="landing__seo-faq-answer">Mahjong Solitaire ist ein Einzelspieler-Puzzle. Finde Paare identischer Steine, um das Brett zu leeren. Auch Shanghai Solitaire genannt.</div>
+          </details>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">Ist Mahjong Boss kostenlos?</summary>
+            <div class="landing__seo-faq-answer">Ja! Mahjong Boss ist komplett kostenlos, ohne Download oder Anmeldung. Gib nach dem Gewinnen deinen Namen ein, um in der Bestenliste zu speichern.</div>
+          </details>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">Hat Mahjong Boss eine Tägliche Herausforderung?</summary>
+            <div class="landing__seo-faq-answer">Ja! Spiele die Tägliche Herausforderung—gleiches Layout und Steine für alle jeden Tag. Konkurriere in der Bestenliste mit dem gleichen Puzzle.</div>
+          </details>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">Wie spiele ich Mahjong Solitaire?</summary>
+            <div class="landing__seo-faq-answer">Klicke auf zwei identische Steine (gleiches Design), die nicht blockiert sind. Steine müssen links oder rechts frei sein und nichts oben drauf haben. Räume alle ab, um zu gewinnen!</div>
+          </details>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">Kann ich auf dem Handy spielen?</summary>
+            <div class="landing__seo-faq-answer">Ja! Mahjong Boss läuft auf allen Geräten: PC, Tablet und Handy. Keine App nötig—einfach im Browser spielen.</div>
+          </details>
         </div>
         <footer class="landing__footer">
           <span class="landing__langs" aria-label="Language">

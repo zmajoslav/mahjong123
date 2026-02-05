@@ -108,6 +108,14 @@
     "url": "https://mahjongboss.com/it/",
     "description": "Mahjong Solitaire gratis online (Solitaire Shanghai). 8 layout, Sfida Giornaliera, suggerimenti e classifica. Senza download—gioca nel browser.",
     "applicationCategory": "GameApplication",
+
+    "audience": {
+      "@type": "PeopleAudience",
+      "suggestedMinAge": "5",
+      "audienceType": "Senior"
+    },
+    "accessibilityHazard": "none",
+    "featureList": "Large Print Tiles, No Forced Video Ads, Offline Mode, Zen Gameplay",
     "operatingSystem": "Any",
     "browserRequirements": "Requires JavaScript",
     "publisher": {
@@ -120,25 +128,8 @@
       "price": "0",
       "priceCurrency": "USD"
     },
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.8",
-      "ratingCount": "1250"
-    }
-  }
-  </script>
-  
-  <!-- HowTo Schema (how to play – can surface as rich result) -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "HowTo",
-    "name": "How to Play Mahjong Solitaire",
-    "description": "Match coppie of identical tessere that are free on the left or right with nothing on top. Clear all tessere to win.",
-    "step": [
-      { "@type": "HowToStep", "name": "Choose a layout", "text": "Pick Sfida Giornaliera or a level (24 to 104 tessere)." },
-      { "@type": "HowToStep", "name": "Find matching tessere", "text": "Click two tessere with the same design. They must not be blocked by other tessere and must be free on the left or right with nothing on top." },
-      { "@type": "HowToStep", "name": "Clear the board", "text": "Keep matching coppie until all tessere are removed to win." }
+    { "@type": "HowToStep", "name": "Find matching tessere", "text": "Click two tessere with the same design. They must not be blocked by other tessere and must be free on the left or right with nothing on top." },
+      { "@type": "HowToStep", "name": "Clear the board", "text": "Continua ad abbinare le coppie finché tutte le tessere non saranno rimosse per vincere." }
     ]
   }
   </script>
@@ -154,7 +145,16 @@
         "acceptedAnswer": {
           "@type": "Answer",
           "text": "Il Mahjong Solitaire è un puzzle di tessere per un giocatore. Abbina tessere identiche per pulire il tavolo. Chiamato anche Solitaire Shanghai."
-        }
+        },
+    "video": {
+      "@type": "VideoObject",
+      "name": "Mahjong Boss Gameplay Trailer",
+      "description": "Relaxing Mahjong Solitaire gameplay showing large tiles and zen mode.",
+      "thumbnailUrl": "https://mahjongboss.com/og-image.png",
+      "uploadDate": "2026-01-01",
+      "duration": "PT1M",
+      "contentUrl": "https://mahjongboss.com/gameplay.mp4" 
+    }
       },
       {
         "@type": "Question",
@@ -219,19 +219,35 @@
         <section class="landing__howto" aria-labelledby="howto-heading">
           <h2 id="howto-heading" class="landing__howto-title">Come giocare a Mahjong Solitaire</h2>
           <ol class="landing__howto-steps">
-            <li><h3>Scegli un layout</h3><p>Pick Sfida Giornaliera or a level from 24 to 104 tessere.</p></li>
-            <li><h3>Abbina le tessere libere</h3><p>Click two identical tessere that are free on the left or right with nothing on top.</p></li>
-            <li><h3>Pulisci il tavolo</h3><p>Keep matching coppie until all tessere are removed to win.</p></li>
+            <li><h3>Scegli un layout</h3><p>Scegli Sfida Giornaliera o un livello da 24 a 104 tessere.</p></li>
+            <li><h3>Abbina le tessere libere</h3><p>Clicca su due tessere identiche che siano libere a sinistra o destra e senza nulla sopra.</p></li>
+            <li><h3>Pulisci il tavolo</h3><p>Continua ad abbinare le coppie finché tutte le tessere non saranno rimosse per vincere.</p></li>
           </ol>
         </section>
         <p><strong>Come giocare:</strong> Clicca su due tessere <strong>identiche</strong> (stesso disegno) non bloccate. Devono essere libere a sinistra o destra e senza nulla sopra. Ogni fiore solo con lo stesso fiore; ogni stagione con la stessa. Pulisci tutte per vincere!</p>
         <p><strong>Funzionalità:</strong> Senza download—gioca nel browser su PC, tablet o cellulare. <strong>Mahjong con suggerimenti</strong> quando sei bloccato. Annulla, mescola o competi in <strong>classifica</strong>. Tessere grandi e leggibili.</p>
-        <div class="landing__faq">
-          <h3 class="landing__faq-title">FAQ</h3>
-          <p><strong>Cos'è il Mahjong Solitaire?</strong> È un puzzle di tessere per un giocatore. Abbina tessere identiche per pulire il tavolo. Chiamato anche Solitaire Shanghai.</p>
-          <p><strong>È gratuito?</strong> Sì. Gioca senza download o registrazione. Inserisci il tuo nome dopo la vittoria per la classifica.</p>
-          <p><strong>Come salvo il mio punteggio?</strong> Dopo la vittoria, inserisci il tuo nome e clicca su "Salva in classifica". Senza registrazione.</p>
-          <p><strong>Cos'è la Sfida Giornaliera?</strong> Stesso layout e tessere per tutti ogni giorno. Tutti giocano lo stesso puzzle—competi in classifica!</p>
+        <div class="landing__seo-knowledge-base">
+          <h2 class="landing__seo-title">Base di Conoscenza Mahjong</h2>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">Cos'è il Mahjong Solitaire?</summary>
+            <div class="landing__seo-faq-answer">Il Mahjong Solitaire è un puzzle di tessere per un giocatore. Abbina tessere identiche per pulire il tavolo. Chiamato anche Solitaire Shanghai.</div>
+          </details>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">Mahjong Boss è gratuito?</summary>
+            <div class="landing__seo-faq-answer">Sì! Mahjong Boss è completamente gratuito, senza download o registrazione. Inserisci il tuo nome dopo la vittoria per salvare in classifica.</div>
+          </details>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">Mahjong Boss ha la Sfida Giornaliera?</summary>
+            <div class="landing__seo-faq-answer">Sì! Gioca la Sfida Giornaliera: stesso layout e tessere per tutti ogni giorno. Competi in classifica con lo stesso puzzle.</div>
+          </details>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">Come si gioca a Mahjong Solitaire?</summary>
+            <div class="landing__seo-faq-answer">Clicca su due tessere identiche (stesso disegno) non bloccate da altre. Le tessere devono essere libere a sinistra o destra e senza nulla sopra. Pulisci tutte per vincere!</div>
+          </details>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">Posso giocare su mobile?</summary>
+            <div class="landing__seo-faq-answer">Sì! Mahjong Boss funziona su tutti i dispositivi: PC, tablet e cellulare. Nessuna app da scaricare—gioca nel browser.</div>
+          </details>
         </div>
         <footer class="landing__footer">
           <span class="landing__langs" aria-label="Language">

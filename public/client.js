@@ -452,7 +452,7 @@ var LAYOUT_PAIRS = {
   fort: 40,
   caterpillar: 36,
 };
-var AUTO_HINT_DELAY_MS = 10000;
+var AUTO_HINT_DELAY_MS = 30000;
 
 function formatTime(sec) {
   const m = Math.floor(sec / 60);
@@ -1193,6 +1193,7 @@ function scaleToFit() {
     var scaleY = (stageH - padding) / boardH;
     // Allow scaling up to 1.2x on mobile to fill screen, but keep 1.0x on desktop for sharpness
     var maxScale = window.innerWidth <= 600 ? 1.2 : 1.0;
+    
     var scale = Math.min(scaleX, scaleY, maxScale);
 
     inner.style.transformOrigin = 'center center';
@@ -1351,8 +1352,15 @@ function escapeHtml(s) {
     .replace(/"/g, '&quot;');
 }
 
-function onTileClick(ev) {
+  var lastClickTime = 0;
+  function onTileClick(ev) {
   if (!game || matchInProgress) return;
+  
+  // Debounce clicks (prevent accidental double-taps)
+  var now = Date.now();
+  if (now - lastClickTime < 150) return;
+  lastClickTime = now;
+
   const el = ev.target.closest('.tile');
   if (!el || !el.dataset.id) return;
   const id = el.dataset.id;
@@ -2012,6 +2020,11 @@ function applyTheme() {
 }
 
 function init() {
+  // Dynamic Year Update for SEO Freshness
+  document.querySelectorAll('.current-year').forEach(function(el) {
+    el.textContent = new Date().getFullYear();
+  });
+
   applyTheme();
 
   var zenModeToggle = $('zenModeToggle');

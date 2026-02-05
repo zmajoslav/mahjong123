@@ -3054,3 +3054,64 @@ select:focus-visible {
     left: 100%;
   }
 }
+
+/* === SENIOR FRIENDLY MODE (Large Print Logic) === */
+.senior-friendly .tile {
+  filter: drop-shadow(0 0 2px rgba(0,0,0,0.8)) contrast(1.1);
+  z-index: auto; /* Allow stacking context to work, but boost relative z-index if needed */
+}
+.senior-friendly .tile__kind {
+  -webkit-text-stroke: 2px rgba(0,0,0,0.9); /* High contrast stroke */
+  font-weight: 900;
+}
+
+/* === KNOWLEDGE BASE (SEO) === */
+.landing__seo-knowledge-base h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  color: var(--text);
+}
+.landing__seo-knowledge-base details {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
+  transition: all 0.2s ease;
+}
+.landing__seo-knowledge-base details[open] {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: var(--borderStrong);
+}
+.landing__seo-knowledge-base summary {
+  font-weight: 600;
+  cursor: pointer;
+  list-style: none;
+  position: relative;
+  padding-right: 24px;
+  color: var(--textDim);
+}
+.landing__seo-knowledge-base summary::-webkit-details-marker {
+  display: none;
+}
+.landing__seo-knowledge-base summary::after {
+  content: '+';
+  position: absolute;
+  right: 0;
+  top: 0;
+  font-weight: 400;
+  font-size: 1.2rem;
+}
+.landing__seo-knowledge-base details[open] summary::after {
+  content: '-';
+}
+.landing__seo-knowledge-base details[open] summary {
+  color: var(--accent2);
+  margin-bottom: 12px;
+}
+.landing__seo-knowledge-base p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.6;
+}

@@ -108,6 +108,14 @@
     "url": "https://mahjongboss.com/ro/",
     "description": "Mahjong Solitaire gratuit (Shanghai) online. 8 layout-uri, provocare zilnică, indicii.",
     "applicationCategory": "GameApplication",
+
+    "audience": {
+      "@type": "PeopleAudience",
+      "suggestedMinAge": "5",
+      "audienceType": "Senior"
+    },
+    "accessibilityHazard": "none",
+    "featureList": "Large Print Tiles, No Forced Video Ads, Offline Mode, Zen Gameplay",
     "operatingSystem": "Any",
     "browserRequirements": "Requires JavaScript",
     "publisher": {
@@ -120,24 +128,7 @@
       "price": "0",
       "priceCurrency": "USD"
     },
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.8",
-      "ratingCount": "1250"
-    }
-  }
-  </script>
-  
-  <!-- HowTo Schema (how to play – can surface as rich result) -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "HowTo",
-    "name": "How to Play Mahjong Solitaire",
-    "description": "Match perechi of identical plăci that are free on the left or right with nothing on top. Clear all plăci to win.",
-    "step": [
-      { "@type": "HowToStep", "name": "Choose a layout", "text": "Pick Provocare Zilnică or a level (24 to 104 plăci)." },
-      { "@type": "HowToStep", "name": "Find matching plăci", "text": "Click two plăci with the same design. They must not be blocked by other plăci and must be free on the left or right with nothing on top." },
+    { "@type": "HowToStep", "name": "Find matching plăci", "text": "Click two plăci with the same design. They must not be blocked by other plăci and must be free on the left or right with nothing on top." },
       { "@type": "HowToStep", "name": "Clear the board", "text": "Keep matching perechi until all plăci are removed to win." }
     ]
   }
@@ -154,7 +145,16 @@
         "acceptedAnswer": {
           "@type": "Answer",
           "text": "Mahjong Solitaire este puzzle de plăci pentru un jucător. Potriviți perechi identice."
-        }
+        },
+    "video": {
+      "@type": "VideoObject",
+      "name": "Mahjong Boss Gameplay Trailer",
+      "description": "Relaxing Mahjong Solitaire gameplay showing large tiles and zen mode.",
+      "thumbnailUrl": "https://mahjongboss.com/og-image.png",
+      "uploadDate": "2026-01-01",
+      "duration": "PT1M",
+      "contentUrl": "https://mahjongboss.com/gameplay.mp4" 
+    }
       },
       {
         "@type": "Question",
@@ -226,12 +226,28 @@
         </section>
         <p><strong>Cum se joacă:</strong> Dați clic pe două plăci <strong>identice</strong> (același model) neblocate. Libere la stânga sau dreapta. Curățați toate!</p>
         <p><strong>Funcții:</strong> Fără descărcare—jucați în browser. Indicii, anulare, amestecare, <strong>clasament</strong>.</p>
-        <div class="landing__faq">
-          <h3 class="landing__faq-title">Întrebări frecvente</h3>
-          <p><strong>Ce este Mahjong Solitaire?</strong> Puzzle de plăci pentru un jucător. Potriviți perechi identice pentru a goli tabla. De asemenea Solitaire Shanghai.</p>
-          <p><strong>Gratuit?</strong> Da.</p>
-          <p><strong>Cum salvez scorul?</strong> După victorie introduceți numele și dați clic pe "Salvați în clasament".</p>
-          <p><strong>Ce e Provocarea Zilnică?</strong> Același layout pentru toți zilnic.</p>
+        <div class="landing__seo-knowledge-base">
+          <h2 class="landing__seo-title">Mahjong Knowledge Base</h2>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">Ce este Mahjong Solitaire?</summary>
+            <div class="landing__seo-faq-answer">Mahjong Solitaire este puzzle de plăci pentru un jucător. Potriviți perechi identice.</div>
+          </details>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">Mahjong Boss e gratuit?</summary>
+            <div class="landing__seo-faq-answer">Da! Complet gratuit, fără descărcare sau înregistrare.</div>
+          </details>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">Există Provocare Zilnică?</summary>
+            <div class="landing__seo-faq-answer">Da! Același layout pentru toți în fiecare zi.</div>
+          </details>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">Cum se joacă?</summary>
+            <div class="landing__seo-faq-answer">Dați clic pe două plăci identice (același model) neblocate. Plăcile trebuie să fie libere la stânga sau dreapta. Curățați toate!</div>
+          </details>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">Se poate juca pe mobil?</summary>
+            <div class="landing__seo-faq-answer">Da! Funcționează pe PC, tabletă și telefon în browser.</div>
+          </details>
         </div>
         <footer class="landing__footer">
           <span class="landing__langs" aria-label="Language">

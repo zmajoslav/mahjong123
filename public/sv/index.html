@@ -108,6 +108,14 @@
     "url": "https://mahjongboss.com/sv/",
     "description": "Gratis Mahjong Solitaire (Shanghai) online. 8 layouter, dagens utmaning, ledtrådar.",
     "applicationCategory": "GameApplication",
+
+    "audience": {
+      "@type": "PeopleAudience",
+      "suggestedMinAge": "5",
+      "audienceType": "Senior"
+    },
+    "accessibilityHazard": "none",
+    "featureList": "Large Print Tiles, No Forced Video Ads, Offline Mode, Zen Gameplay",
     "operatingSystem": "Any",
     "browserRequirements": "Requires JavaScript",
     "publisher": {
@@ -120,24 +128,7 @@
       "price": "0",
       "priceCurrency": "USD"
     },
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.8",
-      "ratingCount": "1250"
-    }
-  }
-  </script>
-  
-  <!-- HowTo Schema (how to play – can surface as rich result) -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "HowTo",
-    "name": "How to Play Mahjong Solitaire",
-    "description": "Match par of identical brickor that are free on the left or right with nothing on top. Clear all brickor to win.",
-    "step": [
-      { "@type": "HowToStep", "name": "Choose a layout", "text": "Pick Dagens utmaning or a level (24 to 104 brickor)." },
-      { "@type": "HowToStep", "name": "Find matching brickor", "text": "Click two brickor with the same design. They must not be blocked by other brickor and must be free on the left or right with nothing on top." },
+    { "@type": "HowToStep", "name": "Find matching brickor", "text": "Click two brickor with the same design. They must not be blocked by other brickor and must be free on the left or right with nothing on top." },
       { "@type": "HowToStep", "name": "Clear the board", "text": "Keep matching par until all brickor are removed to win." }
     ]
   }
@@ -154,7 +145,16 @@
         "acceptedAnswer": {
           "@type": "Answer",
           "text": "Mahjong Solitaire är ett ettspelar-brickpussel. Matcha identiska brickor för att rensa brädet."
-        }
+        },
+    "video": {
+      "@type": "VideoObject",
+      "name": "Mahjong Boss Gameplay Trailer",
+      "description": "Relaxing Mahjong Solitaire gameplay showing large tiles and zen mode.",
+      "thumbnailUrl": "https://mahjongboss.com/og-image.png",
+      "uploadDate": "2026-01-01",
+      "duration": "PT1M",
+      "contentUrl": "https://mahjongboss.com/gameplay.mp4" 
+    }
       },
       {
         "@type": "Question",
@@ -226,12 +226,28 @@
         </section>
         <p><strong>Så spelar du:</strong> Klicka på två <strong>identiska</strong> brickor (samma mönster) som inte är blockade. Måste vara fria till vänster eller höger. Rensa alla!</p>
         <p><strong>Funktioner:</strong> Ingen nedladdning—spela i webbläsaren. Ledtrådar, ångra, blanda, <strong>topplista</strong>.</p>
-        <div class="landing__faq">
-          <h3 class="landing__faq-title">Vanliga frågor</h3>
-          <p><strong>Vad är Mahjong Solitaire?</strong> Ettspelar-brickpussel. Matcha identiska brickor för att rensa brädet. Kallas också Shanghai Solitaire.</p>
-          <p><strong>Gratis?</strong> Ja.</p>
-          <p><strong>Hur sparar jag poäng?</strong> Efter vinst, ange namn och klicka "Spara till topplista".</p>
-          <p><strong>Vad är Dagens utmaning?</strong> Samma layout för alla varje dag.</p>
+        <div class="landing__seo-knowledge-base">
+          <h2 class="landing__seo-title">Mahjong Knowledge Base</h2>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">Vad är Mahjong Solitaire?</summary>
+            <div class="landing__seo-faq-answer">Mahjong Solitaire är ett ettspelar-brickpussel. Matcha identiska brickor för att rensa brädet.</div>
+          </details>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">Är Mahjong Boss gratis?</summary>
+            <div class="landing__seo-faq-answer">Ja! Helt gratis, ingen nedladdning eller registrering. Ange namn efter vinst för att spara till topplistan.</div>
+          </details>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">Finns Dagens utmaning?</summary>
+            <div class="landing__seo-faq-answer">Ja! Dagens utmaning—samma layout för alla varje dag.</div>
+          </details>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">Hur spelar man?</summary>
+            <div class="landing__seo-faq-answer">Klicka på två identiska brickor (samma mönster) som inte är blockade. Brickor måste vara fria till vänster eller höger. Rensa alla för att vinna!</div>
+          </details>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">Kan man spela på mobil?</summary>
+            <div class="landing__seo-faq-answer">Ja! Fungerar på PC, surfplatta och mobil i webbläsaren.</div>
+          </details>
         </div>
         <footer class="landing__footer">
           <span class="landing__langs" aria-label="Language">

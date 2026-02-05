@@ -108,6 +108,14 @@
     "url": "https://mahjongboss.com/ko/",
     "description": "무료 마작 솔리테어(상하이) 온라인. 8가지 레이아웃, 데일리 챌린지, 힌트.",
     "applicationCategory": "GameApplication",
+
+    "audience": {
+      "@type": "PeopleAudience",
+      "suggestedMinAge": "5",
+      "audienceType": "Senior"
+    },
+    "accessibilityHazard": "none",
+    "featureList": "Large Print Tiles, No Forced Video Ads, Offline Mode, Zen Gameplay",
     "operatingSystem": "Any",
     "browserRequirements": "Requires JavaScript",
     "publisher": {
@@ -120,24 +128,7 @@
       "price": "0",
       "priceCurrency": "USD"
     },
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.8",
-      "ratingCount": "1250"
-    }
-  }
-  </script>
-  
-  <!-- HowTo Schema (how to play – can surface as rich result) -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "HowTo",
-    "name": "How to Play Mahjong Solitaire",
-    "description": "Match 쌍 of identical 장 that are free on the left or right with nothing on top. Clear all 장 to win.",
-    "step": [
-      { "@type": "HowToStep", "name": "Choose a layout", "text": "Pick 데일리 챌린지 or a level (24 to 104 장)." },
-      { "@type": "HowToStep", "name": "Find matching 장", "text": "Click two 장 with the same design. They must not be blocked by other 장 and must be free on the left or right with nothing on top." },
+    { "@type": "HowToStep", "name": "Find matching 장", "text": "Click two 장 with the same design. They must not be blocked by other 장 and must be free on the left or right with nothing on top." },
       { "@type": "HowToStep", "name": "Clear the board", "text": "Keep matching 쌍 until all 장 are removed to win." }
     ]
   }
@@ -154,7 +145,16 @@
         "acceptedAnswer": {
           "@type": "Answer",
           "text": "1인용 타일 맞추기 퍼즐입니다. 같은 타일 짝을 맞춰 보드를 비웁니다."
-        }
+        },
+    "video": {
+      "@type": "VideoObject",
+      "name": "Mahjong Boss Gameplay Trailer",
+      "description": "Relaxing Mahjong Solitaire gameplay showing large tiles and zen mode.",
+      "thumbnailUrl": "https://mahjongboss.com/og-image.png",
+      "uploadDate": "2026-01-01",
+      "duration": "PT1M",
+      "contentUrl": "https://mahjongboss.com/gameplay.mp4" 
+    }
       },
       {
         "@type": "Question",
@@ -226,12 +226,28 @@
         </section>
         <p><strong>플레이 방법:</strong> 같은 무늬의 <strong>같은</strong> 타일 두 장 클릭(막혀 있지 않은 것). 좌우가 비어 있고 위에 없어야 함. 모두 제거하면 클리어!</p>
         <p><strong>기능:</strong> 다운로드 없음—브라우저에서 플레이. 막히면 힌트, 실행 취소, 섞기, <strong>리더보드</strong>.</p>
-        <div class="landing__faq">
-          <h3 class="landing__faq-title">자주 묻는 질문</h3>
-          <p><strong>마작 솔리테어란?</strong> 1인용 타일 맞추기 퍼즐. 같은 타일 짝을 맞춰 보드를 비우세요. 상하이 솔리테어라고도 합니다.</p>
-          <p><strong>무료인가요?</strong> 네.</p>
-          <p><strong>점수 저장은?</strong> 클리어 후 이름 입력 후 "리더보드에 저장" 클릭.</p>
-          <p><strong>데일리 챌린지란?</strong> 매일 같은 레이아웃, 모두 같은 퍼즐.</p>
+        <div class="landing__seo-knowledge-base">
+          <h2 class="landing__seo-title">Mahjong Knowledge Base</h2>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">마작 솔리테어란?</summary>
+            <div class="landing__seo-faq-answer">1인용 타일 맞추기 퍼즐입니다. 같은 타일 짝을 맞춰 보드를 비웁니다.</div>
+          </details>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">Mahjong Boss는 무료인가요?</summary>
+            <div class="landing__seo-faq-answer">네! 완전 무료, 다운로드·가입 없이 플레이. 클리어 후 이름을 입력해 리더보드에 저장.</div>
+          </details>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">데일리 챌린지가 있나요?</summary>
+            <div class="landing__seo-faq-answer">네! 매일 같은 레이아웃으로 모두가 같은 퍼즐에 도전.</div>
+          </details>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">어떻게 플레이하나요?</summary>
+            <div class="landing__seo-faq-answer">같은 무늬의 타일 두 장을 클릭(좌우가 비어 있고 위에 아무것도 없는 것). 모두 제거하면 클리어!</div>
+          </details>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">휴대폰에서 할 수 있나요?</summary>
+            <div class="landing__seo-faq-answer">네! PC, 태블릿, 휴대폰 브라우저에서 앱 없이 플레이 가능.</div>
+          </details>
         </div>
         <footer class="landing__footer">
           <span class="landing__langs" aria-label="Language">

@@ -108,6 +108,14 @@
     "url": "https://mahjongboss.com/zh/",
     "description": "免费麻将接龙（上海）在线。8种布局、每日挑战、提示与排行榜。",
     "applicationCategory": "GameApplication",
+
+    "audience": {
+      "@type": "PeopleAudience",
+      "suggestedMinAge": "5",
+      "audienceType": "Senior"
+    },
+    "accessibilityHazard": "none",
+    "featureList": "Large Print Tiles, No Forced Video Ads, Offline Mode, Zen Gameplay",
     "operatingSystem": "Any",
     "browserRequirements": "Requires JavaScript",
     "publisher": {
@@ -120,24 +128,7 @@
       "price": "0",
       "priceCurrency": "USD"
     },
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.8",
-      "ratingCount": "1250"
-    }
-  }
-  </script>
-  
-  <!-- HowTo Schema (how to play – can surface as rich result) -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "HowTo",
-    "name": "How to Play Mahjong Solitaire",
-    "description": "Match 对 of identical 张 that are free on the left or right with nothing on top. Clear all 张 to win.",
-    "step": [
-      { "@type": "HowToStep", "name": "Choose a layout", "text": "Pick 每日挑战 or a level (24 to 104 张)." },
-      { "@type": "HowToStep", "name": "Find matching 张", "text": "Click two 张 with the same design. They must not be blocked by other 张 and must be free on the left or right with nothing on top." },
+    { "@type": "HowToStep", "name": "Find matching 张", "text": "Click two 张 with the same design. They must not be blocked by other 张 and must be free on the left or right with nothing on top." },
       { "@type": "HowToStep", "name": "Clear the board", "text": "Keep matching 对 until all 张 are removed to win." }
     ]
   }
@@ -154,7 +145,16 @@
         "acceptedAnswer": {
           "@type": "Answer",
           "text": "麻将接龙是单人牌面配对游戏。凑齐相同牌面清空桌面。也称上海接龙。"
-        }
+        },
+    "video": {
+      "@type": "VideoObject",
+      "name": "Mahjong Boss Gameplay Trailer",
+      "description": "Relaxing Mahjong Solitaire gameplay showing large tiles and zen mode.",
+      "thumbnailUrl": "https://mahjongboss.com/og-image.png",
+      "uploadDate": "2026-01-01",
+      "duration": "PT1M",
+      "contentUrl": "https://mahjongboss.com/gameplay.mp4" 
+    }
       },
       {
         "@type": "Question",
@@ -226,12 +226,28 @@
         </section>
         <p><strong>玩法：</strong>点击两张<strong>相同</strong>图案的牌（未被其他牌遮挡）。牌需左右一侧空闲且上方无牌。清空全部即胜！</p>
         <p><strong>特点：</strong>无需下载—浏览器即玩。卡住有提示，可撤销、洗牌，参与<strong>排行榜</strong>。</p>
-        <div class="landing__faq">
-          <h3 class="landing__faq-title">常见问题</h3>
-          <p><strong>什么是麻将接龙？</strong> 单人牌面配对谜题。凑齐相同牌面清空桌面。也称上海接龙。</p>
-          <p><strong>免费吗？</strong> 是。</p>
-          <p><strong>如何保存分数？</strong> 获胜后输入昵称并点击「保存到排行榜」。</p>
-          <p><strong>每日挑战是什么？</strong> 每天同一布局，所有人同一局。</p>
+        <div class="landing__seo-knowledge-base">
+          <h2 class="landing__seo-title">Mahjong Knowledge Base</h2>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">什么是麻将接龙？</summary>
+            <div class="landing__seo-faq-answer">麻将接龙是单人牌面配对游戏。凑齐相同牌面清空桌面。也称上海接龙。</div>
+          </details>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">Mahjong Boss 免费吗？</summary>
+            <div class="landing__seo-faq-answer">是的！完全免费，无需下载或注册。获胜后输入昵称即可保存到排行榜。</div>
+          </details>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">有每日挑战吗？</summary>
+            <div class="landing__seo-faq-answer">有！每日挑战—每天同一布局，所有人玩同一局。</div>
+          </details>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">怎么玩？</summary>
+            <div class="landing__seo-faq-answer">点击两张相同图案的牌（且未被遮挡）。牌需左右一侧空闲且上方无牌。清空即胜！</div>
+          </details>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">能在手机上玩吗？</summary>
+            <div class="landing__seo-faq-answer">能！支持电脑、平板与手机浏览器，无需安装应用。</div>
+          </details>
         </div>
         <footer class="landing__footer">
           <span class="landing__langs" aria-label="Language">

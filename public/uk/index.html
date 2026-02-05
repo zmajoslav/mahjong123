@@ -108,6 +108,14 @@
     "url": "https://mahjongboss.com/uk/",
     "description": "Безкоштовне Маджонг Сольїтар (Шанхай) онлайн. 8 розкладок, щоденний виклик, підказки.",
     "applicationCategory": "GameApplication",
+
+    "audience": {
+      "@type": "PeopleAudience",
+      "suggestedMinAge": "5",
+      "audienceType": "Senior"
+    },
+    "accessibilityHazard": "none",
+    "featureList": "Large Print Tiles, No Forced Video Ads, Offline Mode, Zen Gameplay",
     "operatingSystem": "Any",
     "browserRequirements": "Requires JavaScript",
     "publisher": {
@@ -120,24 +128,7 @@
       "price": "0",
       "priceCurrency": "USD"
     },
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.8",
-      "ratingCount": "1250"
-    }
-  }
-  </script>
-  
-  <!-- HowTo Schema (how to play – can surface as rich result) -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "HowTo",
-    "name": "How to Play Mahjong Solitaire",
-    "description": "Match пар of identical плиток that are free on the left or right with nothing on top. Clear all плиток to win.",
-    "step": [
-      { "@type": "HowToStep", "name": "Choose a layout", "text": "Pick Щоденний виклик or a level (24 to 104 плиток)." },
-      { "@type": "HowToStep", "name": "Find matching плиток", "text": "Click two плиток with the same design. They must not be blocked by other плиток and must be free on the left or right with nothing on top." },
+    { "@type": "HowToStep", "name": "Find matching плиток", "text": "Click two плиток with the same design. They must not be blocked by other плиток and must be free on the left or right with nothing on top." },
       { "@type": "HowToStep", "name": "Clear the board", "text": "Keep matching пар until all плиток are removed to win." }
     ]
   }
@@ -154,7 +145,16 @@
         "acceptedAnswer": {
           "@type": "Answer",
           "text": "Маджонг Сольїтар — пазл для одного гравця. Знаходьте пари однакових плиток."
-        }
+        },
+    "video": {
+      "@type": "VideoObject",
+      "name": "Mahjong Boss Gameplay Trailer",
+      "description": "Relaxing Mahjong Solitaire gameplay showing large tiles and zen mode.",
+      "thumbnailUrl": "https://mahjongboss.com/og-image.png",
+      "uploadDate": "2026-01-01",
+      "duration": "PT1M",
+      "contentUrl": "https://mahjongboss.com/gameplay.mp4" 
+    }
       },
       {
         "@type": "Question",
@@ -226,12 +226,28 @@
         </section>
         <p><strong>Як грати:</strong> Клацніть дві <strong>однакові</strong> плитки (один малюнок), не заблоковані. Плитки мають бути вільні зліва або справа. Приберіть усі!</p>
         <p><strong>Можливості:</strong> Без завантаження—гра в браузері. Підказки, скасування, перемішування, <strong>таблиця лідерів</strong>.</p>
-        <div class="landing__faq">
-          <h3 class="landing__faq-title">Часті питання</h3>
-          <p><strong>Що таке Маджонг Сольїтар?</strong> Пазл для одного гравця. Знаходьте пари однакових плиток. Також Шанхайський сольїтар.</p>
-          <p><strong>Безкоштовно?</strong> Так.</p>
-          <p><strong>Як зберегти рахунок?</strong> Після перемоги введіть ім'я та натисніть «Зберегти в таблицю».</p>
-          <p><strong>Щоденний виклик?</strong> Одна розкладка для всіх щодня.</p>
+        <div class="landing__seo-knowledge-base">
+          <h2 class="landing__seo-title">Mahjong Knowledge Base</h2>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">Що таке Маджонг Сольїтар?</summary>
+            <div class="landing__seo-faq-answer">Маджонг Сольїтар — пазл для одного гравця. Знаходьте пари однакових плиток.</div>
+          </details>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">Mahjong Boss безкоштовний?</summary>
+            <div class="landing__seo-faq-answer">Так! Повністю безкоштовно, без завантаження та реєстрації.</div>
+          </details>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">Є Щоденний виклик?</summary>
+            <div class="landing__seo-faq-answer">Так! Одна розкладка для всіх щодня.</div>
+          </details>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">Як грати?</summary>
+            <div class="landing__seo-faq-answer">Клацніть дві однакові плитки, вільні зліва або справа. Приберіть усі плитки.</div>
+          </details>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">Грати на телефоні?</summary>
+            <div class="landing__seo-faq-answer">Так! Працює на ПК, планшеті та телефоні в браузері.</div>
+          </details>
         </div>
         <footer class="landing__footer">
           <span class="landing__langs" aria-label="Language">

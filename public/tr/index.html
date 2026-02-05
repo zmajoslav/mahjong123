@@ -108,6 +108,14 @@
     "url": "https://mahjongboss.com/tr/",
     "description": "Ücretsiz Mahjong Solitaire (Şangay) çevrimiçi. 8 düzen, günlük meydan okuma, ipuçları.",
     "applicationCategory": "GameApplication",
+
+    "audience": {
+      "@type": "PeopleAudience",
+      "suggestedMinAge": "5",
+      "audienceType": "Senior"
+    },
+    "accessibilityHazard": "none",
+    "featureList": "Large Print Tiles, No Forced Video Ads, Offline Mode, Zen Gameplay",
     "operatingSystem": "Any",
     "browserRequirements": "Requires JavaScript",
     "publisher": {
@@ -120,24 +128,7 @@
       "price": "0",
       "priceCurrency": "USD"
     },
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.8",
-      "ratingCount": "1250"
-    }
-  }
-  </script>
-  
-  <!-- HowTo Schema (how to play – can surface as rich result) -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "HowTo",
-    "name": "How to Play Mahjong Solitaire",
-    "description": "Match eşleşme of identical taş that are free on the left or right with nothing on top. Clear all taş to win.",
-    "step": [
-      { "@type": "HowToStep", "name": "Choose a layout", "text": "Pick Günlük Meydan Okuma or a level (24 to 104 taş)." },
-      { "@type": "HowToStep", "name": "Find matching taş", "text": "Click two taş with the same design. They must not be blocked by other taş and must be free on the left or right with nothing on top." },
+    { "@type": "HowToStep", "name": "Find matching taş", "text": "Click two taş with the same design. They must not be blocked by other taş and must be free on the left or right with nothing on top." },
       { "@type": "HowToStep", "name": "Clear the board", "text": "Keep matching eşleşme until all taş are removed to win." }
     ]
   }
@@ -154,7 +145,16 @@
         "acceptedAnswer": {
           "@type": "Answer",
           "text": "Mahjong Solitaire tek oyunculu taş eşleştirme bulmacasıdır. Aynı taş çiftlerini bularak tahtayı temizleyin."
-        }
+        },
+    "video": {
+      "@type": "VideoObject",
+      "name": "Mahjong Boss Gameplay Trailer",
+      "description": "Relaxing Mahjong Solitaire gameplay showing large tiles and zen mode.",
+      "thumbnailUrl": "https://mahjongboss.com/og-image.png",
+      "uploadDate": "2026-01-01",
+      "duration": "PT1M",
+      "contentUrl": "https://mahjongboss.com/gameplay.mp4" 
+    }
       },
       {
         "@type": "Question",
@@ -226,12 +226,28 @@
         </section>
         <p><strong>Nasıl oynanır:</strong> <strong>Aynı</strong> desenli iki taşa (bloke olmayan) tıklayın. Soldan veya sağdan serbest olmalı. Hepsini temizleyin!</p>
         <p><strong>Özellikler:</strong> İndirme yok—tarayıcıda oynayın. İpuçları, geri al, karıştır, <strong>lider tablosu</strong>.</p>
-        <div class="landing__faq">
-          <h3 class="landing__faq-title">SSS</h3>
-          <p><strong>Mahjong Solitaire nedir?</strong> Tek oyunculu taş eşleştirme bulmacası. Aynı taş çiftlerini bularak tahtayı temizleyin. Şangay Solitaire de denir.</p>
-          <p><strong>Ücretsiz mi?</strong> Evet.</p>
-          <p><strong>Skor nasıl kaydedilir?</strong> Kazandıktan sonra adınızı girin ve "Lider tablosuna kaydet"e tıklayın.</p>
-          <p><strong>Günlük Meydan Okuma nedir?</strong> Her gün herkes için aynı düzen.</p>
+        <div class="landing__seo-knowledge-base">
+          <h2 class="landing__seo-title">Mahjong Knowledge Base</h2>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">Mahjong Solitaire nedir?</summary>
+            <div class="landing__seo-faq-answer">Mahjong Solitaire tek oyunculu taş eşleştirme bulmacasıdır. Aynı taş çiftlerini bularak tahtayı temizleyin.</div>
+          </details>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">Mahjong Boss ücretsiz mi?</summary>
+            <div class="landing__seo-faq-answer">Evet! Tamamen ücretsiz, indirme veya kayıt yok. Kazandıktan sonra adınızı girerek lider tablosuna kaydedin.</div>
+          </details>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">Günlük Meydan Okuma var mı?</summary>
+            <div class="landing__seo-faq-answer">Evet! Günlük Meydan Okuma—her gün herkes için aynı düzen.</div>
+          </details>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">Nasıl oynanır?</summary>
+            <div class="landing__seo-faq-answer">Aynı desenli iki taşa tıklayın (bloke olmayan). Taşlar soldan veya sağdan serbest olmalı. Hepsini temizleyin ve kazanın!</div>
+          </details>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">Mobilde oynanır mı?</summary>
+            <div class="landing__seo-faq-answer">Evet! PC, tablet ve telefon tarayıcısında uygulama indirmeden oynayın.</div>
+          </details>
         </div>
         <footer class="landing__footer">
           <span class="landing__langs" aria-label="Language">

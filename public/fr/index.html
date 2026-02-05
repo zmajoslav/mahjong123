@@ -108,6 +108,14 @@
     "url": "https://mahjongboss.com/fr/",
     "description": "Mahjong Solitaire gratuit en ligne (Solitaire Shanghai). 8 dispositions, Défi Quotidien, astuces et classement. Sans téléchargement—jouez dans le navigateur.",
     "applicationCategory": "GameApplication",
+
+    "audience": {
+      "@type": "PeopleAudience",
+      "suggestedMinAge": "5",
+      "audienceType": "Senior"
+    },
+    "accessibilityHazard": "none",
+    "featureList": "Large Print Tiles, No Forced Video Ads, Offline Mode, Zen Gameplay",
     "operatingSystem": "Any",
     "browserRequirements": "Requires JavaScript",
     "publisher": {
@@ -120,25 +128,8 @@
       "price": "0",
       "priceCurrency": "USD"
     },
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.8",
-      "ratingCount": "1250"
-    }
-  }
-  </script>
-  
-  <!-- HowTo Schema (how to play – can surface as rich result) -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "HowTo",
-    "name": "How to Play Mahjong Solitaire",
-    "description": "Match paires of identical tuiles that are free on the left or right with nothing on top. Clear all tuiles to win.",
-    "step": [
-      { "@type": "HowToStep", "name": "Choose a layout", "text": "Pick Défi Quotidien or a level (24 to 104 tuiles)." },
-      { "@type": "HowToStep", "name": "Find matching tuiles", "text": "Click two tuiles with the same design. They must not be blocked by other tuiles and must be free on the left or right with nothing on top." },
-      { "@type": "HowToStep", "name": "Clear the board", "text": "Keep matching paires until all tuiles are removed to win." }
+    { "@type": "HowToStep", "name": "Find matching tuiles", "text": "Click two tuiles with the same design. They must not be blocked by other tuiles and must be free on the left or right with nothing on top." },
+      { "@type": "HowToStep", "name": "Clear the board", "text": "Continuez à associer les paires jusqu'à ce que toutes les tuiles soient retirées pour gagner." }
     ]
   }
   </script>
@@ -154,7 +145,16 @@
         "acceptedAnswer": {
           "@type": "Answer",
           "text": "Le Mahjong Solitaire est un jeu de puzzle pour un joueur. Associez des tuiles identiques pour vider le plateau. Aussi appelé Solitaire Shanghai."
-        }
+        },
+    "video": {
+      "@type": "VideoObject",
+      "name": "Mahjong Boss Gameplay Trailer",
+      "description": "Relaxing Mahjong Solitaire gameplay showing large tiles and zen mode.",
+      "thumbnailUrl": "https://mahjongboss.com/og-image.png",
+      "uploadDate": "2026-01-01",
+      "duration": "PT1M",
+      "contentUrl": "https://mahjongboss.com/gameplay.mp4" 
+    }
       },
       {
         "@type": "Question",
@@ -219,19 +219,35 @@
         <section class="landing__howto" aria-labelledby="howto-heading">
           <h2 id="howto-heading" class="landing__howto-title">Comment jouer au Mahjong Solitaire</h2>
           <ol class="landing__howto-steps">
-            <li><h3>Choisissez une disposition</h3><p>Pick Défi Quotidien or a level from 24 to 104 tuiles.</p></li>
-            <li><h3>Associez les tuiles libres</h3><p>Click two identical tuiles that are free on the left or right with nothing on top.</p></li>
-            <li><h3>Videz le plateau</h3><p>Keep matching paires until all tuiles are removed to win.</p></li>
+            <li><h3>Choisissez une disposition</h3><p>Choisissez Défi Quotidien ou un niveau de 24 à 104 tuiles.</p></li>
+            <li><h3>Associez les tuiles libres</h3><p>Cliquez sur deux tuiles identiques qui sont libres à gauche ou à droite et sans rien au-dessus.</p></li>
+            <li><h3>Videz le plateau</h3><p>Continuez à associer les paires jusqu'à ce que toutes les tuiles soient retirées pour gagner.</p></li>
           </ol>
         </section>
         <p><strong>Comment jouer :</strong> Cliquez sur deux tuiles <strong>identiques</strong> (même motif) non bloquées. Elles doivent être libres à gauche ou à droite et sans rien au-dessus. Chaque fleur avec la même fleur ; chaque saison avec la même saison. Videz tout pour gagner !</p>
         <p><strong>Fonctionnalités :</strong> Sans téléchargement—jouez dans le navigateur sur ordinateur, tablette ou mobile. <strong>Mahjong avec astuces</strong> quand vous êtes bloqué. Annulez, mélangez ou competez au <strong>classement</strong>. Tuiles grandes et lisibles.</p>
-        <div class="landing__faq">
-          <h3 class="landing__faq-title">FAQ</h3>
-          <p><strong>Qu'est-ce que le Mahjong Solitaire ?</strong> C'est un puzzle de tuiles pour un joueur. Associez des tuiles identiques pour vider le plateau. Aussi appelé Solitaire Shanghai.</p>
-          <p><strong>Est-ce gratuit ?</strong> Oui. Jouez sans téléchargement ni inscription. Entrez votre nom après une victoire pour le classement.</p>
-          <p><strong>Comment enregistrer mon score ?</strong> Après une victoire, entrez votre nom et cliquez sur « Enregistrer au classement ». Sans inscription.</p>
-          <p><strong>Qu'est-ce que le Défi Quotidien ?</strong> Même disposition et tuiles pour tous chaque jour. Même puzzle pour tous—compétez au classement !</p>
+        <div class="landing__seo-knowledge-base">
+          <h2 class="landing__seo-title">Base de Connaissances Mahjong</h2>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">Qu'est-ce que le Mahjong Solitaire ?</summary>
+            <div class="landing__seo-faq-answer">Le Mahjong Solitaire est un jeu de puzzle pour un joueur. Associez des tuiles identiques pour vider le plateau. Aussi appelé Solitaire Shanghai.</div>
+          </details>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">Mahjong Boss est-il gratuit ?</summary>
+            <div class="landing__seo-faq-answer">Oui ! Mahjong Boss est entièrement gratuit, sans téléchargement ni inscription. Entrez votre nom après une victoire pour enregistrer au classement.</div>
+          </details>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">Mahjong Boss a-t-il un Défi Quotidien ?</summary>
+            <div class="landing__seo-faq-answer">Oui ! Jouez au Défi Quotidien : même disposition et tuiles pour tous chaque jour. Compétez au classement avec le même puzzle.</div>
+          </details>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">Comment jouer au Mahjong Solitaire ?</summary>
+            <div class="landing__seo-faq-answer">Cliquez sur deux tuiles identiques (même motif) non bloquées par d'autres. Les tuiles doivent être libres à gauche ou à droite et sans rien au-dessus. Videz tout pour gagner !</div>
+          </details>
+          <details class="landing__seo-faq-item">
+            <summary class="landing__seo-faq-question">Puis-je jouer sur mobile ?</summary>
+            <div class="landing__seo-faq-answer">Oui ! Mahjong Boss fonctionne sur tous les appareils : ordinateur, tablette et téléphone. Pas d'app à télécharger—jouez dans le navigateur.</div>
+          </details>
         </div>
         <footer class="landing__footer">
           <span class="landing__langs" aria-label="Language">
