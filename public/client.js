@@ -907,6 +907,14 @@ function updateUI() {
   } else if (state.validMoves === 0 && state.remaining > 0) {
     if (!stuckModalShownForGame) {
       stuckModalShownForGame = true;
+      
+      // Add visual feedback that the game is stuck
+      var board = $('board');
+      if (board) {
+        board.classList.add('board--shake');
+        setTimeout(function() { board.classList.remove('board--shake'); }, 500);
+      }
+      
       showStuckModal();
     }
   }

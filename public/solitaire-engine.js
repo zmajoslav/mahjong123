@@ -567,8 +567,17 @@
       }
 
       if (!success) {
+        // Fallback: Just shuffle randomly if we can't find a guaranteed solvable state.
+        // It's better to let the user play than to block them.
         remaining.forEach(function (t, i) { t.kind = originalKinds[i]; });
-        return { ok: false, message: 'Could not find a solvable shuffle. Try New Game.' };
+        
+        // One last random shuffle
+        const finalKinds = remaining.map(function (t) { return t.kind; });
+        finalKinds.sort(function () { return Math.random() - 0.5; });
+        remaining.forEach(function (t, i) { t.kind = finalKinds[i]; });
+        
+        combo = 0;
+        return { ok: true, penaltySeconds: SHUFFLE_PENALTY, fromCache: false, message: 'Shuffled (Solvability uncertain)' };
       }
 
       combo = 0;
