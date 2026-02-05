@@ -63,7 +63,11 @@ function createApp({ env, pool }) {
       res.setHeader('Pragma', 'no-cache');
       res.setHeader('Expires', '0');
     } else if (STATIC_EXTENSIONS.includes(ext)) {
-      res.setHeader('Cache-Control', 'public, max-age=31536000');
+      if (env.NODE_ENV === 'production') {
+        res.setHeader('Cache-Control', 'public, max-age=31536000');
+      } else {
+        res.setHeader('Cache-Control', 'no-cache');
+      }
     }
     next();
   });
