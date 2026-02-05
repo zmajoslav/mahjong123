@@ -1361,31 +1361,14 @@ function onTileClick(ev) {
   const tile = state.tiles.find(function (t) { return t.id === id; });
   if (!tile || !tile.free) return;
 
-  console.log('[DEBUG] Tile clicked - ID:', id, 'Selected:', selectedTileId, 'MatchInProgress:', matchInProgress);
-  console.log('[DEBUG] Tile element classes before:', el.className);
-  console.log('[DEBUG] Tile element style before:', el.style.cssText);
+  // Debug logging removed - bug fixed!
 
   if (selectedTileId === null) {
     selectedTileId = id;
     playWoodClick();
     document.querySelectorAll('.tile--selected').forEach(function (e) { e.classList.remove('tile--selected'); });
     el.classList.add('tile--selected');
-    console.log('[DEBUG] First tile selected, state before:', game.getState().tiles.length, 'tiles');
-    console.log('[DEBUG] Tile element classes after selection:', el.className);
-    console.log('[DEBUG] Tile element style after selection:', el.style.cssText);
-    
-    // Check if tile is visible after selection
-    setTimeout(function() {
-      var checkEl = document.querySelector('[data-id="' + id + '"]');
-      if (!checkEl) {
-        console.error('[DEBUG] TILE DISAPPEARED! ID:', id);
-      } else {
-        console.log('[DEBUG] Tile still exists after 100ms. Classes:', checkEl.className);
-        console.log('[DEBUG] Computed style display:', window.getComputedStyle(checkEl).display);
-        console.log('[DEBUG] Computed style opacity:', window.getComputedStyle(checkEl).opacity);
-        console.log('[DEBUG] Computed style visibility:', window.getComputedStyle(checkEl).visibility);
-      }
-    }, 100);
+    // Debug logging removed - bug fixed!
     
     return;
   }
